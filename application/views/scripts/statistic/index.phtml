@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Статистика базы данных</h1>
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>	
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Информация
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                     <form id="device_name_select" name="device_name_select" method="post">
+                    <table width=100% class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <tbody>
+                            <tr class="gradeA">
+                                <td>Всего аппаратов в базе:</td>
+                                <td><? echo $this->devices;?></td>
+                            </tr>                            
+                            <tr class="gradeA">
+                                <td>
+                                    Всего аппаратов с именем:&nbsp;
+                                        <select name="select_device" onchange="device_name_select.submit();">
+                                             <? foreach ($this->devices_list as $value) { ?>
+                                            <option <? if($this->name == "{$value['name']}") {echo('selected ');} ?> value="<? echo $this->escape($value['name'])?>"><? echo $this->escape($value['name'])?> </option> <?}?>
+                                        </select>
+                                   
+                                </td>
+                                <td><? echo $this->count_names;?></td>
+                            </tr>  
+                            <tr class="gradeA">
+                                <td>
+                                    Всего аппаратов сo статусом:&nbsp
+                                        <select name="select_status" onchange="device_name_select.submit();">
+                                             <? foreach ($this->status_list as $value) { ?>
+                                            <option <? if($this->status == "{$value['status']}") {echo('selected ');} ?> value="<? echo $this->escape($value['status'])?>"><? echo $this->escape($value['status'])?> </option> <?}?>
+                                        </select>
+                                    
+                                </td>
+                                <td><? echo $this->count_status;?></td>
+                            </tr>  
+                            <tr class="gradeA">
+                                <td>
+                                    Всего аппаратов с принадлежностью:&nbsp
+                                        <select name="select_owner" onchange="device_name_select.submit();">
+                                             <? foreach ($this->owner_list as $value) { ?>
+                                            <option <? if($this->owner == "{$value['owner']}") {echo('selected ');} ?> value="<? echo $this->escape($value['owner'])?>"><? echo $this->escape($value['owner'])?> </option> <?}?>
+                                        </select>
+                                   </td>
+                                <td><? echo $this->count_owner;?></td>
+                            </tr>  
+                            <tr class="gradeA">
+                                <td>
+                                    Всего аппаратов используется:&nbsp
+                                        <select name="select_user" onchange="device_name_select.submit();">
+                                             <? foreach ($this->user_list as $value) { ?>
+                                            <option <? if($this->user == "{$value['user']}") {echo('selected ');} ?> value="<? echo $this->escape($value['user'])?>"><? echo $this->escape($value['user'])?> </option> <?}?>
+                                        </select>
+                                </td>
+                                <td><? echo $this->count_user;?></td>
+                            </tr>  
+                        </tbody>
+                    </table>
+                         
+                    <br>
+                    <table width=100% class="table table-striped table-bordered table-hover" id="dataTables-example">
+                          <tbody>
+                        <tr class="gradeA">
+                                <td>Всего ремонтов в базе:</td>
+                                <td><? echo $this->repairs;?></td>
+                            </tr>  
+                        <tr class="gradeA">
+                                <td>
+                                    Всего ремонтов аппарата:&nbsp
+                                        <select name="select_repair" onchange="device_name_select.submit();">
+                                             <? foreach ($this->repairs_list as $value) { ?>
+                                            <option <? if($this->repair_name == "{$value['name']}") {echo('selected ');} ?> value="<? echo $this->escape($value['name'])?>"><? echo $this->escape($value['name'])?> </option> <?}?>
+                                        </select>
+                                </td>
+                                <td><? echo $this->count_repair_name;?></td>
+                            </tr>  
+                        </tbody>
+                    </table>
+ </form>
+
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+

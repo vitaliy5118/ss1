@@ -1,0 +1,16 @@
+<?php
+    $this->title = "Удаление записи";
+    $this->headTitle($this->title);
+?>
+<p>Вы действительно хотите удалить запись???<br>
+  Дата '<?=$this->escape($this->repaire['data']); ?>'<br>
+ </p><br>
+
+<form action="<?=$this->url(array('action'=>'delete')); ?>" method="post">
+    <div>
+        <input type="hidden" name="id" value="<?php echo $this->repaire['id']; ?>" />
+        <input type="hidden" name="dopid" value="<?php echo $this->repaire['dopid']; ?>" />
+        <input type="submit" name="del" value="Да" />
+        <input type="submit" name="del" value="Нет" />
+    </div>
+</form>

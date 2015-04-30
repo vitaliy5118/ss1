@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">История ремонтов</h1>
+        <h4>Номер аппарата:&nbsp;<?=$this->number?></h4>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>	
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class='row'>
+                    <div class="col-sm-4">
+                        <div class="dataTables_length" id="dataTables-example_length">
+                            Показать 
+                            <select>
+
+                                    <option <? if($_SESSION['select_limit']== 10) {echo('selected ');} ?>value="10">10</option>
+                                    <option <? if($_SESSION['select_limit']== 25) {echo('selected ');} ?>value="25">25</option>
+                                    <option <? if($_SESSION['select_limit']== 50) {echo('selected ');} ?>value="50">50</option>
+                                    <option <? if($_SESSION['select_limit']== 100) {echo('selected ');} ?>value="100">100</option>
+                            </select>
+                            строк
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="dataTables_length" id="dataTables-example_length">
+                            <button type="button" onclick="window.location.href = '/repairs/add/number/<?=$this->number?>'" class="btn btn-default">Добавить</button>
+                            <button type="button" onclick="window.location.href = '/catalog/add/'" class="btn btn-default">Обновить</button>
+                        </div>
+                        </div>
+                    <div class="col-sm-4">
+                        <div class="dataTables_length" id="dataTables-example_length">
+                            
+                            <input type="search" class="form-control" placeholder="Поиск:" aria-controls="dataTables-example"/>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Дата&nbsp<i class="fa fa-sort fa-fw"></i></th>
+                                <th>Жалоба&nbsp<i class="fa fa-sort fa-fw"></i></th>
+                                <th>Диагноз&nbsp<i class="fa fa-sort fa-fw"></i></th>
+                                <th>Работа&nbsp<i class="fa fa-sort fa-fw"></i></th>
+                                <th>Запчасти&nbsp<i class="fa fa-sort fa-fw"></i></th>
+                                <th>Коментарий&nbsp<i class="fa fa-sort fa-fw"></i></th>
+                                <th><center><i class="fa fa-gavel fa-fw"></i></center></th>
+                                <th><center><i class="fa fa-trash-o fa-fw"></i></center></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php
+                            foreach ($this->repairs as $rows) {
+                            ?> <tr class="gradeA">
+                                    <td><?php echo $this->escape($rows['date']); ?></td>
+                                    <td><?php echo $this->escape($rows['claim']); ?></td>
+                                    <td><?php echo $this->escape($rows['diagnos']); ?></td>
+                                    <td><?php echo $this->escape($rows['work']); ?></td>
+                                    <td><?php echo $this->escape($rows['spares']); ?></td>
+                                    <td><?php echo $this->escape($rows['comments']); ?></td>
+                                    <td><center><a class="fa fa-gavel fa-fw" href="/repairs/edit/id/<?php echo $this->escape($rows['id']); ?>"></a></center></td>
+                                    <td><center><a class="fa fa-trash-o fa-fw" href="/service/index/sort/number"></a></center></td>
+                               </tr> <? } ?>                            
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+                <div class="well">
+                    <h4>Информация каталога</h4>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+

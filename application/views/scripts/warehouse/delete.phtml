@@ -1,0 +1,15 @@
+<?php
+    $this->title = "Удаление записи";
+    $this->headTitle($this->title);
+?>
+<p>Вы действительно хотите запчасть???<br>
+  Серийный номер '<?=$this->escape($this->warehouse['serial']); ?>'<br>
+  Название '<?=$this->escape($this->warehouse['name']); ?>'?</p><br>
+
+<form action="<?=$this->url(array('action'=>'delete')); ?>" method="post">
+    <div>
+        <input type="hidden" name="id" value="<?php echo $this->warehouse['id']; ?>" />
+        <input type="submit" name="del" value="Да" />
+        <input type="submit" name="del" value="Нет" />
+    </div>
+</form>

@@ -1,0 +1,24 @@
+<?php
+// Создаём заголовок страницы, который загрузится в layout
+$this->title = "Удаление записи";
+
+$this->headTitle($this->title);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">Удаление записи</h3>
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="well">
+    <h4>Вы действительно хотите удалить запись?</h4>
+    
+    <h4>Запись:&nbsp;<?php echo($this->data['user']); ?></h4>
+   
+ <? echo $this->form; ?>  
+    <br>
+    <p>Внимание! Все данные включая ремонты будут удалены!</p>
+</div>
+

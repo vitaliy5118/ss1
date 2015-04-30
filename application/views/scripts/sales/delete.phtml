@@ -1,0 +1,15 @@
+<?php
+    $this->title = "Удаление записи";
+    $this->headTitle($this->title);
+?>
+<p>Вы действительно хотите удалить запись???<br>
+  Номер '<?=$this->escape($this->sales['number']); ?>'<br>
+  Имя '<?=$this->escape($this->sales['name']); ?>'?</p><br>
+
+<form action="<?=$this->url(array('action'=>'delete')); ?>" method="post">
+    <div>
+        <input type="hidden" name="id" value="<?php echo $this->sales['id']; ?>" />
+        <input type="submit" name="del" value="Да" />
+        <input type="submit" name="del" value="Нет" />
+    </div>
+</form>

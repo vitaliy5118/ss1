@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Каталог проданных апаратов</h1>
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>	
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <table width=100% border="0">
+                    <tr  align="left">
+                        <td width="33%" align="left">
+                        <div class="dataTables_length" id="dataTables-example_length">
+                            <form id="form_select" name="form_select" method="post">
+                                Показать 
+
+                                <select name="select_limit" onchange="form_select.submit();">
+
+                                    <option <? if($_SESSION['select_limit']== 2) {echo('selected ');} ?>value="2">2</option>
+                                    <option <? if($_SESSION['select_limit']== 4) {echo('selected ');} ?>value="4">4</option>
+                                    <option <? if($_SESSION['select_limit']== 6) {echo('selected ');} ?>value="6">6</option>
+                                    <option <? if($_SESSION['select_limit']== 10) {echo('selected ');} ?>value="10">10</option>
+                                </select>
+                                
+                                <input name="search_catalog" type="hidden" value="<?=$this->search?>" >
+
+                                строк
+                            </form>
+                        </div>
+                    </td>
+                   <td align="center">
+                        <div class="dataTables_length" id="dataTables-example_length">
+                            <button type="button" onclick="window.location.href = '/sales/add/'" class="btn btn-default">Добавить</button>
+                            <button type="button" onclick="window.location.href = '/sales/index/'"class="btn btn-default">Обновить</button>
+                        </div>
+                    </td>
+                    <td  width="33%" align="right">
+                        <div class="dataTables_length" id="dataTables-example_length">
+                            <form id="search_form" method="post">
+                            <div class="input-group custom-search-form">
+                                <input name="search_catalog" type="text" value="<?=$this->search?>" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button form="search_form" class="btn btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            </form>
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <table width=100% class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Дата&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_number'); ?>"></a></th>
+                                <th>Номер&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_name'); ?>"></a></th>
+                                <th>Название&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_owner'); ?>"></a></th>
+                                <th>Покупатель&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_user'); ?>"></a></th>
+                                <th>Статус&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_status'); ?>"></a></th>
+                                <th><center><i class="fa fa-gavel fa-fw"></i></center></th>
+                                <th><center><i class="fa fa-trash-o fa-fw"></i></center></th>
+
+                        </tr>
+                        
+                         </thead>
+                        <tbody>
+
+                        <?php
+                        foreach ($this->sales as $rows) {
+                            ?> <tr class="gradeA">
+                                <td><?php echo $this->escape($rows['date']); ?></td>
+                                <td><?php echo $this->escape($rows['number']); ?></td>
+                                <td><?php echo $this->escape($rows['name']); ?></td>
+                                <td><?php echo $this->escape($rows['buyer']); ?></td>
+                                <td><?php echo $this->escape($rows['status']); ?></td>
+                                <td><center><a class="fa fa-gavel fa-fw" href="/sales/edit/id/<?= $this->escape($rows['id']) ?>"></a></center></td>
+                                <td><center><a class="fa fa-trash-o fa-fw" href="/sales/delete/id/<?= $this->escape($rows['id']) ?>"></a></center></td>
+                            </tr> <? } ?>                            
+
+                        </tbody>
+                    </table>
+                    <table width=100% border="0">       
+                        <tr>
+                            <td align="left">
+                                Показано от <?=$this->page_first?> до <?=$this->page_last?> из <?=$this->count?> записей
+                            </td>
+                            <td align="right">
+                                <ul class="pagination">
+                                    <li class="paginate_button previous <?=$this->previos_page?>" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
+                                        <a href="/catalog/index/sort/<?=$_SESSION['sort']?>/page/<? if($_SESSION['page']>1) { echo ($_SESSION['page']-1); } else { echo ($_SESSION['page']); } ?><?=$this->search_param?>">назад</a>
+                                    </li>
+                                    
+                                    <? foreach ($this->button_parameters as $key) { ?>
+                                    <li class="paginate_button <?=$key['active']?>" aria-controls="dataTables-example" tabindex="0">
+                                        <a href="/catalog/index/sort/<?=$_SESSION['sort']?>/page/<?=$key['number']?><?=$this->search_param?>"><?=$key['number']?></a>
+                                    </li> <? } ?>
+
+                                    
+                                    <li class="paginate_button next <?=$this->next_page?>" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
+                                        <a href="/catalog/index/sort/<?=$_SESSION['sort']?>/page/<?=$this->last_page?><?=$this->search_param?>">Next</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+                <div class="well">
+                    <h4>Информация каталога</h4>
+                    <p>Выборка : <?=$_SESSION['select_limit'];?> |
+                       Текущая страница : <?=$_SESSION['page'];?> |
+                       Сортировка : <?=$_SESSION['sort'];?> |
+                       Всего в базе : <?=$this->count;?>
+                    </p>
+                    <a class="btn btn-default btn-lg btn-block" target="_blank" href="https://datatables.net/">View DataTables Documentation</a>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
