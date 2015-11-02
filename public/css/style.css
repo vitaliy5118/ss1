@@ -1,0 +1,185 @@
+.myshow{
+    vertical-align: middle;
+}
+
+#devices{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 300px;
+}
+
+#repair{
+    padding-bottom: 20px;
+    width: 300px;
+}
+
+.repair_number{
+    font-weight: 600;
+}
+
+
+#documentation{
+   margin: 5px 0 5px 0;
+}
+#documentation dl{
+    margin: 0 0 0 0;
+}
+#documentation .zend_form dd,dt{
+    display: inline;
+}
+#documentation .zend_form dd#description-element input#description{
+    margin: 0 0 0 0;
+    width:180px;
+    display: inline;
+}
+#documentation .zend_form dd#file-element input#file{
+    margin: 0 0 0 0;
+    display: inline;
+}
+
+.repairs_info_block{
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+.main_spares_block {
+ margin-bottom: 20px;
+}
+.main_spares_block p{
+ font: bold 110% serif;
+}
+.main_spares_block .left_spares_block{
+    width: 40%;
+    float: left;
+}
+
+.main_spares_block .right_spares_block{
+    width: 40%;
+    margin-left: 45%;
+}
+
+.main_spares_block #spares_block{
+ margin-bottom: 10px;
+}
+
+#spares_foto{
+    width: 60px;
+    height: 60px;
+}
+#spares_remain{
+    width: 60px;
+    vertical-align: mi
+}
+#spares_remain_check{
+    width: 75px;
+}
+
+#spares_check{
+    width: 60px;
+}
+#spares_check input{
+    margin-left: 35%
+}
+#spares_row td{
+    vertical-align: middle;
+}
+
+#spares_foto p img {
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-left: 1%;
+}
+
+.error{
+    background-color: #ECA7A7;
+}
+.message_in {
+    display: none;
+}
+.error_message{
+    display: inline;
+    color: red;
+}
+
+.repair_data{
+    width: 10%;
+}
+.repair_claim{
+    width: 15%;
+}
+.repair_spares{
+    width: 30%;
+}
+.repair_counter{
+    width: auto;
+}
+
+.repair_stat_data{
+    width: 10%;
+}
+.repair_stat_date{
+    width: 16%;
+}
+.repair_data_row{
+    width: 100%;
+    float: left;
+}
+.repair_data_row #repair_row_h{
+    float: left;
+}
+.repair_data_row #repair_row_a{
+    float: left;
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+.history_but{
+    float: left;
+    margin-left: 5px;
+}
+.history_data{
+    float: left;
+    margin-left: 20px;
+}
+.stat_panel{
+    width:100px;
+}
+
+.set_list_block{
+    width: 50%;
+    height: 24px;
+}
+.set_list_row_text{
+    margin-left: 25px;
+    width: 160px;
+}
+.set_list_row_checkbox{
+    float: left;
+    margin-left: 5px;
+}
+.ss1{
+    width: 25%;
+    height: 230px;
+    float: left;
+}
+
+.ss2{
+    margin-top: 5px;
+}
+
+.set_userdata_block input{
+    width: 250px;
+    margin-bottom: 5px;
+} 
+.set_userdata_block select{
+    width: 250px;
+    margin-bottom: 25px;
+} 
+
+.check_row{
+    color: red;
+}
+
+
+
+

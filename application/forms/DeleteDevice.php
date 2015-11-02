@@ -8,7 +8,7 @@ class Application_Form_DeleteDevice extends Zend_Form
         /* Form Elements & Other Definitions Here ... */
         $submit = new Zend_Form_Element_Submit('submit',array('class'=>'btn btn-default'));
         $cancel = new Zend_Form_Element_Submit('cancel',array('class'=>'btn btn-default'));
-                // —оздаЄм элемент hidden c именем = id
+
         $id = new Zend_Form_Element_Hidden('id');
         // ”казываем, что данные в этом элементе фильтруютс€ как число int
         $id->addFilter('Int')

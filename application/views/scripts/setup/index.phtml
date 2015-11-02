@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Настройки базы данных</h1>
+        <h1 class="page-header"><i class="fa fa-magic fa-fw"></i> Настройки базы данных</h1>
 
     </div>
     <!-- /.col-lg-12 -->
@@ -9,25 +9,27 @@
         <ul class="nav" id="side-menu">
             <p>Настройки каталога</p>
             <li>
-                <a href="<?php echo $this->url(array(), 'setup_names'); ?>"><i class="fa fa-dashboard fa-fw"></i> Названия аппаратов</a>
+                <a href="<?php echo $this->url(array(), 'setup_names'); ?>"><i class="fa fa-tag fa-fw"></i> Названия аппаратов</a>
             </li>
             <li>
-                <a href="<?php echo $this->url(array(), 'setup_owners'); ?>"><i class="fa fa-table fa-fw"></i> Принадлежность</a>
+                <a href="<?php echo $this->url(array(), 'setup_types'); ?>"><i class="fa fa-th-list"></i> Группы аппаратов</a>
             </li>
             <li>
-                <a href="<?php echo $this->url(array(), 'setup_users'); ?>"><i class="fa fa-edit fa-fw"></i> Территория использования</a>
+                <a href="<?php echo $this->url(array(), 'setup_owners'); ?>"><i class="fa fa-child fa-fw"></i> Принадлежность</a>
             </li>
             <li>
-                <a href="<?php echo $this->url(array(), 'setup_status'); ?>"><i class="fa fa-edit fa-fw"></i> Статус</a>
+                <a href="<?php echo $this->url(array(), 'setup_users'); ?>"><i class="fa fa-car fa-fw"></i> Территория использования</a>
             </li>
-            <p>Настройки документации</p>
             <li>
-                <a href="<?php echo $this->url(array(), 'setup_access'); ?>"><i class="fa fa-edit fa-fw"></i> Документация</a>
+                <a href="<?php echo $this->url(array(), 'setup_status'); ?>"><i class="fa fa-trello"></i> Статус</a>
+            </li>
+            <p>Услуги мастерской</p>
+            <li>
+                <a href="<?php echo $this->url(array(), 'setup_prices'); ?>"><i class="fa fa-usd fa-fw"></i> Прейскурант на услуги</a>
             </li>
             <p>Настройки доступа</p>
             <li>
-                <a href="<?php echo $this->url(array(), 'setup_access'); ?>"><i class="fa fa-edit fa-fw"></i> Доступ</a>
+                <a href="<?php echo $this->url(array(), 'setup_access'); ?>"><i class="fa fa-unlock-alt fa-fw"></i> Доступ</a>
             </li>
         </ul>
     </div>
-    <!-- /.sidebar-collapse -->

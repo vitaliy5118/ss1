@@ -21,9 +21,10 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
     public function statisticRepairs($date) {
 
         //Составляем запрос
-        $sql = (" SELECT *
-                  FROM `repairs`
+        $sql = (" SELECT repairs.*, devices.name
+                  FROM `repairs` JOIN `devices` ON repairs.number=devices.number
                   WHERE `date` LIKE '%$date%'
+                  ORDER BY date DESC
                       
                 ");
 
@@ -52,37 +53,52 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
 
         return $this->getAdapter()->query($sql)->fetchAll();
     }
+    public function getCountRepairsbyNumber($number) {
+
+        //Составляем запрос
+        $sql = (" SELECT count(repairs.id) as count
+                  FROM `repairs` 
+                  WHERE `number` = '$number'
+                ");
+
+        return $this->getAdapter()->query($sql)->fetchAll();
+    }
     
     // Метод для добавление новой записи
-    public function addRepaire($number, $claim, $diagnos, $spares, $work, $comments) {
+    public function addRepaire($number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked) {
         // Формируем массив вставляемых значений
-        $data = array(
+        $data_array = array(
             'number' => $number,
             'claim' => $claim,
             'diagnos' => $diagnos,
             'work' => $work,
             'spares' => $spares,
-            'comments' => $comments
+            'comments' => $comments,
+            'counter' => $counter,
+            'serialize_data' => $serialize_data,
+            'serialize_checked' => $serialize_checked
         );
 
 // Используем метод insert для вставки записи в базу
-        $this->insert($data);
+        $this->insert($data_array);
     }
     
-    public function editRepaire($id, $number, $data, $claim, $diagnos, $spares, $work, $comments) {
+    public function editRepaire($id, $number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked) {
     // Формируем массив вставляемых значений
-        $data = array(
-            'data' => $data,
+        $data_array = array(
             'claim' => $claim,
             'diagnos' => $diagnos,
             'work' => $work,
             'spares' => $spares,
             'comments' => $comments,
-            'number' => $number
+            'number' => $number,
+            'counter' => $counter,
+            'serialize_data' => $serialize_data,
+            'serialize_checked' => $serialize_checked
         );
 
     // Используем метод insert для вставки записи в базу
-        $this->update($data, 'id=' . (int) $id);
+        $this->update($data_array, 'id=' . (int) $id);
     }
 
     public function getRepaire($id) {

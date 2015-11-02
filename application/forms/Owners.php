@@ -10,7 +10,7 @@ class Application_Form_Owners extends Zend_Form {
                ->setAttrib('placeholder','Введите принадлежность')
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
-               ->addValidator('db_norecordexists',true, array('table'=>'owner','field'=>'owner',  'messages' => 'Запись уже существует!'))
+               ->addValidator('Db_NoRecordExists',true, array('table'=>'owner','field'=>'owner',  'messages' => 'Запись уже существует!'))
                ->addValidator('regex',true, array("/^[A-Za-zА-Яа-я1-90 \.\-]{3,20}$/i", 'messages' => $settings['messages']['error']))
                ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
                ->setDecorators(array('ViewHelper', 'Errors',

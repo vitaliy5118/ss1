@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" id='test_js'><i class="fa fa-edit fa-fw"></i> Расход запчастей</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>	
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <table width=100% border="0">
+                   <tr>
+                        <td width="100px" align="left">
+                            <div class="dataTables_length" id="dataTables-example_length">
+                                <button type="button" onclick="window.location.href = '/warehouse/index/'" class="btn btn-default">Назад</button>
+                            </div>
+                        </td>
+                        <td align="left">
+                            <div class="dataTables_length" id="dataTables-example_length">
+                                <form id="form_select" name="form_select" method="post">
+                                    Показать 
+                                    <select name="select_limit" onchange="form_select.submit();">
+                                        <option <? if($_SESSION['select_limit']== 10) {echo('selected ');} ?>value="10">10</option>
+                                        <option <? if($_SESSION['select_limit']== 25) {echo('selected ');} ?>value="25">25</option>
+                                        <option <? if($_SESSION['select_limit']== 50) {echo('selected ');} ?>value="50">50</option>
+                                        <option <? if($_SESSION['select_limit']== 100) {echo('selected ');} ?>value="100">100</option>
+                                    </select>
+                                    <input name="search_catalog" type="hidden" value="<?=$this->search?>" >
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <table width=100% class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Дата&nbsp</th>
+                                <th>Серийный номер&nbsp</th>
+                                <th>Название&nbsp</th>
+                                <th>Тип&nbsp</th>
+                                <th>Склад&nbsp</th>
+                                <th>+ / -&nbsp</th>
+                                <th>Остаток&nbsp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($this->warehistory as $rows) {
+                            ?> <tr class="gradeA">
+                                <td><?php echo $this->escape($rows['data']); ?></td>
+                                <td><?php echo $this->escape($rows['serial']); ?></td>
+                                <td><?php echo $this->escape($rows['name']); ?></td>
+                                <td><?php echo $this->escape($rows['method']); ?></td>
+                                <td><?php echo $this->escape($rows['presence']); ?></td>
+                                <td><?php echo $this->escape($rows['expense']); ?></td>
+                                <td><?php echo $this->escape($rows['remain']); ?></td>
+                            </tr> <? } ?>                            
+
+                        </tbody>
+                    </table>
+                    <table width=100% border="0">       
+                        <tr>
+                            <td align="left">
+                                Показано от <?=$this->page_first?> до <?=$this->page_last?> из <?=$this->count?> записей
+                            </td>
+                            <td align="right">
+                                <ul class="pagination">
+                                    <li class="paginate_button previous <?=$this->previos_page?>" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
+                                        <a href="/warehouse/history/page/<? if($_SESSION['page']>1) { echo ($_SESSION['page']-1); } else { echo ($_SESSION['page']); } ?><?=$this->search_param?>">назад</a>
+                                    </li>
+                                    
+                                    <? foreach ($this->button_parameters as $key) { ?>
+                                    <li class="paginate_button <?=$key['active']?>" aria-controls="dataTables-example" tabindex="0">
+                                        <a href="/warehouse/history/page/<?=$key['number']?><?=$this->search_param?>"><?=$key['number']?></a>
+                                    </li> <? } ?>
+
+                                    
+                                    <li class="paginate_button next <?=$this->next_page?>" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
+                                        <a href="/warehouse/history/page/<?=$this->last_page?><?=$this->search_param?>">вперед</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+

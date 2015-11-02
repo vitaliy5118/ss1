@@ -12,59 +12,65 @@ class SalesController extends Zend_Controller_Action
         // action body
         $sales = new Application_Model_DbTable_Sales();
         
-        if($this->getRequest()->getParam('sort')){
+        //если идет запрос сортировки
+        if ($this->getRequest()->getParam('sort')) {
             $sort = $this->getRequest()->getParam('sort');
+        } else {
+            $sort = $this->_helper->navigation->sortby();
         }
         
-        if($this->getRequest()->isPost('select_limit')){
+        //если идет запрос количества записей на странице
+        if ($this->getRequest()->isPost('select_limit')) {
             $select_limit = $this->getRequest()->getPost('select_limit');
-        }
+            $page=1;
+        } else {
+            $select_limit = $this->_helper->navigation->selectlimit();
+            
+            //если идет запрос страницы
+            if ($this->getRequest()->getParam('page')) {
+                $page = $this->getRequest()->getParam('page');
+            } else {
+                $page = $this->_helper->navigation->page();
+            }
+        } 
         
-        if($this->getRequest()->getParam('page')){
-            $page = $this->getRequest()->getParam('page');
-        }
-       
         //обработка параметров поиска
-        if($this->getRequest()->isPost('search_catalog')){
-            
+        if ($this->getRequest()->isPost('search_catalog')) {
             $search = $this->getRequest()->getPost('search_catalog');
-
-         } elseif ($this->getRequest()->getParam('search_catalog')){
-            
+        } elseif ($this->getRequest()->getParam('search_catalog')) {
             $search = $this->getRequest()->getParam('search_catalog');
+        }
 
-         }
-         
-         if($search != '' ){
-             $data_array = $sales->fetchAll($sales->searchDevice($search)); 
-         } else {
-             $data_array = $sales->fetchAll();
-         }
-         
+        
+        if ($search != '') {
+            $data_array = $sales->fetchAll($sales->searchSales($search));
+        } else {
+            $data_array = $sales->fetchAll(); 
+        }
+
         //вывод навигации
-        $this->_helper->navigation->initNav($sort, $select_limit, $page, $data_array);
+        $this->_helper->navigation->initNav($sort, $select_limit, $select_type, $page, $data_array);
         $this->_helper->navigation->setView($this->view);
+
         
-         
-        $sort = $this->_helper->navigation->sortby();
-        $select_limit = $this->_helper->navigation->selectlimit();
-        $page = $this->_helper->navigation->page();
         $count = $select_limit;
-        $offset = $page*$select_limit-$select_limit;
-        
+        $offset = $page * $select_limit - $select_limit;
+
         //формируем запрос
-        if($search != ''){
+        //запрос поиска
+        if ($search != '') {
             $select = $sales->searchSales($search)->order($sort)->limit($count, $offset);
             $this->view->search_param = "/search_catalog/$search";
+        //запрос конкретного типа 
         } else {
-            $select = $sales->select()->order($sort)->limit($count, $offset);    
+            $select = $sales->select()->order($sort)->limit($count, $offset);
         }
-        //Выводим результат
+        
+   
         $this->view->sales = $sales->fetchAll($select);
         $this->view->search = $search;
+   }
         
-    }
-
     public function addAction()
     {
         
@@ -103,7 +109,7 @@ class SalesController extends Zend_Controller_Action
     public function editAction()
     {
         // action body
-        $form = new Application_Form_Devices();
+        $form = new Application_Form_Sales();
         $form->submit->setLabel('Редактировать');
         $_SESSION['edit'] = true;
         $this->view->form = $form;
@@ -116,12 +122,11 @@ class SalesController extends Zend_Controller_Action
                 $id = (int) $form->getValue('id');
                 $number = $form->getValue('number');
                 $name = $form->getValue('name');
-                $owner = $form->getValue('owner');
-                $user = $form->getValue('user');
+                $buyer = $form->getValue('buyer');
                 $status = $form->getValue('status');
 
-                $device = new Application_Model_DbTable_Devices();
-                $device->editDevice($id, $number, $name, $owner, $user, $status);
+                $sales = new Application_Model_DbTable_Sales();
+                $sales->editSales($id, $number, $name, $buyer, $status);
                 $this->_helper->redirector('index');
             } else {
 
@@ -130,15 +135,15 @@ class SalesController extends Zend_Controller_Action
         } else {
 
             $id = $this->getParam('id');
-            $device = new Application_Model_DbTable_Devices();
-            $form->populate($device->getDevice($id));
+            $sales = new Application_Model_DbTable_Sales();
+            $form->populate($sales->getSales($id));
         }
     }
 
     public function deleteAction()
     {
         // action body
-        $form = new Application_Form_DeleteDevice();
+        $form = new Application_Form_DeleteSales();
         $form->submit->setLabel('Удалить');
         $form->cancel->setLabel('Отмена');
         $this->view->form = $form;
@@ -148,24 +153,112 @@ class SalesController extends Zend_Controller_Action
             //если подтверждаем удаление
             if  ($this->getRequest()->getPost('submit')){
                 //Application_Model_DbTable_Devices::deleteDevice($id);
-                $device = new Application_Model_DbTable_Devices();
-                $device->deleteDevice($id);
+                $sales = new Application_Model_DbTable_Sales();
+                $sales->deleteSales($id);
                 $this->_helper->redirector('index');
             } else {
             //если отменяем удаление
-            if ($this->getRequest()->getPost('cancel')){
-            $this->_helper->redirector('index');
+                if ($this->getRequest()->getPost('cancel')){
+                $this->_helper->redirector('index');
             }
             }
         } else {
         //выводим дополнительные данные
 
-        $device = new Application_Model_DbTable_Devices();
+        $sales = new Application_Model_DbTable_Sales();
 
-        $this->view->device = $device->getDevice($id);
+        $this->view->sales = $sales->getSales($id);
         }
     }
+    
+    public function toexcelAction() {
 
+        // Подключаем класс для работы с excel
+        require_once('PHPExcel.php');
+        // Подключаем класс для вывода данных в формате excel
+        require_once('PHPExcel/Writer/Excel5.php');
+
+        // Создаем объект класса PHPExcel
+        $xls = new PHPExcel();
+        // Устанавливаем индекс активного листа
+        $xls->setActiveSheetIndex(0);
+        // Получаем активный лист
+        $sheet = $xls->getActiveSheet();
+        // Подписываем лист
+        $sheet->setTitle('Sales CoffeeService');
+        $sheet->setCellValue("A1", '№');
+        $sheet->setCellValue("B1", 'Номер');
+        $sheet->setCellValue("C1", 'Название');
+        $sheet->setCellValue("D1", 'Покупатель');
+        $sheet->setCellValue("E1", 'Статус');
+        $sheet->setCellValue("F1", 'Дата');
+
+//меняем цвет заголовка      
+        $sheet->getStyle('A1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('A1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('B1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('B1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('C1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('C1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('D1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('D1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('E1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('E1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('F1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('F1')->getFill()->getStartColor()->setRGB('EEEEEE');
+
+        $sheet->getStyle('A')->getAlignment()->setHorizontal(
+                PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+// автоматическая ширина ячейки
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+// формат ячейки текстовый
+        $sheet->getStyle('A')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('B')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('C')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('D')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('E')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('F')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+        $sales = new Application_Model_DbTable_Sales();
+        $data = $sales->fetchAll()->toArray();
+
+        $i = 2;
+
+        foreach ($data as $rows) {
+            $number = $i - 1;
+            $sheet->setCellValue("A$i", "$number");
+            $sheet->setCellValue("B$i", "$rows[number]");
+            $sheet->setCellValue("C$i", "$rows[name]");
+            $sheet->setCellValue("D$i", "$rows[buyer]");
+            $sheet->setCellValue("E$i", "$rows[status]");
+            $sheet->setCellValue("F$i", "$rows[date]");
+            $i++;
+        }
+
+// Выводим содержимое файла
+        $objWriter = new PHPExcel_Writer_Excel5($xls);
+        $objWriter->save('sales.xls');
+        // открываем файл в бинарном режиме
+        header('Location: http://ss1.su/sales.xls');
+    }
 
 }
 

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Каталог проданных апаратов</h1>
+        <h1 class="page-header"><i class="fa fa-euro fa-fw"></i> Каталог проданных апаратов</h1>
 
     </div>
     <!-- /.col-lg-12 -->
@@ -18,10 +18,10 @@
 
                                 <select name="select_limit" onchange="form_select.submit();">
 
-                                    <option <? if($_SESSION['select_limit']== 2) {echo('selected ');} ?>value="2">2</option>
-                                    <option <? if($_SESSION['select_limit']== 4) {echo('selected ');} ?>value="4">4</option>
-                                    <option <? if($_SESSION['select_limit']== 6) {echo('selected ');} ?>value="6">6</option>
                                     <option <? if($_SESSION['select_limit']== 10) {echo('selected ');} ?>value="10">10</option>
+                                    <option <? if($_SESSION['select_limit']== 25) {echo('selected ');} ?>value="25">25</option>
+                                    <option <? if($_SESSION['select_limit']== 50) {echo('selected ');} ?>value="50">50</option>
+                                    <option <? if($_SESSION['select_limit']== 100) {echo('selected ');} ?>value="100">100</option>
                                 </select>
                                 
                                 <input name="search_catalog" type="hidden" value="<?=$this->search?>" >
@@ -30,10 +30,11 @@
                             </form>
                         </div>
                     </td>
-                   <td align="center">
+                   <td align="left">
                         <div class="dataTables_length" id="dataTables-example_length">
                             <button type="button" onclick="window.location.href = '/sales/add/'" class="btn btn-default">Добавить</button>
                             <button type="button" onclick="window.location.href = '/sales/index/'"class="btn btn-default">Обновить</button>
+                            <button type="button" onclick="window.location.href = '/sales/toexcel/'"class="btn btn-default">To Excel</button>
                         </div>
                     </td>
                     <td  width="33%" align="right">
@@ -59,11 +60,11 @@
                     <table width=100% class="table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Дата&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_number'); ?>"></a></th>
-                                <th>Номер&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_name'); ?>"></a></th>
-                                <th>Название&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_owner'); ?>"></a></th>
-                                <th>Покупатель&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_user'); ?>"></a></th>
-                                <th>Статус&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_status'); ?>"></a></th>
+                                <th>Дата&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'sales_sort_date'); ?>"></a></th>
+                                <th>Номер&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'sales_sort_number'); ?>"></a></th>
+                                <th>Название&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'sales_sort_name'); ?>"></a></th>
+                                <th>Покупатель&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'sales_sort_buyer'); ?>"></a></th>
+                                <th>Статус&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'sales_sort_status'); ?>"></a></th>
                                 <th><center><i class="fa fa-gavel fa-fw"></i></center></th>
                                 <th><center><i class="fa fa-trash-o fa-fw"></i></center></th>
 
@@ -94,17 +95,17 @@
                             <td align="right">
                                 <ul class="pagination">
                                     <li class="paginate_button previous <?=$this->previos_page?>" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
-                                        <a href="/catalog/index/sort/<?=$_SESSION['sort']?>/page/<? if($_SESSION['page']>1) { echo ($_SESSION['page']-1); } else { echo ($_SESSION['page']); } ?><?=$this->search_param?>">назад</a>
+                                        <a href="/sales/index/sort/<?=$_SESSION['sort']?>/page/<? if($_SESSION['page']>1) { echo ($_SESSION['page']-1); } else { echo ($_SESSION['page']); } ?><?=$this->search_param?>">назад</a>
                                     </li>
                                     
                                     <? foreach ($this->button_parameters as $key) { ?>
                                     <li class="paginate_button <?=$key['active']?>" aria-controls="dataTables-example" tabindex="0">
-                                        <a href="/catalog/index/sort/<?=$_SESSION['sort']?>/page/<?=$key['number']?><?=$this->search_param?>"><?=$key['number']?></a>
+                                        <a href="/sales/index/sort/<?=$_SESSION['sort']?>/page/<?=$key['number']?><?=$this->search_param?>"><?=$key['number']?></a>
                                     </li> <? } ?>
 
                                     
                                     <li class="paginate_button next <?=$this->next_page?>" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
-                                        <a href="/catalog/index/sort/<?=$_SESSION['sort']?>/page/<?=$this->last_page?><?=$this->search_param?>">Next</a>
+                                        <a href="/sales/index/sort/<?=$_SESSION['sort']?>/page/<?=$this->last_page?><?=$this->search_param?>">вперед</a>
                                     </li>
                                 </ul>
                             </td>
@@ -119,7 +120,6 @@
                        Сортировка : <?=$_SESSION['sort'];?> |
                        Всего в базе : <?=$this->count;?>
                     </p>
-                    <a class="btn btn-default btn-lg btn-block" target="_blank" href="https://datatables.net/">View DataTables Documentation</a>
                 </div>
             </div>
             <!-- /.panel-body -->

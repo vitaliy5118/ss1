@@ -10,8 +10,8 @@ class Application_Form_Names extends Zend_Form {
                ->setAttrib('placeholder','Ââåäèòå íàçâàíèå àïïàğàòà')
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
-               ->addValidator('db_norecordexists',true, array('table'=>'name','field'=>'name',  'messages' => 'Çàïèñü óæå ñóùåñòâóåò!'))
-               ->addValidator('regex',true, array("/^[A-Za-z1-90 \.\-\À\Ï\Í]{3,30}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('Db_NoRecordExists',true, array('table'=>'name','field'=>'name',  'messages' => 'Çàïèñü óæå ñóùåñòâóåò!'))
+               ->addValidator('regex',true, array("/^[A-Za-z1-90 \.]{3,30}$/i", 'messages' => 'Âíèìàíèå äîïóñêàåòñÿ ââîä òîëüêî ëàòèíñêèõ ñèìâîëîâ A-Z !'))
                ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
                ->setDecorators(array('ViewHelper', 'Errors',
                     array(array('data' => 'HtmlTag'), array('class'  => 'test')),

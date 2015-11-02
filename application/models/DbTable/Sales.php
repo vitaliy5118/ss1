@@ -18,13 +18,13 @@ class Application_Model_DbTable_Sales extends Zend_Db_Table_Abstract {
         $this->insert($data);
     }
 
-    public function editSales($id, $date, $number, $name, $comments) {
+    public function editSales($id, $number, $name, $buyer, $status) {
 // Формируем массив вставляемых значений
         $data = array(
-            'date' => $date,
             'number' => $number,
             'name' => $name,
-            'comments' => $comments
+            'buyer' => $buyer,
+            'status' => $status
         );
 
 // Используем метод insert для вставки записи в базу
@@ -50,6 +50,17 @@ class Application_Model_DbTable_Sales extends Zend_Db_Table_Abstract {
     public function deleteSales($id) {
         $this->delete('id=' . (int) $id);
     }
+    
+    public function searchSales($search) {
+        // Формируем массив вставляемых значений
+        $select = $this->select()->where('date LIKE ?', "%$search%")
+                ->orwhere('name LIKE ?', "%$search%")
+                ->orwhere('number LIKE ?', "%$search%")
+                ->orwhere('status LIKE ?', "%$search%")
+                ->orwhere('buyer LIKE ?', "%$search%");
+        // Возвращаем select
+        return $select;
+     }
 
 }
 

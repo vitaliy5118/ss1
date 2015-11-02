@@ -1,0 +1,325 @@
+<?php $this->headTitle("Добавление пользователя"); ?>
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">Изменение настроек пользователя</h3>
+
+    </div>
+    <!-- /.col-lg-12 -->
+
+<form id="form_access" name="form_access" method="post">
+    <div class="set_userdata_block">
+        <label>Имя пользователя</label>
+        <input class="form-control <?=$this->error['username'] ?>" type="text" name="username" placeholder="Введите имя пользователя" value="<?=$this->username?>">
+        <?php if($this->error['message']){ ?> <p><?=$this->error['message'];?></p> <? } ?>
+        <label>Пароль</label> 
+        <input class="form-control <?=$this->error['password'] ?>" type="password" name="password" placeholder="Введите пароль">
+        <label>Роль</label>
+        <select  class="form-control" name="role">
+            <option>admin</option>
+            <option selected >client</option>
+        </select>
+        <p class="page-header">Внимание, для пользователя с правами admin доступны все действия!</p>
+    </div>
+    <button form="form_access" class="btn btn-lg btn-success btn-block set_button_block" type="submit">Изменить настройки пользователя</button>
+    <h4 class="page-header">Отметьте действия которые будут доступны пользователю:</h4>
+<dl>
+    <dd class="ss1"><i class="fa fa-dashboard fa-fw"></i> Каталог аппаратов
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_cat_index" type="checkbox" value="index" 
+                                                       <?=$this->check_data['check_cat_index'];?> ></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_cat_add" type="checkbox" value="add"
+                                                              <?=$this->check_data['check_cat_add'];?>></div>
+                    <div class='set_list_row_text'>Добавить</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_rps_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_rps_index'];?>></div>
+                    <div class='set_list_row_text'>Ремонты</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_his_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_his_index'];?>></div>
+                    <div class='set_list_row_text'>История</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_cat_edit" type="checkbox" value="edit"
+                                                              <?=$this->check_data['check_cat_edit'];?>></div>
+                    <div class='set_list_row_text'>Редактировать</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_cat_del" type="checkbox" value="delete"
+                                                              <?=$this->check_data['check_cat_del'];?>></div>
+                    <div class='set_list_row_text'>Удалить</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa fa-wrench fa-fw"></i> Ремонт по конкретному аппарату
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_rps_add" type="checkbox" value="add"
+                                                              <?=$this->check_data['check_rps_add'];?>></div>
+                    <div class='set_list_row_text'>Добавить ремонт</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_rps_edit" type="checkbox" value="edit"
+                                                              <?=$this->check_data['check_rps_edit'];?>></div>
+                    <div class='set_list_row_text'>Редактировать</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_rps_delete" type="checkbox" value="delete"
+                                                              <?=$this->check_data['check_rps_delete'];?>></div>
+                    <div class='set_list_row_text'>Удалить</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa fa-wrench fa-fw"></i> История ремонтов
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_rps_statistic" type="checkbox" value="statistic"
+                                                              <?=$this->check_data['check_rps_statistic'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa fa-euro fa-fw"></i> Продажа аппаратов
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_sal_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_sal_index'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_sal_add" type="checkbox" value="add"
+                                                              <?=$this->check_data['check_sal_add'];?>></div>
+                    <div class='set_list_row_text'>Добавить</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_sal_edit" type="checkbox" value="edit"
+                                                              <?=$this->check_data['check_sal_edit'];?>></div>
+                    <div class='set_list_row_text'>Редактировать</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_sal_delete" type="checkbox" value="delete"
+                                                              <?=$this->check_data['check_sal_delete'];?>></div>
+                    <div class='set_list_row_text'>Удалить</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa fa-edit fa-fw"></i> Склад запчастей
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_war_index'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_load" type="checkbox" value="load"
+                                                              <?=$this->check_data['check_war_load'];?>></div>
+                    <div class='set_list_row_text'>Загрузка</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_unload" type="checkbox" value="unload"
+                                                              <?=$this->check_data['check_war_unload'];?>></div>
+                    <div class='set_list_row_text'>Выдача</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_add" type="checkbox" value="add"
+                                                              <?=$this->check_data['check_war_add'];?>></div>
+                    <div class='set_list_row_text'>Добавить запчасть</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_history" type="checkbox" value="history"
+                                                              <?=$this->check_data['check_war_history'];?>></div>
+                    <div class='set_list_row_text'>История</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_edit" type="checkbox" value="edit"
+                                                              <?=$this->check_data['check_war_edit'];?>></div>
+                    <div class='set_list_row_text'>Редактировать</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_delete" type="checkbox" value="delete"
+                                                              <?=$this->check_data['check_war_delete'];?>></div>
+                    <div class='set_list_row_text'>Удалить</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa fa-magic fa-fw"></i> Настройки
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_set_index'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_names" type="checkbox" value="names"
+                                                              <?=$this->check_data['check_set_names'];?>></div>
+                    <div class='set_list_row_text'>Названия аппаратов</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_types" type="checkbox" value="types"
+                                                              <?=$this->check_data['check_set_types'];?>></div>
+                    <div class='set_list_row_text'>Группы аппаратов</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_owners" type="checkbox" value="owners"
+                                                              <?=$this->check_data['check_set_owners'];?>></div>
+                    <div class='set_list_row_text'>Принадлежность</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_users" type="checkbox" value="users"
+                                                              <?=$this->check_data['check_set_users'];?>></div>
+                    <div class='set_list_row_text'>Территория</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_status" type="checkbox" value="status"
+                                                              <?=$this->check_data['check_set_status'];?>></div>
+                    <div class='set_list_row_text'>Статус</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_access" type="checkbox" value="access"
+                                                              <?=$this->check_data['check_set_access'];?>></div>
+                    <div class='set_list_row_text'><p style="color:red"><strong>Доступ</strong></p></div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa  fa-book fa-fw"></i> Документация
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_doc_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_doc_index'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_doc_file" type="checkbox" value="file"
+                                                              <?=$this->check_data['check_doc_file'];?>></div>
+                    <div class='set_list_row_text'>Загрузить</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_doc_delete" type="checkbox" value="delete"
+                                                              <?=$this->check_data['check_doc_delete'];?>></div>
+                    <div class='set_list_row_text'>Удалить</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa  fa-tags"></i> Отчеты .xls
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_rep_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_rep_index'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_cat_exl" type="checkbox" value="toexcel"
+                                                              <?=$this->check_data['check_cat_exl'];?>></div>
+                    <div class='set_list_row_text'>Каталог аппаратов</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_rps_toexcel" type="checkbox" value="toexcel"
+                                                              <?=$this->check_data['check_rps_toexcel'];?>></div>
+                    <div class='set_list_row_text'>Выписка всех ремонтов</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_war_toexcel" type="checkbox" value="toexcel"
+                                                              <?=$this->check_data['check_war_toexcel'];?>></div>
+                    <div class='set_list_row_text'>Склад запчастей</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_sal_toexcel" type="checkbox" value="toexcel"
+                                                              <?=$this->check_data['check_sal_toexcel'];?>></div>
+                    <div class='set_list_row_text'>Проданные аппараты</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa  fa-bar-chart-o fa-fw"></i> Статистика
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_stat_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_stat_index'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+</dl>
+    <br>
+    <br>
+</form>
+</div>

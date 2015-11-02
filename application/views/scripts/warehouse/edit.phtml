@@ -1,9 +1,13 @@
 <?php
     // Создаём заголовок страницы, который загрузится в layout
-    $this->title = "Измениние запчасти";
+    $this->title = "Изменение запчасти";
       
     $this->headTitle($this->title);
     
     // Выводим форму, полученную из контроллера
     echo $this->form ;
 ?>
+
+<div>
+    <p><img src="/img/<?php echo $this->path; ?>" width="50px" ></p> 
+</div>

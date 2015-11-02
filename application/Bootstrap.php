@@ -19,7 +19,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $layout = $this->getResource('layout');
         $view = $layout->getView();
         
-        $view->headTitle('Jacobs Mondeles Ukraine');
+        $view->headTitle('SB Coffee Service Center Admin');
         $view->headTitle()->setSeparator(' - ');
         
         if(Zend_Auth::getInstance()->hasIdentity()){

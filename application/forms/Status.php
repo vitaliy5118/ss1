@@ -7,10 +7,10 @@ class Application_Form_Status extends Zend_Form {
         $status = new Zend_Form_Element_Text('status', array('class'=>'form-control', 'width'=>'50px'));
         $status->setLabel('Статус')
                ->setRequired(true)
-               ->setAttrib('placeholder','Введите принадлежность')
+               ->setAttrib('placeholder','Введите статус')
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
-               ->addValidator('db_norecordexists',true, array('table'=>'status','field'=>'status',  'messages' => 'Запись уже существует!'))
+               ->addValidator('Db_NoRecordExists',true, array('table'=>'status','field'=>'status',  'messages' => 'Запись уже существует!'))
                ->addValidator('regex',true, array("/^[A-Za-zА-Яа-я1-90 \.\-]{3,20}$/i", 'messages' => $settings['messages']['error']))
                ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
                ->setDecorators(array('ViewHelper', 'Errors',

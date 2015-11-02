@@ -5,6 +5,7 @@ Zend_Controller_Action_Helper_Abstract {
 
     private $sort;
     private $select_limit;
+    private $select_type;
     private $page;
     private $allpages;
     private $count;
@@ -31,9 +32,10 @@ Zend_Controller_Action_Helper_Abstract {
         $this->view->count = $this->count();
     }
 
-    public function initNav($sort, $select_limit, $page, $allpages) {
+    public function initNav($sort, $select_limit, $select_type, $page, $allpages) {
         $this->sort = $sort;
         $this->select_limit = $select_limit;
+        $this->select_type = $select_type;
         $this->page = $page;
         $this->count = count($allpages);
 
@@ -52,6 +54,14 @@ Zend_Controller_Action_Helper_Abstract {
                 $_SESSION['select_limit'] = 10;
             }
         }
+ 
+        if ($this->select_type != '') {
+            $_SESSION['select_type'] = $this->select_type;
+        } else {
+            //if (!isset($_SESSION['select_type'])) {
+                $_SESSION['select_type'] = 'all';
+           // }
+        }
 
         if ($this->page) {
             $_SESSION['page'] = $this->page;
@@ -68,15 +78,6 @@ Zend_Controller_Action_Helper_Abstract {
         }
 
         $this->allpages = $allpages;
-
-//        print_r('sort=');
-//        print_r($this->sort . '<br>');
-//        print_r('select_limit=');
-//        print_r($this->select_limit . '<br>');
-//        print_r('page=');
-//        print_r($this->page . '<br>');
-//        print_r('allpages=');
-//        print_r($this->allpages . '<br>');
     }
 
     //функция параметров сортировки
@@ -89,6 +90,11 @@ Zend_Controller_Action_Helper_Abstract {
     public function selectlimit() {
 
         return $_SESSION['select_limit'];
+    }
+    //функция параметров количества строк
+    public function selecttype() {
+
+        return $_SESSION['select_type'];
     }
 
     //функция определения текущей страницы

@@ -10,7 +10,7 @@ class Application_Form_Users extends Zend_Form {
                ->setAttrib('placeholder','Введите территорию использования')
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
-               ->addValidator('db_norecordexists',true, array('table'=>'user','field'=>'user',  'messages' => 'Запись уже существует!'))
+               ->addValidator('Db_NoRecordExists',true, array('table'=>'user','field'=>'user',  'messages' => 'Запись уже существует!'))
                ->addValidator('regex',true, array("/^[A-Za-zА-Яа-я1-90 \.\-]{3,20}$/i", 'messages' => $settings['messages']['error']))
                ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
                ->setDecorators(array('ViewHelper', 'Errors',

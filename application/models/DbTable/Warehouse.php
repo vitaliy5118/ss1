@@ -7,11 +7,11 @@ class Application_Model_DbTable_Warehouse extends Zend_Db_Table_Abstract {
     // Метод для поиска значений
     public function searchWarehouse($search) {
         // Формируем массив вставляемых значений
-        $select = $this->select()->where('serial = ?', $search)
-                ->orwhere('name = ?', $search)
-                ->orwhere('remain = ?', $search)
-                ->orwhere('lastadding = ?', $search)
-                ->orwhere('type = ?', $search);
+        $select = $this->select()->where('serial LIKE ?', "%$search%")
+                ->orwhere('name LIKE ?', "%$search%")
+                ->orwhere('remain LIKE ?', "%$search%")
+               // ->orwhere('lastadding = ?', $search)
+                ->orwhere('type LIKE ?', "%$search%");
         // Возвращаем select
         return $select;
     }
@@ -41,32 +41,59 @@ class Application_Model_DbTable_Warehouse extends Zend_Db_Table_Abstract {
     }
 
     // Метод для добавление новой записи
-    public function addWarehouse($serial, $name, $type, $remain, $lastadding) {
+    public function addWarehouse($serial, $name, $type, $remain, $price, $path){
         // Формируем массив вставляемых значений
         $data = array(
                 'serial' => $serial,
                 'name' => $name,
                 'type' => $type,
                 'remain' => $remain,
-                'lastadding' => $lastadding
+                'price' => $price,
+                'path' => $path
         );
 
 // Используем метод insert для вставки записи в базу
         $this->insert($data);
     }
     
-    public function editWarehouse($id, $serial, $name, $type, $remain, $lastadding) {
+    public function editWarehouse($id, $serial, $name, $type, $remain, $price, $path) {
+        
     // Формируем массив вставляемых значений
         $data = array(
                 'serial' => $serial,
                 'name' => $name,
                 'type' => $type,
                 'remain' => $remain,
-                'lastadding' => $lastadding
+                'path' => $path
         );
+        
+        if ($price!='unload'){
+            $data = array('price' => $price);
+            
+        }
 
     // Используем метод insert для вставки записи в базу
         $this->update($data, 'id=' . (int) $id);
+                //Составляем запрос
+        $sql = (" UPDATE warehouse
+                  SET lastadding = CURRENT_TIMESTAMP()
+                  WHERE id = $id
+                ");
+
+        $this->getAdapter()->query($sql);
+    }
+    
+    public function loadWarehouse($id, $remain, $price) {
+        
+       //Составляем запрос
+        $sql = (" UPDATE warehouse
+                  SET lastadding = CURRENT_TIMESTAMP(), 
+                      remain = $remain,
+                      price = $price
+                  WHERE id = $id
+                ");
+
+        $this->getAdapter()->query($sql);
     }
 
     public function getWarehouse($id) {
@@ -88,6 +115,6 @@ class Application_Model_DbTable_Warehouse extends Zend_Db_Table_Abstract {
         public function deleteWarehouse($id) {
         $this->delete('id=' . (int) $id);
     }
-
+ 
 }
 

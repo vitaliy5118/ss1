@@ -24,6 +24,12 @@ class StatisticController extends Zend_Controller_Action {
         $devices_names = $devices_list->fetchAll()->toArray();
         $this->view->devices_list = $devices_names;
         $this->view->repairs_list = $devices_names;
+
+        //передача в индекс списка имен аппаратов
+        $types_list = new Application_Model_DbTable_Setup();
+        $types_list->setTableName('type');
+        $devices_types = $types_list->fetchAll()->toArray();
+        $this->view->devices_types = $devices_types;
         
         //передача в индекс списка статусов аппаратов
         $status_list = new Application_Model_DbTable_Setup();
@@ -47,12 +53,14 @@ class StatisticController extends Zend_Controller_Action {
         if($this->getRequest()->isPost()){
            if($this->getRequest()->getPost('select_device')){
                $name = $this->getRequest()->getPost('select_device');
+               $type = $this->getRequest()->getPost('select_type');
                $status = $this->getRequest()->getPost('select_status');
                $owner = $this->getRequest()->getPost('select_owner');
                $user = $this->getRequest()->getPost('select_user');
                $repair_name = $this->getRequest()->getPost('select_repair');
            } else {
                  $name = $devices_names[0]['name'];
+                 $type = $devices_types[0]['type'];
                  $status = $devices_status[0]['status'];
                  $owner = $devices_owner[0]['owner'];
                  $user = $devices_user[0]['user'];
@@ -61,19 +69,22 @@ class StatisticController extends Zend_Controller_Action {
 
         } else {
           $name = $devices_names[0]['name'];
+          $type = $devices_types[0]['type'];
           $status = $devices_status[0]['status'];
           $owner = $devices_owner[0]['owner'];
           $user = $devices_user[0]['user'];
           $repair_name = $devices_names[0]['name'];
         }
         
-        print_r($this->getRequest()->getPost());
-        print_r($dd[0]['name']);
-
         //передача в индекс количестка аппаратов с именем
         $dd = $devices->getCountDevices($name);
         $this->view->count_names = $dd[0]['count'];
         $this->view->name = $name;
+
+        //передача в индекс количестка аппаратов с именем
+        $dd = $devices->getCountDevices($type);
+        $this->view->count_types = $dd[0]['count'];
+        $this->view->type = $type;
         
         //передача в индекс количестка аппаратов со статусом 
         $dd = $devices->getCountDevices($status);

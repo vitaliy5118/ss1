@@ -1,16 +1,21 @@
 <?php
-    $this->title = "Удаление записи";
-    $this->headTitle($this->title);
-?>
-<p>Вы действительно хотите удалить запись???<br>
-  Дата '<?=$this->escape($this->repaire['data']); ?>'<br>
- </p><br>
+// Создаём заголовок страницы, который загрузится в layout
+$this->title = "Удаление ремонта";
 
-<form action="<?=$this->url(array('action'=>'delete')); ?>" method="post">
-    <div>
-        <input type="hidden" name="id" value="<?php echo $this->repaire['id']; ?>" />
-        <input type="hidden" name="dopid" value="<?php echo $this->repaire['dopid']; ?>" />
-        <input type="submit" name="del" value="Да" />
-        <input type="submit" name="del" value="Нет" />
-    </div>
-</form>
+$this->headTitle($this->title);
+?>
+
+<br>
+<br>
+<div class="well">
+    <h4>Вы действительно хотите удалить запись?</h4>
+    
+    <p>Ремонт от :&nbsp;<?php echo($this->repaire['date']); ?><br>
+       Номер аппарата :&nbsp;<?php echo($this->repaire['number']); ?><br>
+    </p>
+
+   
+ <? echo $this->form; ?>  
+    <br>
+    <p>Внимание! Данные будут удалены!</p>
+</div>

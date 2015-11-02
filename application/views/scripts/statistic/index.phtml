@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Статистика базы данных</h1>
+        <h1 class="page-header"><i class="fa  fa-bar-chart-o fa-fw"></i> Статистика базы данных</h1>
 
     </div>
     <!-- /.col-lg-12 -->
@@ -31,6 +31,17 @@
                                    
                                 </td>
                                 <td><? echo $this->count_names;?></td>
+                            </tr>  
+                            <tr class="gradeA">
+                                <td>
+                                    Всего аппаратов по типам:&nbsp;
+                                        <select name="select_type" onchange="device_name_select.submit();">
+                                             <? foreach ($this->devices_types as $value) { ?>
+                                            <option <? if($this->type == "{$value['type']}") {echo('selected ');} ?> value="<? echo $this->escape($value['type'])?>"><? echo $this->escape($value['type'])?> </option> <?}?>
+                                        </select>
+                                   
+                                </td>
+                                <td><? echo $this->count_types;?></td>
                             </tr>  
                             <tr class="gradeA">
                                 <td>

@@ -116,6 +116,9 @@ Zend_Controller_Action_Helper_Abstract {
         if ($this->actionName == 'names' || $this->actionName == 'addname' ||
                 $this->actionName == 'editname' || $this->actionName == 'deletename') {
             $this->tableName = 'name';
+        }elseif ($this->actionName == 'types' || $this->actionName == 'addtype' ||
+                $this->actionName == 'edittype' || $this->actionName == 'deletetype') {
+            $this->tableName = 'type';
         } elseif ($this->actionName == 'owners' || $this->actionName == 'addowner' ||
                 $this->actionName == 'editowner' || $this->actionName == 'deleteowner') {
             $this->tableName = 'owner';
@@ -146,6 +149,8 @@ Zend_Controller_Action_Helper_Abstract {
             $form = new Application_Form_Users();
         } elseif ($this->actionName == 'addstatus' || $this->actionName == 'editstatus') {
             $form = new Application_Form_Status();
+        } elseif ($this->actionName == 'addtype' || $this->actionName == 'edittype') {
+            $form = new Application_Form_Type();
         }
 
 

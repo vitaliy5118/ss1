@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-cog fa-fw"></i> Услуги мастерской</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>	
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <table width=100% border="0">
+                    <tr  align="left">
+                        <td width="30%" align="left">
+                            <div class="dataTables_length" id="dataTables-example_length">
+                                <form id="form_select" name="form_date" method="post">
+                                    Ремонты 
+
+                                     <select name="select_month" onchange="form_date.submit();">
+                                        <option <?if($_SESSION['month']== '01') {echo('selected ');}?> value="01">январь</option>
+                                        <option <?if($_SESSION['month']== '02') {echo('selected ');}?> value="02">февраль</option>
+                                        <option <?if($_SESSION['month']== '03') {echo('selected ');}?> value="03">март</option>
+                                        <option <?if($_SESSION['month']== '04') {echo('selected ');}?> value="04">апрель</option>
+                                        <option <?if($_SESSION['month']== '05') {echo('selected ');}?> value="05">май</option>
+                                        <option <?if($_SESSION['month']== '06') {echo('selected ');}?> value="06">июнь</option>
+                                        <option <?if($_SESSION['month']== '07') {echo('selected ');}?> value="07">июль</option>
+                                        <option <?if($_SESSION['month']== '08') {echo('selected ');}?> value="08">август</option>
+                                        <option <?if($_SESSION['month']== '09') {echo('selected ');}?> value="09">сентябрь</option>
+                                        <option <?if($_SESSION['month']== '10') {echo('selected ');}?> value="10">октябрь</option>
+                                        <option <?if($_SESSION['month']== '11') {echo('selected ');}?> value="11">ноябрь</option>
+                                        <option <?if($_SESSION['month']== '12') {echo('selected ');}?> value="12">декабрь</option>
+                                    </select>
+                                     <select name="select_year" onchange="form_date.submit();">
+                                        <option <?if($_SESSION['year']== '2014') {echo('selected ');}?> value="2014">2014</option>
+                                        <option <?if($_SESSION['year']== '2015') {echo('selected ');}?> value="2015">2015</option>
+                                        <option <?if($_SESSION['year']== '2016') {echo('selected ');}?> value="2016">2016</option>
+                                        <option <?if($_SESSION['year']== '2017') {echo('selected ');}?> value="2017">2017</option>
+                                        <option <?if($_SESSION['year']== '2018') {echo('selected ');}?> value="2018">2018</option>
+                                    </select>
+                                    за период
+                                </form>
+                            </div>
+                        </td>
+                        <td width="40%" align="center">
+                             <button type="button" onclick="window.location.href = '/service/add/'" class="btn btn-default">Добавить</button>
+                            <button type="button" onclick="window.location.href = '/repairs/toexcelmonth/'" class="btn btn-default">To Excel За период</button>
+                            <button type="button" onclick="window.location.href = '/repairs/toexcel/'" class="btn btn-default">To Excel Все</button>
+                        </td>
+                        <td width="30%" align="right">
+                            <div class="dataTables_length" id="dataTables-example_length">
+                                <form id="search_form" method="post">
+                                    <div class="input-group custom-search-form">
+                                        <input name="search_catalog" type="text" value="<?= $this->search ?>" class="form-control" placeholder="Search...">
+                                        <span class="input-group-btn">
+                                            <button form="search_form" class="btn btn-default" type="submit">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div> 
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+
+                            <?php $data=$this->count+1;
+                            foreach ($this->service as $rows) { $data--;
+                                ?>
+                    <p><span><h4><?=$data?>.&nbspДата&nbsp<?php echo $this->escape($rows['date']); ?>&nbsp&nbsp
+                                S/N:<?php echo $this->escape($rows['number']); ?>&nbsp<?php echo $this->escape($rows['name']); ?></h4>
+                                <button type="button" onclick="window.location.href = '/repairs/toexcel/'" class="btn btn-default">мастер накладной</button>
+                                <button type="button" onclick="window.location.href = '/repairs/toexcel/'" class="btn btn-default">выдать накладную</button>
+                        </span></p>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                              <tbody>
+                                <tr>
+                                    <th class="stat_panel">Клиент&nbsp</th>
+                                    <td><?php echo $this->escape($rows['client']); ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="stat_panel">Жалоба&nbsp</th>
+                                    <td><?php echo $this->escape($rows['claim']); ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="stat_panel">Диагноз&nbsp</th>
+                                    <td><?php echo $this->escape($rows['diagnos']); ?></td>
+                                </tr>
+                                <tr> 
+                                    <th class="stat_panel">Работа&nbsp</th>
+                                    <td><?php echo $this->escape($rows['work']); ?></td>
+                                </tr>
+                                <tr>    
+                                    <th class="stat_panel">Запчасти&nbsp</th>
+                                    <td><?php echo $this->escape($rows['spares']); ?></td>
+                                </tr>
+                                <tr>    
+                                    <th class="stat_panel">Коментарий&nbsp</th>
+                                    <td><?php echo $this->escape($rows['comments']); ?></td>
+                                </tr>                           
+                                <tr>    
+                                    <th class="stat_panel">Состояние&nbsp</th>
+                                    <td><?php echo $this->escape($rows['status']); ?></td>
+                                </tr>                           
+                        </tbody>
+                    </table>
+                    <br> <? } ?> 
+                </div>
+                <!-- /.table-responsive -->
+                <div class="well">
+                    <h4>Информация каталога</h4>
+                    Всего ремонтов за месяц:&nbsp;<?php echo $this->count;?><br>
+                    Всего ремонтов в базе:&nbsp;<?php echo $this->allcount;?><br>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+

@@ -1,0 +1,66 @@
+<?php $this->headTitle('Выгрузка запчастей'); ?>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" id='test_js'><i class="fa fa-edit fa-fw"></i> Загрузка запчастей</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<form id="form_spares" name="form_spares" method="post">
+    <div class="panel-body">
+        <button form="form_spares" class="btn btn-lg btn-success btn-block" type="submit">Добавить запчасти</button>
+        <br>
+        <div class="dataTable_wrapper">
+            <table width=100% class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>Фото</th>
+                        <th>Серийный номер</th>
+                        <th>Название</th>
+                        <th>Цена.грн</th>
+                        <th>Остаток</th>
+                        <th>К-во</th>
+                        <th>CH</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                <?php
+                 foreach ($this->warehouse as $rows) {
+                ?>  <tr id='spares_row' class="gradeA">
+                        <td id="spares_foto"><p><img src="/img/<?php echo $this->escape($rows['path']); ?>" width="30px" height="30px" ></p></td> 
+                        <td><?php echo $this->escape($rows['serial']); ?></td>
+                        <td><?php echo $this->escape($rows['name']); ?></td>
+                        
+                        <td id="spares_remain_check" >
+                            <input class=" check_spare_<?php echo $this->escape($rows['id']); ?> form-control <?=$this->error['price_'."{$this->escape($rows['id'])}"]; ?>" 
+                                   <? if(!$this->checked["{$this->escape($rows['id'])}"]) { echo ('disabled'); }?>
+                                   name="price_<?php echo $this->escape($rows['id']); ?>" 
+                                   type="input" 
+                                   value="<? if($this->check_data['price_'."{$this->escape($rows['id'])}"]){ echo $this->check_data['price_'."{$this->escape($rows['id'])}"]; } else {echo $this->escape($rows['price']); } ?>"> 
+                        </td>
+                        
+                        <td id="spares_remain"><center><?php echo $this->escape($rows['remain']); ?></center></td>
+                        
+                        <td id="spares_remain_check" >
+                            <input class=" check_spare_<?php echo $this->escape($rows['id']); ?> form-control <?=$this->error['remain_'."{$this->escape($rows['id'])}"]; ?>" 
+                                   name="remain_<?php echo $this->escape($rows['id']); ?>" 
+                                   type="input" 
+                                   <? if(!$this->checked["{$this->escape($rows['id'])}"]) { echo ('disabled'); }?>
+                                   value="<?=$this->check_data['remain_'."{$this->escape($rows['id'])}"];?>">
+                        </td>
+                        <td id="spares_check">
+                            <input class="spare_check spare_check_<?php echo $this->escape($rows['id']); ?> "
+                                   name="check_<?php echo $this->escape($rows['id']); ?>" 
+                                   type="checkbox" 
+                                   value="<?php echo $this->escape($rows['id']); ?>" <?=$this->checked["{$this->escape($rows['id'])}"];?> >
+                        </td>
+                    </tr> <? } ?>                            
+
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <button form="form_spares" class="btn btn-lg btn-success btn-block" type="submit">Добавить запчасти</button>
+        <br>
+    </div>
+</form>

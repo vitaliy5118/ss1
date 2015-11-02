@@ -3,7 +3,7 @@
 class Application_Form_Repair extends Zend_Form {
  
     public function init() {
-
+        
         global $settings;
         // Задаём имя форме
         $this->setName('repair');
@@ -55,7 +55,7 @@ class Application_Form_Repair extends Zend_Form {
              ->setRequired(true) //поле обязательное для ввода
              ->addFilter('StripTags') //фильтр убирает теги HTML
              ->addValidator('NotEmpty', true, array('messages' => $settings['messages']['empty']))
-             ->addValidator('regex',true, array("/^[А-Яа-я \.\,]{3,20}$/i", 'messages' => $settings['messages']['error']))
+             ->addValidator('regex',true, array("/^[A-Za-zА-Яа-я0-9 \.\,\-\ \;\|]{3,400}$/i", 'messages' => $settings['messages']['error']))
              ->setDecorators(array('ViewHelper', 'Errors',
                     array(array('data' => 'HtmlTag'), array('class'  => 'test')),
                     array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
@@ -70,6 +70,18 @@ class Application_Form_Repair extends Zend_Form {
             // ->addValidator('between', false, array('min'=> 10, 'max'=>100, 'messages'=>'Шакальство'))
              ->addValidator('NotEmpty', true, array('messages' => $settings['messages']['empty']))
              ->addValidator('regex',true, array("/^[А-Яа-я \.\,]{3,20}$/i", 'messages' => $settings['messages']['error']))
+             ->setDecorators(array('ViewHelper', 'Errors',
+                    array(array('data' => 'HtmlTag'), array('class'  => 'test')),
+                    array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array('Errors', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
+               ));
+        
+        $counter = new Zend_Form_Element_Text('counter', array('class'=>'form-control'));
+        $counter->setLabel('Счетчик')
+             ->setRequired(true) //поле обязательное для ввода
+             ->addFilter('StripTags') //фильтр убирает теги HTML
+             ->addValidator('regex',true, array("/^[0-9]{0,10}$/i", 'messages' => $settings['messages']['error']))
              ->setDecorators(array('ViewHelper', 'Errors',
                     array(array('data' => 'HtmlTag'), array('class'  => 'test')),
                     array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
@@ -96,7 +108,7 @@ class Application_Form_Repair extends Zend_Form {
            ->removeDecorator('element');
 
         // Добавляем все созданные элементы к форме.
-        $this->addElements(array($id, $number, $claim,$diagnos, $spares, $work, $comments, $submit));
+        $this->addElements(array($id, $number, $claim,$diagnos, $spares, $work, $comments, $counter, $submit));
     }
 
 }

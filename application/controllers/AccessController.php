@@ -25,7 +25,7 @@ class AccessController extends Zend_Controller_Action {
 
                 // подставл€ем полученные данные из формы
                 $authAdapter->setIdentity($username)
-                        ->setCredential($password);
+                        ->setCredential(md5($password));
 
                 // получаем экземпл€р Zend_Auth
                 $auth = Zend_Auth::getInstance();

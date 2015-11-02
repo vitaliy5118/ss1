@@ -35,7 +35,7 @@ class Application_Form_Sales extends Zend_Form {
                ));
         //проверка редактирования или добавления елемента
         if($_SESSION['edit'] == false){
-            $number ->addValidator('db_norecordexists',true, array('table'=>'devices','field'=>'number',  'messages' => $settings['messages']['db']));   
+            $number ->addValidator('Db_NoRecordExists',true, array('table'=>'sales','field'=>'number',  'messages' => $settings['messages']['db']));   
         } else {
             $_SESSION['edit'] = false;         
         }

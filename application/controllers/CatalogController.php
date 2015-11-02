@@ -1,76 +1,102 @@
 <?php
 
-class CatalogController extends Zend_Controller_Action
-{
-    public function init()
-    {
+class CatalogController extends Zend_Controller_Action {
+
+    public function init() {
         /* Initialize action controller here */
     }
 
-    public function indexAction()
-    {
-        // action body
+    public function indexAction() {
+        
+       // print_r($expression);
+        
+        // создаем модель
         $devices = new Application_Model_DbTable_Devices();
         
-        if($this->getRequest()->getParam('sort')){
+        //если идет запрос сортировки
+        if ($this->getRequest()->getParam('sort')) {
             $sort = $this->getRequest()->getParam('sort');
+        } else {
+            $sort = $this->_helper->navigation->sortby();
         }
         
-        if($this->getRequest()->isPost('select_limit')){
+        //если идет запрос количества записей на странице
+        if ($this->getRequest()->isPost('select_limit')) {
             $select_limit = $this->getRequest()->getPost('select_limit');
-        }
+            $page=1;
+        } else {
+            $select_limit = $this->_helper->navigation->selectlimit();
+            
+            //если идет запрос страницы
+            if ($this->getRequest()->getParam('page')) {
+                $page = $this->getRequest()->getParam('page');
+            } else {
+                $page = $this->_helper->navigation->page();
+            }
+        } 
         
-        if($this->getRequest()->getParam('page')){
-            $page = $this->getRequest()->getParam('page');
+        
+        //если идет запрос типа
+        if ($this->getRequest()->isPost('select_type')) {
+            $select_type = $this->getRequest()->getPost('select_type');
+        } elseif ($this->getRequest()->getParam('select_type')) {
+            $select_type = $this->getRequest()->getParam('select_type');
+        } else {
+            $select_type = $this->_helper->navigation->selecttype();
         }
-       
+
+
         //обработка параметров поиска
-        if($this->getRequest()->isPost('search_catalog')){
-            
+        if ($this->getRequest()->isPost('search_catalog')) {
             $search = $this->getRequest()->getPost('search_catalog');
-
-         } elseif ($this->getRequest()->getParam('search_catalog')){
-            
+        } elseif ($this->getRequest()->getParam('search_catalog')) {
             $search = $this->getRequest()->getParam('search_catalog');
+        }
 
-         }
-         
-         if($search != '' ){
-             $data_array = $devices->fetchAll($devices->searchDevice($search)); 
-         } else {
-             $data_array = $devices->fetchAll();
-         }
-         
-        //вывод навигации
-        $this->_helper->navigation->initNav($sort, $select_limit, $page, $data_array);
-        $this->_helper->navigation->setView($this->view);
-         
-        $sort = $this->_helper->navigation->sortby();
-        $select_limit = $this->_helper->navigation->selectlimit();
-        $page = $this->_helper->navigation->page();
-        $count = $select_limit;
-        $offset = $page*$select_limit-$select_limit;
         
+        if ($search != '') {
+            $data_array = $devices->fetchAll($devices->searchDevice($search));
+        } elseif($select_type!='all') {
+            $data_array = $devices->fetchAll($devices->select()->where("type = '$select_type'"));
+        } else {
+            $data_array = $devices->fetchAll(); 
+        }
+
+        //вывод навигации
+        $this->_helper->navigation->initNav($sort, $select_limit, $select_type, $page, $data_array);
+        $this->_helper->navigation->setView($this->view);
+
+        
+        $count = $select_limit;
+        $offset = $page * $select_limit - $select_limit;
+
         //формируем запрос
-        if($search != ''){
+        //запрос поиска
+        if ($search != '') {
             $select = $devices->searchDevice($search)->order($sort)->limit($count, $offset);
             $this->view->search_param = "/search_catalog/$search";
+        //запрос конкретного типа 
+        } elseif ($select_type!='all') {
+            $select = $devices->select()->where("type = '$select_type'")->order($sort)->limit($count, $offset);
+        //запрос типа 'все' 
         } else {
-            $select = $devices->select()->order($sort)->limit($count, $offset);    
+            $select = $devices->select()->order($sort)->limit($count, $offset);
         }
-        //Выводим результат
+        
+        $type = new Application_Model_DbTable_Setup();
+        $type->setTableName('type');
+ 
+        $this->view->types = $type->getValues();
         $this->view->devices = $devices->fetchAll($select);
         $this->view->search = $search;
-        
-    }
+   }
 
-    public function addAction()
-    {
-        
+    public function addAction() {
+
         $form = new Application_Form_Devices();
         $form->submit->setLabel('Добавить');
         $this->view->form = $form;
-       
+
         // Если к нам идёт Post запрос
         if ($this->getRequest()->isPost()) {
             //принимаем данные
@@ -82,13 +108,16 @@ class CatalogController extends Zend_Controller_Action
                 //Извлекаем данные
                 $number = $form->getValue('number');
                 $name = $form->getValue('name');
+                $type = $form->getValue('type');
                 $owner = $form->getValue('owner');
                 $user = $form->getValue('user');
                 $status = $form->getValue('status');
 
                 //Добавляем данные в базу
                 $devices = new Application_Model_DbTable_Devices();
-                $devices->addDevice($number, $name, $owner, $user, $status);
+                $devices->addDevice($number, $name, $type, $owner, $user, $status);
+                $history = new Application_Model_DbTable_History();
+                $history->addHistory($number, $owner, $user, $status);
 
                 //Переходим на предыдущую страницу
                 $this->_helper->redirector('index');
@@ -100,8 +129,7 @@ class CatalogController extends Zend_Controller_Action
         }
     }
 
-    public function editAction()
-    {
+    public function editAction() {
         // action body
         $form = new Application_Form_Devices();
         $form->submit->setLabel('Редактировать');
@@ -116,12 +144,15 @@ class CatalogController extends Zend_Controller_Action
                 $id = (int) $form->getValue('id');
                 $number = $form->getValue('number');
                 $name = $form->getValue('name');
+                $type = $form->getValue('type');
                 $owner = $form->getValue('owner');
                 $user = $form->getValue('user');
                 $status = $form->getValue('status');
 
                 $device = new Application_Model_DbTable_Devices();
-                $device->editDevice($id, $number, $name, $owner, $user, $status);
+                $device->editDevice($id, $number, $name, $type, $owner, $user, $status);
+                $history = new Application_Model_DbTable_History();
+                $history->addHistory($number, $owner, $user, $status);
                 $this->_helper->redirector('index');
             } else {
 
@@ -135,8 +166,7 @@ class CatalogController extends Zend_Controller_Action
         }
     }
 
-    public function deleteAction()
-    {
+    public function deleteAction() {
         // action body
         $form = new Application_Form_DeleteDevice();
         $form->submit->setLabel('Удалить');
@@ -144,31 +174,115 @@ class CatalogController extends Zend_Controller_Action
         $this->view->form = $form;
         $id = $this->getParam('id');
         //если идет запрос POST
-        if ($this->getRequest()->isPost()){
+        if ($this->getRequest()->isPost()) {
             //если подтверждаем удаление
-            if  ($this->getRequest()->getPost('submit')){
+            if ($this->getRequest()->getPost('submit')) {
                 $device = new Application_Model_DbTable_Devices();
                 $device->deleteDevice($id);
                 $this->_helper->redirector('index');
             } else {
-            //если отменяем удаление
-            if ($this->getRequest()->getPost('cancel')){
-            $this->_helper->redirector('index');
-            }
+                //если отменяем удаление
+                if ($this->getRequest()->getPost('cancel')) {
+                    $this->_helper->redirector('index');
+                }
             }
         } else {
-        //выводим дополнительные данные
+            //выводим дополнительные данные
 
-        $device = new Application_Model_DbTable_Devices();
+            $device = new Application_Model_DbTable_Devices();
 
-        $this->view->device = $device->getDevice($id);
+            $this->view->device = $device->getDevice($id);
         }
     }
 
+    public function toexcelAction() {
+
+// Подключаем класс для работы с excel
+        require_once('PHPExcel.php');
+// Подключаем класс для вывода данных в формате excel
+        require_once('PHPExcel/Writer/Excel5.php');
+
+// Создаем объект класса PHPExcel
+        $xls = new PHPExcel();
+// Устанавливаем индекс активного листа
+        $xls->setActiveSheetIndex(0);
+// Получаем активный лист
+        $sheet = $xls->getActiveSheet();
+// Подписываем лист
+        $sheet->setTitle('Catalog CoffeeService');
+        $sheet->setCellValue("A1", '№');
+        $sheet->setCellValue("B1", 'Номер');
+        $sheet->setCellValue("C1", 'Название');
+        $sheet->setCellValue("D1", 'Принадлежность');
+        $sheet->setCellValue("E1", 'Пользователь');
+        $sheet->setCellValue("F1", 'Статус');
+
+//меняем цвет заголовка      
+        $sheet->getStyle('A1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('A1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('B1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('B1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('C1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('C1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('D1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('D1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('E1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('E1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('F1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('F1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        
+        $sheet->getStyle('A')->getAlignment()->setHorizontal(
+                PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        
+// автоматическая ширина ячейки
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+// формат ячейки текстовый
+        $sheet->getStyle('A')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('B')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('C')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('D')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('E')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('F')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+ 
+        $devices = new Application_Model_DbTable_Devices();
+        $data = $devices->fetchAll()->toArray();
+
+        $i = 2;
+        
+        foreach ($data as $rows) {
+            $number=$i-1;
+            $sheet->setCellValue("A$i", "$number");
+            $sheet->setCellValue("B$i", "$rows[number]");
+            $sheet->setCellValue("C$i", "$rows[name]");
+            $sheet->setCellValue("D$i", "$rows[owner]");
+            $sheet->setCellValue("E$i", "$rows[user]");
+            $sheet->setCellValue("F$i", "$rows[status]");
+            $i++;
+        }
+
+// Выводим содержимое файла
+        $objWriter = new PHPExcel_Writer_Excel5($xls);
+        $objWriter->save('catalog.xls');
+        // открываем файл в бинарном режиме
+        header('Location: http://ss1.su/catalog.xls');
+    }
 
 }
-
-
-
-
 

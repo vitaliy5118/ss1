@@ -9,6 +9,10 @@ class Application_Form_Devices extends Zend_Form {
         $names  = new Application_Model_DbTable_Setup();
         $names->setTableName('name');
         $names_values = $names->getValues();
+
+        $types  = new Application_Model_DbTable_Setup();
+        $types->setTableName('type');
+        $types_values = $types->getValues();
         
         $status  = new Application_Model_DbTable_Setup();
         $status->setTableName('status');
@@ -43,7 +47,7 @@ class Application_Form_Devices extends Zend_Form {
                ));
         //проверка редактирования или добавления елемента
         if($_SESSION['edit'] == false){
-            $number ->addValidator('db_norecordexists',true, array('table'=>'devices','field'=>'number',  'messages' => $settings['messages']['db']));   
+            $number ->addValidator('Db_NoRecordExists',true, array('table'=>'devices','field'=>'number',  'messages' => $settings['messages']['db']));   
         } else {
             $_SESSION['edit'] = false;         
         }
@@ -60,9 +64,22 @@ class Application_Form_Devices extends Zend_Form {
                     array('Errors', array('tag' => 'div', 'class' => 'form-control-static')),
                     array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
                ));  
+ 
+        $type = new Zend_Form_Element_Select('type', array('class'=>'form-control', "multiOptions" => $types_values));
+        $type->setLabel('Группа аппаратов')
+                ->setRequired(true)
+                ->addFilter('StripTags')
+                ->addFilter('StringTrim')
+                ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
+                ->setDecorators(array('ViewHelper', 'Errors',
+                    array(array('data' => 'HtmlTag'), array('class'  => 'test')),
+                    array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array('Errors', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
+               ));  
 
         $owner = new Zend_Form_Element_Select('owner', array('class'=>'form-control',"multiOptions" => $owners_values));
-        $owner->setLabel('Крафт')
+        $owner->setLabel('Принадлежность')
                ->setRequired(true)
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
@@ -75,7 +92,7 @@ class Application_Form_Devices extends Zend_Form {
                ));  
 
         $user = new Zend_Form_Element_Select('user', array('class'=>'form-control',"multiOptions" => $users_values));
-        $user->setLabel('Принадлежность')
+        $user->setLabel('Территория')
              ->setRequired(true)
              ->addFilter('StripTags')
              ->addFilter('StringTrim')
@@ -110,7 +127,7 @@ class Application_Form_Devices extends Zend_Form {
         // Создаём элемент формы Submit c именем = submit
         $submit = new Zend_Form_Element_Submit('submit',array('class'=>'btn btn-default'));
         // Добавляем все созданные элементы к форме.
-        $this->addElements(array($id, $number, $name, $owner, $user, $status, $submit));
+        $this->addElements(array($id, $number, $name, $type, $owner, $user, $status, $submit));
     }
 
 }
