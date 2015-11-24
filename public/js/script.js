@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    console.log('js_ready');
 //******************************************************************************
     $("tbody tr td p img#war_img").hover(function () {
         console.log('oh');
@@ -22,9 +23,10 @@ $(document).ready(function () {
     });
 
     $('.row_set').click(function () {
-        console.log('__check_row___');
+        console.log('__check_row2___');
         $(this).toggleClass('check_row'); 
    });
+    
 //******************************************************************************
 //Загрузка запчастей
 //Запрет ввода данных до нажатия соответствующей галочки
@@ -39,6 +41,20 @@ $(document).ready(function () {
             console.log($('.spare_check_'+id ).prop( "checked" ));
         });
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 });

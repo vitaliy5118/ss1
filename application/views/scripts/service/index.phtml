@@ -42,8 +42,8 @@
                         </td>
                         <td width="40%" align="center">
                              <button type="button" onclick="window.location.href = '/service/add/'" class="btn btn-default">Добавить</button>
-                            <button type="button" onclick="window.location.href = '/repairs/toexcelmonth/'" class="btn btn-default">To Excel За период</button>
-                            <button type="button" onclick="window.location.href = '/repairs/toexcel/'" class="btn btn-default">To Excel Все</button>
+                             <button type="button" onclick="window.location.href = '/service/toexcel/'" class="btn btn-default">To Excel</button>
+                             <button type="button" onclick="window.location.href = '/service/index/'" class="btn btn-default">Обновить</button>
                         </td>
                         <td width="30%" align="right">
                             <div class="dataTables_length" id="dataTables-example_length">
@@ -66,13 +66,15 @@
             <div class="panel-body">
                 <div class="dataTable_wrapper">
 
-                            <?php $data=$this->count+1;
+                            <?php $data=$this->countshow+1;
                             foreach ($this->service as $rows) { $data--;
                                 ?>
                     <p><span><h4><?=$data?>.&nbspДата&nbsp<?php echo $this->escape($rows['date']); ?>&nbsp&nbsp
-                                S/N:<?php echo $this->escape($rows['number']); ?>&nbsp<?php echo $this->escape($rows['name']); ?></h4>
-                                <button type="button" onclick="window.location.href = '/repairs/toexcel/'" class="btn btn-default">мастер накладной</button>
-                                <button type="button" onclick="window.location.href = '/repairs/toexcel/'" class="btn btn-default">выдать накладную</button>
+                                S/N:<?php echo $this->escape($rows['number']); ?>&nbsp<?php echo $this->escape($rows['name']); ?>
+                            </h4>
+                                <button type="button" onclick="window.location.href = '/service/invoice/id/<?php echo $this->escape($rows['id']); ?>/num/<?php echo $data?>'" class="btn btn-default">выдать накладную</button>
+                                <a class="fa fa-gavel fa-fw" href="/service/edit/id/<?= $this->escape($rows['id']) ?>"></a>
+                                <a class="fa fa-trash-o fa-fw" href="/service/delete/id/<?= $this->escape($rows['id']) ?>"></a>
                         </span></p>
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                               <tbody>
@@ -99,6 +101,10 @@
                                 <tr>    
                                     <th class="stat_panel">Коментарий&nbsp</th>
                                     <td><?php echo $this->escape($rows['comments']); ?></td>
+                                </tr>                           
+                                <tr>    
+                                    <th class="stat_panel">Счетчик&nbsp</th>
+                                    <td><?php echo $this->escape($rows['counter']); ?></td>
                                 </tr>                           
                                 <tr>    
                                     <th class="stat_panel">Состояние&nbsp</th>

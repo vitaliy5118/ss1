@@ -3,8 +3,9 @@
     $this->headTitle($this->title);
 ?>
 <br>
-<p>Вы действительно хотите удалить запись???<br>
-  Номер '<?=$this->escape($this->sales['number']); ?>'<br>
-  Имя '<?=$this->escape($this->sales['name']); ?>'</p><br>
+<h3>Вы действительно хотите удалить запись???</h3>
+<br>
+  <h4>Номер '<?=$this->escape($this->service['number']); ?>'</h4>
+  <h4>Имя '<?=$this->escape($this->service['name']); ?>'</h4><br>
 
  <? echo $this->form; ?>  

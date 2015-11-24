@@ -247,8 +247,6 @@ class RepairsController extends Zend_Controller_Action {
             $claim = $this->getRequest()->getPost('claim');
             $diagnos = $this->getRequest()->getPost('diagnos');
             $spares = $this->getRequest()->getPost('spares');
-            //$spares = strpos($spares, "||");
-            //print_r($spares); die;
             $work = $this->getRequest()->getPost('work');
             $comments = $this->getRequest()->getPost('comments');
             $counter = $this->getRequest()->getPost('counter');
@@ -261,7 +259,6 @@ class RepairsController extends Zend_Controller_Action {
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$comments)){$error['comments']='error';}
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{0,300}$/i",$counter)) {$error['counter']='error';}
             
-
             //если нет ошибкок
             if (!$error){
 
@@ -306,10 +303,7 @@ class RepairsController extends Zend_Controller_Action {
                 
                 $repaire->editRepaire($id, $number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked);
                 
-                
-                
                 $this->_helper->redirector->gotoUrl("repairs/index/number/$number");
-                
                 
             //если есть ошибки
             } else {
@@ -372,7 +366,8 @@ class RepairsController extends Zend_Controller_Action {
     }
 
     public function toexcelAction() {
-
+        
+        global $settings;
 // Подключаем класс для работы с excel
         require_once('PHPExcel.php');
 // Подключаем класс для вывода данных в формате excel
@@ -473,10 +468,11 @@ class RepairsController extends Zend_Controller_Action {
         $objWriter = new PHPExcel_Writer_Excel5($xls);
         $objWriter->save('repairs.xls');
         // открываем файл в бинарном режиме
-        header('Location: http://aromoservice.in.ua/repairs.xls');
+        header("Location: http://{$settings['excel']['site']}/repairs.xls");
     }
     public function toexcelmonthAction() {
-
+        
+        global $settings;
 // Подключаем класс для работы с excel
         require_once('PHPExcel.php');
 // Подключаем класс для вывода данных в формате excel
@@ -602,7 +598,7 @@ class RepairsController extends Zend_Controller_Action {
         $objWriter = new PHPExcel_Writer_Excel5($xls);
         $objWriter->save('repairs_mounth.xls');
         // открываем файл в бинарном режиме
-        header('Location: http://aromoservice.in.ua/repairs_mounth.xls');
+        header("Location: http://{$settings['excel']['site']}/repairs_mounth.xls");
     }
 
 }

@@ -57,7 +57,7 @@ class Application_Model_DbTable_Warehouse extends Zend_Db_Table_Abstract {
     }
     
     public function editWarehouse($id, $serial, $name, $type, $remain, $price, $path) {
-        
+
     // Формируем массив вставляемых значений
         $data = array(
                 'serial' => $serial,
@@ -68,10 +68,10 @@ class Application_Model_DbTable_Warehouse extends Zend_Db_Table_Abstract {
         );
         
         if ($price!='unload'){
-            $data = array('price' => $price);
+            $data['price'] = $price;
             
         }
-
+        
     // Используем метод insert для вставки записи в базу
         $this->update($data, 'id=' . (int) $id);
                 //Составляем запрос

@@ -1,32 +1,46 @@
 <?php $this->headTitle('Добавление ремонта'); ?>
-<br>
-<div class="repairs_info_block">
-    <h4>
-        Номер аппарата:&nbsp;<span class="repair_number"><?=$this->number?></span>
-        &nbsp&nbsp&nbspНазвание аппарата:&nbsp;<span class="repair_number"><?=$this->name?></span>
-    </h4>
-</div>
-
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-cog fa-fw"></i> Добавления ремонта</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>	
 <form id="form_spares" name="form_spares" method="post">
     <div class="main_spares_block">
         <div class="left_spares_block">
+            <div id="spares_block">
+                <p>Клиент</p>
+                <input class="form-control <?=$this->error['client'] ?>" placeholder="введите данные клиента" name="client" type="input" value="<?=$this->client; ?>">
+            </div>
+            <div id="spares_block">
+                <p>Серийный номер</p>
+                <input class="form-control <?=$this->error['number'] ?>" placeholder="введите серийный номер аппарата" name="number" type="input" value="<?=$this->number; ?>">
+            </div>
             <div id="spares_block">
                 <p>Жалоба</p>
                 <input class="form-control <?=$this->error['claim'] ?>" placeholder="введите жалобу" name="claim" type="input" value="<?=$this->claim; ?>">
             </div>
             <div id="spares_block">
                 <p>Диагноз</p>
-                <input  class="form-control <?=$this->error['diagnos'] ?>" placeholder="введите жалобу" name="diagnos" type="input" value="<?=$this->diagnos; ?>">
+                <input  class="form-control <?=$this->error['diagnos'] ?>" placeholder="введите диагноз" name="diagnos" type="input" value="<?=$this->diagnos; ?>">
             </div>
             <div id="spares_block">
-                <p>Работы</p>
-                <input  class="form-control <?=$this->error['work'] ?>" placeholder="введите выполненные работы" name="work" type="input" value="<?=$this->work; ?>">
+                <p>Дополнительные работы</p>
+                <input  class="form-control <?=$this->error['work'] ?>" placeholder="введите выполненные дополнительные работы" name="work" type="input" value="<?=$this->work; ?>">
             </div>
         </div>
         <div class="right_spares_block">
             <div id="spares_block">
+                <p>Статус ремонта</p>
+                <input  class="form-control <?=$this->error['status'] ?>" placeholder="введите статус ремонта" name="status" type="input" value="<?=$this->status; ?>"> 
+             </div>
+            <div id="spares_block">
+                <p>Название аппарата</p>
+                <input  class="form-control <?=$this->error['name'] ?>" placeholder="введите название аппарата" name="name" type="input" value="<?=$this->name; ?>">
+            </div>
+            <div id="spares_block">
                 <p>Дополнительные запчасти</p>
-                <input  class="form-control <?=$this->error['spares'] ?>" placeholder="введите запчасти" name="spares" type="input" value="<?=$this->spares; ?>">
+                <input  class="form-control <?=$this->error['spares'] ?>" placeholder="введите дополнительные запчасти" name="spares" type="input" value="<?=$this->spares; ?>">
             </div>
             <div id="spares_block">
                 <p>Счетчик</p>
@@ -63,8 +77,9 @@
                         <td width="100px"><center><?php echo $this->escape($rows['price']); ?></center></td>
                         <td id="spares_check">
                             <input class="spare_check spare_check_<?php echo $this->escape($rows['id']); ?>"
-                                   name="check_<?php echo $this->escape($rows['id']); ?>" type="checkbox" 
-                                   value="<?php echo $this->escape($rows['id']); ?>" <?=$this->checked["{$this->escape($rows['id'])}"];?> 
+                                   name="prices[<?php echo $this->escape($rows['id']); ?>]" type="checkbox" 
+                                   value="<?php echo $this->escape($rows['price']); ?>"
+                                   <?=$this->checked_price["{$this->escape($rows['id'])}"];?> 
                         </td>
                     </tr> <? } ?>                            
 
@@ -86,7 +101,8 @@
                         <th>Фото</th>
                         <th>Серийный номер</th>
                         <th>Название</th>
-                        <th>Остаток</th>
+                        <th><center>Цена(грн)</center></th>
+                        <th><center>Остаток</center></th>
                         <th>К-во</th>
                         <th>CH</th>
                     </tr>
@@ -99,17 +115,18 @@
                         <td id="spares_foto"><p><img src="/img/<?php echo $this->escape($rows['path']); ?>" width="30px" height="30px" ></p></td>
                         <td><?php echo $this->escape($rows['serial']); ?></td>
                         <td><?php echo $this->escape($rows['name']); ?></td>
-                        <td id="spares_remain"><?php echo $this->escape($rows['remain']); ?></td>
+                        <td><center><?php echo $this->escape($rows['price']); ?></center></td>
+                        <td id="spares_remain"><center><?php echo $this->escape($rows['remain']); ?></center></td>
                         <td id="spares_remain_check">
                             <input class=" check_spare_<?php echo $this->escape($rows['id']); ?> form-control <?=$this->error["{$this->escape($rows['id'])}"]; ?>" 
-                                   name="<?php echo $this->escape($rows['id']); ?>"
+                                   name="data[<?php echo $this->escape($rows['id']); ?>]"
                                    <? if(!$this->checked["{$this->escape($rows['id'])}"]) { echo ('disabled'); }?>
                                    type="input" 
                                    value="<?=$this->check_data["{$this->escape($rows['id'])}"];?>">
                         </td>
                         <td id="spares_check">
                             <input class="spare_check spare_check_<?php echo $this->escape($rows['id']); ?>"
-                                   name="check_<?php echo $this->escape($rows['id']); ?>" type="checkbox" 
+                                   name="check[<?php echo $this->escape($rows['id']); ?>]" type="checkbox" 
                                    value="<?php echo $this->escape($rows['id']); ?>" <?=$this->checked["{$this->escape($rows['id'])}"];?> 
                                    <? if($rows['remain']<1){echo ('disabled'); } ?>>
                         </td>

@@ -33,6 +33,9 @@
  * @package    PHPExcel
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
+
+//fukck
+//fukck
 class PHPExcel_Comment implements PHPExcel_IComparable
 {
     /**

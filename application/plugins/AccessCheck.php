@@ -73,6 +73,12 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
                                      ,$allow_data[0]['war_history']
                                      ,$allow_data[0]['war_load']
                                      ,$allow_data[0]['war_unload'])
+           ,'service'       => array ($allow_data[0]['ser_index']
+                                     ,$allow_data[0]['ser_add']
+                                     ,$allow_data[0]['ser_edit']
+                                     ,$allow_data[0]['ser_delete']
+                                     ,$allow_data[0]['ser_toexcel']
+                                     ,$allow_data[0]['ser_invoice'])
            ,'setup'         => array ($allow_data[0]['set_index']
                                      ,$allow_data[0]['set_names']
                                      ,$allow_data[0]['set_addname']
@@ -94,8 +100,13 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
                                      ,$allow_data[0]['set_addstatus']
                                      ,$allow_data[0]['set_editstatus']
                                      ,$allow_data[0]['set_deletestatus']
+                                     ,$allow_data[0]['set_prices']
+                                     ,$allow_data[0]['set_addprices']
+                                     ,$allow_data[0]['set_editprices']
+                                     ,$allow_data[0]['set_deleteprices']
                                      ,$allow_data[0]['set_access']
                                      ,$allow_data[0]['set_addaccess']
+                                     ,$allow_data[0]['set_editaccess']
                                      ,$allow_data[0]['set_deleteaccess'])
 
                                      
@@ -112,6 +123,7 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
             ->allow('client', 'sales',          $allow_array['sales'])
             ->allow('client', 'repairs',        $allow_array['repairs'])
             ->allow('client', 'warehouse',      $allow_array['warehouse'])
+            ->allow('client', 'service',        $allow_array['service'])
             ->allow('client', 'setup',          $allow_array['setup']);
                 
                 
@@ -124,7 +136,7 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
             ->allow('admin', 'statistic', array('index'))
             ->allow('admin', 'catalog',   array('index','toexcel','add', 'edit', 'delete'))
             ->allow('admin', 'sales',     array('index','toexcel','add', 'edit', 'delete'))
-            ->allow('admin', 'service',   array('index','toexcel','add', 'edit', 'delete'))
+            ->allow('admin', 'service',   array('index','toexcel', 'invoice','add', 'edit', 'delete'))
             ->allow('admin', 'repairs',   array('index','statistic','toexcel','toexcelmonth','add', 'edit', 'delete'))
             ->allow('admin', 'warehouse', array('index','add', 'edit', 'delete','unload','load','history','toexcel'))
             ->allow('admin', 'setup',     array('index','names', 'addname', 'editname','deletename'

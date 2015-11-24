@@ -172,7 +172,8 @@ class SalesController extends Zend_Controller_Action
     }
     
     public function toexcelAction() {
-
+        
+        global $settings;
         // Подключаем класс для работы с excel
         require_once('PHPExcel.php');
         // Подключаем класс для вывода данных в формате excel
@@ -257,7 +258,7 @@ class SalesController extends Zend_Controller_Action
         $objWriter = new PHPExcel_Writer_Excel5($xls);
         $objWriter->save('sales.xls');
         // открываем файл в бинарном режиме
-        header('Location: http://ss1.su/sales.xls');
+        header("Location: http://{$settings['excel']['site']}/sales.xls");
     }
 
 }

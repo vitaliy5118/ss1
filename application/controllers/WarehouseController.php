@@ -324,7 +324,6 @@ class WarehouseController extends Zend_Controller_Action {
                        $filename = 'nophoto.png';
                   } 
                 }
-
                 // Вызываем метод модели addMovie для вставки новой записи
                 $warehouse->editWarehouse($id, $serial, $name, $type, $remain, $price, $filename);
                 
@@ -417,6 +416,7 @@ class WarehouseController extends Zend_Controller_Action {
    
     public function toexcelAction() {
 
+        global $settings;
 // Подключаем класс для работы с excel
         require_once('PHPExcel.php');
 // Подключаем класс для вывода данных в формате excel
@@ -501,7 +501,7 @@ class WarehouseController extends Zend_Controller_Action {
         $objWriter = new PHPExcel_Writer_Excel5($xls);
         $objWriter->save('warehouse.xls');
         // открываем файл в бинарном режиме
-        header('Location: http://ss1.su/warehouse.xls');
+        header("Location: http://{$settings['excel']['site']}/warehouse.xls");
     }
   
 

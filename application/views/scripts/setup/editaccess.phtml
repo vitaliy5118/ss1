@@ -236,6 +236,13 @@
             </dd>
             <dd>
                 <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_set_prices" type="checkbox" value="prices"
+                                                              <?=$this->check_data['check_set_prices'];?>></div>
+                    <div class='set_list_row_text'>Прейскурант на услуги</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
                     <div class='set_list_row_checkbox'><input name="check_set_access" type="checkbox" value="access"
                                                               <?=$this->check_data['check_set_access'];?>></div>
                     <div class='set_list_row_text'><p style="color:red"><strong>Доступ</strong></p></div>
@@ -243,27 +250,41 @@
             </dd>
         </dl>
     </dd>
-    <dd class="ss1"><i class="fa  fa-book fa-fw"></i> Документация
+    <dd class="ss1"><i class="fa  fa-bar-chart-o fa-fw"></i> Услуги мастерской
         <dl class='ss2'>
             <dd>
                 <div class="set_list_block">
-                    <div class='set_list_row_checkbox'><input name="check_doc_index" type="checkbox" value="index"
-                                                              <?=$this->check_data['check_doc_index'];?>></div>
+                    <div class='set_list_row_checkbox'><input name="check_ser_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_ser_index'];?>></div>
                     <div class='set_list_row_text'>Общий доступ</div>
                 </div>
             </dd>
             <dd>
                 <div class="set_list_block">
-                    <div class='set_list_row_checkbox'><input name="check_doc_file" type="checkbox" value="file"
-                                                              <?=$this->check_data['check_doc_file'];?>></div>
-                    <div class='set_list_row_text'>Загрузить</div>
+                    <div class='set_list_row_checkbox'><input name="check_ser_add" type="checkbox" value="add"
+                                                              <?=$this->check_data['check_ser_add'];?>></div>
+                    <div class='set_list_row_text'>Добавить</div>
                 </div>
             </dd>
             <dd>
                 <div class="set_list_block">
-                    <div class='set_list_row_checkbox'><input name="check_doc_delete" type="checkbox" value="delete"
-                                                              <?=$this->check_data['check_doc_delete'];?>></div>
+                    <div class='set_list_row_checkbox'><input name="check_ser_edit" type="checkbox" value="edit"
+                                                              <?=$this->check_data['check_ser_edit'];?>></div>
+                    <div class='set_list_row_text'>Редактировать</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_ser_delete" type="checkbox" value="delete"
+                                                              <?=$this->check_data['check_ser_delete'];?>></div>
                     <div class='set_list_row_text'>Удалить</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_ser_invoice" type="checkbox" value="invoice"
+                                                              <?=$this->check_data['check_ser_invoice'];?>></div>
+                    <div class='set_list_row_text'>Выдать накладную</div>
                 </div>
             </dd>
         </dl>
@@ -303,6 +324,38 @@
                     <div class='set_list_row_checkbox'><input name="check_sal_toexcel" type="checkbox" value="toexcel"
                                                               <?=$this->check_data['check_sal_toexcel'];?>></div>
                     <div class='set_list_row_text'>Проданные аппараты</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_ser_toexcel" type="checkbox" value="toexcel"
+                                                              <?=$this->check_data['check_ser_toexcel'];?>></div>
+                    <div class='set_list_row_text'>Услуги мастерской</div>
+                </div>
+            </dd>
+        </dl>
+    </dd>
+    <dd class="ss1"><i class="fa  fa-book fa-fw"></i> Документация
+        <dl class='ss2'>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_doc_index" type="checkbox" value="index"
+                                                              <?=$this->check_data['check_doc_index'];?>></div>
+                    <div class='set_list_row_text'>Общий доступ</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_doc_file" type="checkbox" value="file"
+                                                              <?=$this->check_data['check_doc_file'];?>></div>
+                    <div class='set_list_row_text'>Загрузить</div>
+                </div>
+            </dd>
+            <dd>
+                <div class="set_list_block">
+                    <div class='set_list_row_checkbox'><input name="check_doc_delete" type="checkbox" value="delete"
+                                                              <?=$this->check_data['check_doc_delete'];?>></div>
+                    <div class='set_list_row_text'>Удалить</div>
                 </div>
             </dd>
         </dl>

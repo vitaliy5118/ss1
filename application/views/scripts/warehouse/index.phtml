@@ -65,8 +65,8 @@
                                 <th>Название&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'warehouse_sort_name'); ?>"></a></th>
                                 <th>Тип&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'warehouse_sort_type'); ?>"></a></th>
                                 <th>Дата&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'warehouse_sort_date'); ?>"></a></th>
-                                <th>Остаток&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'warehouse_sort_remain'); ?>"></a></th>
                                 <th>Прайс&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'warehouse_sort_remain'); ?>"></a></th>
+                                <th>Остаток&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'warehouse_sort_remain'); ?>"></a></th>
                         <th><center><abbr title="Редактировать"><i class="fa fa-gavel fa-fw"></i></center></th>
                         <th><center><abbr title="Удалить"><i class="fa fa-trash-o fa-fw"></i></center></th>
 
@@ -82,8 +82,8 @@
                                 <td><?php echo $this->escape($rows['name']); ?></td>
                                 <td><?php echo $this->escape($rows['type']); ?></td>
                                 <td><?php echo $this->escape($rows['lastadding']); ?></td>
-                                <td><?php echo $this->escape($rows['remain']); ?></td>
-                                <td><?php echo $this->escape($rows['price']); ?> грн</td>
+                                <td><center><?php echo $this->escape($rows['price']); ?> грн</center></td>
+                                <td><center><?php echo $this->escape($rows['remain']); ?></center></td>
                                 <td><center><a class="fa fa-gavel fa-fw" href="/warehouse/edit/id/<?= $this->escape($rows['id']) ?>"></a></center></td>
                                 <td><center><a class="fa fa-trash-o fa-fw" href="/warehouse/delete/id/<?= $this->escape($rows['id']) ?>"></a></center></td>
                             </tr> <? } ?>                            

@@ -106,7 +106,21 @@ class StatisticController extends Zend_Controller_Action {
         $this->view->count_repair_name = $dd[0]['count'];
         $this->view->repair_name = $repair_name;
         
+        //принимаем данные о визитерах с базы
+        $visitor = new Application_Model_DbTable_Visitors();
+        $visitors = $visitor->fetchAll();
         
+        $unique_users=0;
+        $visits=0;
+
+        //сравниваем текущего визитера с визитерами в базе
+        foreach($visitors as $rows){
+            $unique_users++;
+            $visits +=$rows['visits'];
+        }
+        
+        $this->view->unique_users = $unique_users;
+        $this->view->visits = $visits;
     }
 
 }

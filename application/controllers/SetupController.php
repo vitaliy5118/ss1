@@ -139,7 +139,7 @@ class SetupController extends Zend_Controller_Action {
                     }
                 }
             }
-
+            
             //создаем массив данных из пунктов где нажаты галочки
             foreach ($formData as $data => $value) {
                 if (preg_match("/check/", $data)) { //ищем переменные check
@@ -171,8 +171,14 @@ class SetupController extends Zend_Controller_Action {
                             $check_data['set_editstatus'] = 'editstatus';
                             $check_data['set_deletestatus'] = 'deletestatus';
                         }
+                        if ($data == 'check_set_prices' && $value == 'prices') {
+                            $check_data['set_addprices'] = 'addprices';
+                            $check_data['set_editprices'] = 'editprices';
+                            $check_data['set_deleteprices'] = 'deleteprices';
+                        }
                         if ($data == 'check_set_access' && $value == 'access') {
                             $check_data['set_addaccess'] = 'addaccess';
+                            $check_data['set_editaccess'] = 'editaccess';
                             $check_data['set_deleteaccess'] = 'deleteaccess';
                         }
                     } else {
@@ -180,7 +186,7 @@ class SetupController extends Zend_Controller_Action {
                     }
                 }
             }
-            //если нет ошибкок
+             //если нет ошибкок
             if (!$error) {
 
                 //ƒобавл€ем данные в базу
@@ -253,8 +259,14 @@ class SetupController extends Zend_Controller_Action {
                             $check_data['set_editstatus'] = 'editstatus';
                             $check_data['set_deletestatus'] = 'deletestatus';
                         }
+                        if ($data == 'check_set_prices' && $value == 'prices') {
+                            $check_data['set_addprices'] = 'addprices';
+                            $check_data['set_editprices'] = 'editprices';
+                            $check_data['set_deleteprices'] = 'deleteprices';
+                        }
                         if ($data == 'check_set_access' && $value == 'access') {
                             $check_data['set_addaccess'] = 'addaccess';
+                            $check_data['set_editaccess'] = 'editaccess';
                             $check_data['set_deleteaccess'] = 'deleteaccess';
                         }
                     } else {
