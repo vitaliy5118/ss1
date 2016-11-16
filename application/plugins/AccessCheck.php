@@ -19,6 +19,7 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
                 ->addResource('access')
                 ->addResource('catalog')
                 ->addResource('history')
+                ->addResource('outlets')
                 ->addResource('warehouse')
                 ->addResource('repairs')
                 ->addResource('sales')
@@ -131,6 +132,7 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
             ->allow('admin', 'access',    array('logout'))
             ->allow('admin', 'index',     array('index'))
             ->allow('admin', 'history',   array('index'))
+            ->allow('admin', 'outlets',   array('index'))
             ->allow('admin', 'documentation', array('index','file','delete'))
             ->allow('admin', 'reports',   array('index'))
             ->allow('admin', 'statistic', array('index'))
@@ -148,12 +150,16 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
                                                ,'prices', 'addprices', 'editprices','deleteprices'));
     
         
-                // получаем доступ к хранилищу данных Zend,
+        // получаем доступ к хранилищу данных Zend,
         // и достаём роль пользователя
-        $identity = $auth->getStorage()->read();
         
+        $identity = $auth->getStorage()->read();
+        //var_dump($auth->getStorage()->read());
+        //die;
         // если в хранилище ничего нет, то значит мы имеем дело с гостем
         if(empty($identity->role)){
+            
+            $identity = new stdClass(); // for php 5.4
             $identity->role = 'guest';
         }
         

@@ -37,7 +37,7 @@ class Application_Form_Devices extends Zend_Form {
                ->setAttrib('placeholder','S/N:')
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
-               ->addValidator('regex',true, array("/^[A-Za-z1-90 \.\-\А\П\Н]{3,20}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('regex',true, array("/^[A-Za-z1-90 \.\-]{3,20}$/i", 'messages' => $settings['messages']['error']))
                ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
                ->setDecorators(array('ViewHelper', 'Errors',
                     array(array('data' => 'HtmlTag'), array('class'  => 'test')),
@@ -115,7 +115,83 @@ class Application_Form_Devices extends Zend_Form {
                     array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
                     array('Errors', array('tag' => 'div', 'class' => 'form-control-static')),
                     array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
-               ));  
+               )); 
+        
+// Создаём элемент формы – ТОРГОВАЯ ТОЧКА       
+        $city = new Zend_Form_Element_Text('city', array('class'=>'form-control'));
+        $city->setLabel('Город')
+               ->setRequired(true)
+               ->setAttrib('placeholder','пример: Киев')
+               ->addFilter('StripTags')
+               ->addFilter('StringTrim')
+               ->addValidator('regex',true, array("/^[А-Яа-яA-Za-z1-90 \.\-\,\"\№]{3,200}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
+               ->setDecorators(array('ViewHelper', 'Errors',
+                    array(array('data' => 'HtmlTag'), array('class'  => 'test')),
+                    array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array('Errors', array('tag' => 'div', 'class' => 'form-control-static')), 
+                    array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
+               ));
+ 
+        $tt_name = new Zend_Form_Element_Text('tt_name', array('class'=>'form-control'));
+        $tt_name->setLabel('Название "Торговой точки"')
+               ->setRequired(true)
+               ->setAttrib('placeholder','пример: магазин Novus')
+               ->addFilter('StripTags')
+               ->addFilter('StringTrim')
+               ->addValidator('regex',true, array("/^[А-Яа-яA-Za-z1-90 \.\-\,\"\№\)\(]{3,200}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
+               ->setDecorators(array('ViewHelper', 'Errors',
+                    array(array('data' => 'HtmlTag'), array('class'  => 'test')),
+                    array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array('Errors', array('tag' => 'div', 'class' => 'form-control-static')), 
+                    array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
+               ));
+ 
+        $tt_user = new Zend_Form_Element_Text('tt_user', array('class'=>'form-control'));
+        $tt_user->setLabel('Контактные данные')
+               ->setRequired(true)
+               ->setAttrib('placeholder','пример: директор Олег Олегович')
+               ->addFilter('StripTags')
+               ->addFilter('StringTrim')
+               ->addValidator('regex',true, array("/^[А-Яа-яA-Za-z1-90 \.\-\,\"\№\)\(]{3,200}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
+               ->setDecorators(array('ViewHelper', 'Errors',
+                    array(array('data' => 'HtmlTag'), array('class'  => 'test')),
+                    array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array('Errors', array('tag' => 'div', 'class' => 'form-control-static')), 
+                    array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
+               ));
+ 
+        $tt_phone = new Zend_Form_Element_Text('tt_phone', array('class'=>'form-control'));
+        $tt_phone->setLabel('Номер договора')
+               ->setRequired(true)
+               ->setAttrib('placeholder','пример: 1234567')
+               ->addFilter('StripTags')
+               ->addFilter('StringTrim')
+               ->addValidator('regex',true, array("/^[А-Яа-яA-Za-z1-90 \.\-\,\"\№\+\(\)]{3,200}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
+               ->setDecorators(array('ViewHelper', 'Errors',
+                    array(array('data' => 'HtmlTag'), array('class'  => 'test')),
+                    array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array('Errors', array('tag' => 'div', 'class' => 'form-control-static')), 
+                    array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
+               ));
+
+        $adress = new Zend_Form_Element_Text('adress', array('class'=>'form-control'));
+        $adress->setLabel('Адрес "Торговой точки"')
+               ->setRequired(true)
+               ->setAttrib('placeholder','привер: ул.Зоологическая 23')
+               ->addFilter('StripTags')
+               ->addFilter('StringTrim')
+               ->addValidator('regex',true, array("/^[А-Яа-яA-Za-z1-90 \.\-\,\"\№\)\(]{3,200}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
+               ->setDecorators(array('ViewHelper', 'Errors',
+                    array(array('data' => 'HtmlTag'), array('class'  => 'test')),
+                    array('Label', array('tag' => 'div', 'class' => 'form-control-static')),
+                    array('Errors', array('tag' => 'div', 'class' => 'form-control-static')), 
+                    array(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'form-group')), //завернуть все тегом див
+               ));
        
         // Создаём элемент hidden c именем = id
         $id = new Zend_Form_Element_Hidden('id');
@@ -127,7 +203,7 @@ class Application_Form_Devices extends Zend_Form {
         // Создаём элемент формы Submit c именем = submit
         $submit = new Zend_Form_Element_Submit('submit',array('class'=>'btn btn-default'));
         // Добавляем все созданные элементы к форме.
-        $this->addElements(array($id, $number, $name, $type, $owner, $user, $status, $submit));
+        $this->addElements(array($id, $number, $name, $type, $owner, $user, $status, $city, $adress, $tt_name, $tt_user, $tt_phone, $submit));
     }
 
 }

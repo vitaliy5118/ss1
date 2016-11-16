@@ -26,10 +26,15 @@
                     <table width=100% class="table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Дата изменения&nbsp</th>
+                                <th>Дата&nbsp</th>
                                 <th>Принадлежность&nbsp</th>
                                 <th>Территория&nbsp</th>
                                 <th>Статус&nbsp</th>
+                                <th>Город&nbsp</th>
+                                <th>Адрес&nbsp</th>
+                                <th>Название ТТ&nbsp</th>
+                                <th>Контактные данные&nbsp</th>
+                                <th>Номер договора&nbsp</th>
                         </tr>
                         
                          </thead>
@@ -42,6 +47,11 @@
                                 <td><?php echo $this->escape($rows['owner']); ?></td>
                                 <td><?php echo $this->escape($rows['user']); ?></td>
                                 <td><?php echo $this->escape($rows['status']); ?></td>
+                                <td><?php echo $this->escape($rows['city']); ?></td>
+                                <td><?php echo $this->escape($rows['adress']); ?></td>
+                                <td><?php echo $this->escape($rows['tt_name']); ?></td>
+                                <td><?php echo $this->escape($rows['tt_user']); ?></td>
+                                <td><?php echo $this->escape($rows['tt_phone']); ?></td>
                             </tr> <? } ?>                            
 
                         </tbody>

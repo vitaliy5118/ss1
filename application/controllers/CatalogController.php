@@ -1,6 +1,10 @@
 <?php
 
+//namespace Catalog;
+
 class CatalogController extends Zend_Controller_Action {
+    
+    public $device = null;
 
     public function init() {
         /* Initialize action controller here */
@@ -96,7 +100,7 @@ class CatalogController extends Zend_Controller_Action {
         $form = new Application_Form_Devices();
         $form->submit->setLabel('Добавить');
         $this->view->form = $form;
-
+        
         // Если к нам идёт Post запрос
         if ($this->getRequest()->isPost()) {
             //принимаем данные
@@ -105,19 +109,24 @@ class CatalogController extends Zend_Controller_Action {
             //Проверка валидациии    
             if ($form->isValid($formData)) {
                 //Успешная валидация
-                //Извлекаем данные
-                $number = $form->getValue('number');
-                $name = $form->getValue('name');
-                $type = $form->getValue('type');
-                $owner = $form->getValue('owner');
-                $user = $form->getValue('user');
-                $status = $form->getValue('status');
+                //Извлекаем данные в массив
+                $device_data['number'] = $form->getValue('number');
+                $device_data['name'] = $form->getValue('name');
+                $device_data['type'] = $form->getValue('type');
+                $device_data['owner'] = $form->getValue('owner');
+                $device_data['user'] = $form->getValue('user');
+                $device_data['status'] = $form->getValue('status');
+                $device_data['city'] = $form->getValue('city');
+                $device_data['adress'] = $form->getValue('adress');
+                $device_data['tt_name'] = $form->getValue('tt_name');
+                $device_data['tt_user'] = $form->getValue('tt_user');
+                $device_data['tt_phone'] = $form->getValue('tt_phone');
 
                 //Добавляем данные в базу
-                $devices = new Application_Model_DbTable_Devices();
-                $devices->addDevice($number, $name, $type, $owner, $user, $status);
+                $device = new Application_Model_DbTable_Devices();
+                $device->addDevice($device_data);
                 $history = new Application_Model_DbTable_History();
-                $history->addHistory($number, $owner, $user, $status);
+                $history->addHistory($device_data);
 
                 //Переходим на предыдущую страницу
                 $this->_helper->redirector('index');
@@ -141,18 +150,24 @@ class CatalogController extends Zend_Controller_Action {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
 
-                $id = (int) $form->getValue('id');
-                $number = $form->getValue('number');
-                $name = $form->getValue('name');
-                $type = $form->getValue('type');
-                $owner = $form->getValue('owner');
-                $user = $form->getValue('user');
-                $status = $form->getValue('status');
+                $device_data['id'] = $form->getValue('id');
+                $device_data['number'] = $form->getValue('number');
+                $device_data['name'] = $form->getValue('name');
+                $device_data['type'] = $form->getValue('type');
+                $device_data['owner'] = $form->getValue('owner');
+                $device_data['user'] = $form->getValue('user');
+                $device_data['status'] = $form->getValue('status');
+                $device_data['city'] = $form->getValue('city');
+                $device_data['adress'] = $form->getValue('adress');
+                $device_data['tt_name'] = $form->getValue('tt_name');
+                $device_data['tt_user'] = $form->getValue('tt_user');
+                $device_data['tt_phone'] = $form->getValue('tt_phone');
 
+                //Добавляем данные в базу
                 $device = new Application_Model_DbTable_Devices();
-                $device->editDevice($id, $number, $name, $type, $owner, $user, $status);
+                $device->editDevice($device_data);
                 $history = new Application_Model_DbTable_History();
-                $history->addHistory($number, $owner, $user, $status);
+                $history->addHistory($device_data);
                 $this->_helper->redirector('index');
             } else {
 
@@ -217,6 +232,11 @@ class CatalogController extends Zend_Controller_Action {
         $sheet->setCellValue("D1", 'Принадлежность');
         $sheet->setCellValue("E1", 'Пользователь');
         $sheet->setCellValue("F1", 'Статус');
+        $sheet->setCellValue("G1", 'Город');
+        $sheet->setCellValue("H1", 'Адрес торговой точки');
+        $sheet->setCellValue("I1", 'Название торговой точки');
+        $sheet->setCellValue("J1", 'Контактные данные');
+        $sheet->setCellValue("K1", 'Номер договора');
 
 //меняем цвет заголовка      
         $sheet->getStyle('A1')->getFill()->setFillType(
@@ -237,6 +257,21 @@ class CatalogController extends Zend_Controller_Action {
         $sheet->getStyle('F1')->getFill()->setFillType(
                 PHPExcel_Style_Fill::FILL_SOLID);
         $sheet->getStyle('F1')->getFill()->getStartColor()->setRGB('EEEEEE');
+        $sheet->getStyle('G1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('G1')->getFill()->getStartColor()->setRGB('FF6347');
+        $sheet->getStyle('H1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('H1')->getFill()->getStartColor()->setRGB('FF6347');
+        $sheet->getStyle('I1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('I1')->getFill()->getStartColor()->setRGB('FF6347');
+        $sheet->getStyle('J1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('J1')->getFill()->getStartColor()->setRGB('FF6347');
+        $sheet->getStyle('K1')->getFill()->setFillType(
+                PHPExcel_Style_Fill::FILL_SOLID);
+        $sheet->getStyle('K1')->getFill()->getStartColor()->setRGB('FF6347');
         
         $sheet->getStyle('A')->getAlignment()->setHorizontal(
                 PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -248,6 +283,11 @@ class CatalogController extends Zend_Controller_Action {
         $sheet->getColumnDimension('D')->setAutoSize(true);
         $sheet->getColumnDimension('E')->setAutoSize(true);
         $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('I')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+        $sheet->getColumnDimension('K')->setAutoSize(true);
 // формат ячейки текстовый
         $sheet->getStyle('A')->getNumberFormat()
                 ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
@@ -260,6 +300,16 @@ class CatalogController extends Zend_Controller_Action {
         $sheet->getStyle('E')->getNumberFormat()
                 ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         $sheet->getStyle('F')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('G')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('H')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('I')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('J')->getNumberFormat()
+                ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('K')->getNumberFormat()
                 ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
  
         $devices = new Application_Model_DbTable_Devices();
@@ -275,6 +325,11 @@ class CatalogController extends Zend_Controller_Action {
             $sheet->setCellValue("D$i", "$rows[owner]");
             $sheet->setCellValue("E$i", "$rows[user]");
             $sheet->setCellValue("F$i", "$rows[status]");
+            $sheet->setCellValue("G$i", "$rows[city]");
+            $sheet->setCellValue("H$i", "$rows[adress]");
+            $sheet->setCellValue("I$i", "$rows[tt_name]");
+            $sheet->setCellValue("J$i", "$rows[tt_user]");
+            $sheet->setCellValue("K$i", "$rows[tt_phone]");
             $i++;
         }
 

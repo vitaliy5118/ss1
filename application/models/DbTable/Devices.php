@@ -4,34 +4,52 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
 
     protected $_name = 'devices';
     
-    public function addDevice($number, $name, $type, $owner, $user, $status) {
-
+    public function addDevice($device) {
+        
         // ‘ормируем массив вставл€емых значений
         $data = array(
-            'number' => $number,
-            'name' => $name,
-            'type' => $type,
-            'owner' => $owner,
-            'user' => $user,
-            'status' => $status
+            'number'   => $device['number'],
+            'name'     => $device['name'],
+            'type'     => $device['type'],
+            'owner'    => $device['owner'],
+            'user'     => $device['user'],
+            'status'   => $device['status'],
+            'city'     => $device['city'], 
+            'adress'   => $device['adress'], 
+            'tt_name'  => $device['tt_name'], 
+            'tt_user'  => $device['tt_user'], 
+            'tt_phone' => $device['tt_phone']
         );
         // »спользуем метод insert дл€ вставки записи в базу
         $this->insert($data);
     }
     
-    public function editDevice($id, $number, $name, $type, $owner, $user, $status) {
+    public function editDevice($device) {
 
         // ‘ормируем массив вставл€емых значений
         $data = array(
-            'number' => $number,
-            'name' => $name,
-            'type' => $type,
-            'owner' => $owner,
-            'user' => $user,
-            'status' => $status
+            'number'   => $device['number'],
+            'name'     => $device['name'],
+            'type'     => $device['type'],
+            'owner'    => $device['owner'],
+            'user'     => $device['user'],
+            'status'   => $device['status'],
+            'city'     => $device['city'], 
+            'adress'   => $device['adress'], 
+            'tt_name'  => $device['tt_name'], 
+            'tt_user'  => $device['tt_user'], 
+            'tt_phone' => $device['tt_phone']
         );
         // »спользуем метод insert дл€ вставки записи в базу
-        $this->update($data, 'id=' .(int) $id);
+        $this->update($data, 'id=' .(int) $device['id']);
+    }
+    public function editDeviceStatus($number, $status) {
+         // ‘ормируем массив вставл€емых значений
+        $data = array(
+            'status' => $status,
+        );
+        // »спользуем метод insert дл€ вставки записи в базу
+        $this->update($data, 'number=' ."'$number'");
     }
     
     public function getDevice($id) {
@@ -46,10 +64,8 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
         return $row->toArray();
     }
     public function getName($number) {
-        //принимаем id
-        $number = (int) $number;
         //читаем данные с таблицы
-        $row = $this->fetchRow('number=' . $number);
+        $row = $this->fetchRow('number =' . "'$number'");
         if (!row) {
             throw new Exeption("Ќет записи с номером - $number");
         }
@@ -67,7 +83,13 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
                 ->orwhere('name LIKE ?', "%$search%")
                 ->orwhere('owner LIKE ?', "%$search%")
                 ->orwhere('status LIKE ?', "%$search%")
-                ->orwhere('user LIKE ?', "%$search%");
+                ->orwhere('user LIKE ?', "%$search%")
+                ->orwhere('city LIKE ?', "%$search%")
+                ->orwhere('adress LIKE ?', "%$search%")
+                ->orwhere('tt_name LIKE ?', "%$search%")
+                ->orwhere('tt_user LIKE ?', "%$search%")
+                ->orwhere('tt_phone LIKE ?', "%$search%");
+
         // ¬озвращаем select
         return $select;
      }
@@ -81,6 +103,7 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
                              OR `status` = '$data'\n
                              OR `owner` = '$data'\n
                              OR `user` = '$data'\n
+                             OR `adress` = '$data'\n
                      ";
         }
         //—оставл€ем запрос

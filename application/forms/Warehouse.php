@@ -14,7 +14,7 @@ class Application_Form_Warehouse extends Zend_Form {
               ->setDestination(DATA_PATH . '/public/img/')
               //->setRequired(true)
               //->addValidator('IsImage')
-              ->addValidator('Size',false,'204800')
+              ->addValidator('Size',false,'204800000')
               ->addValidator('Extension',true,'png,jpg,gif')
               ->addValidator('ImageSize',false,array(
                     'minwidth' => 50

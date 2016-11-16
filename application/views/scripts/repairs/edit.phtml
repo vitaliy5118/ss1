@@ -27,6 +27,14 @@
                 <p>Работы</p>
                 <input  class="form-control <?=$this->error['work'] ?>" placeholder="введите выполненные работы" name="work" type="input" value="<?=$this->work; ?>">
             </div>
+            <div id="spares_block">
+                <p>Статус</p>
+                <select class="form-control" name="status">
+                    <?php foreach ($this->status as $value) { ?>
+                    <option <? if($this->status_ch==$value) {echo('selected ');} ?> value="<?=$value;?>"><?=$value;?></option>
+                    <? } ?>
+                </select>
+            </div>
         </div>
         <div class="right_spares_block">
             <div id="spares_block">
@@ -40,6 +48,11 @@
             <div id="spares_block">
                 <p>Комментарий</p>
                 <input  class="form-control <?=$this->error['comments'] ?>" placeholder="введите комментарий" name="comments" type="input" value="<?=$this->comments; ?>">
+            </div>
+            <div id="spares_block">
+                <br>
+                <br>
+                <br>
             </div>
         </div>
     </div>

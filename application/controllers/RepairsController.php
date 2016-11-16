@@ -68,9 +68,16 @@ class RepairsController extends Zend_Controller_Action {
         $number = $this->getRequest()->getParam('number');
         $this->view->number = $number; //принимаем номер аппарата
         
+        
         $devices = new Application_Model_DbTable_Devices();
         $device = $devices->getName($number);
         $this->view->name=$device['name']; //название аппарата
+        
+        $status  = new Application_Model_DbTable_Setup();
+        $status->setTableName('status');
+        $status_values = $status->getValues();
+        $this->view->status = $status_values; //доступные статус аппарата
+        $this->view->status_ch = $device['status']; //текущий статус аппарата
  
         $warehouse = new Application_Model_DbTable_Warehouse();
         $this->view->warehouse = $warehouse->fetchAll(); //загружаем данные склада
@@ -107,7 +114,8 @@ class RepairsController extends Zend_Controller_Action {
             $work = $this->getRequest()->getPost('work');
             $comments = $this->getRequest()->getPost('comments');
             $counter = $this->getRequest()->getPost('counter');
-
+            $status = $this->getRequest()->getPost('status');
+            
             //проверка регулярных выражений
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$claim))   {$error['claim']='error';}
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$diagnos)) {$error['diagnos']='error';}
@@ -115,6 +123,7 @@ class RepairsController extends Zend_Controller_Action {
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$work))    {$error['work']='error';}
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$comments)){$error['comments']='error';}
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{0,300}$/i",$counter)) {$error['counter']='error';}
+            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$counter)) {$error['status']='error';}
             
 
             //если нет ошибкок
@@ -139,9 +148,10 @@ class RepairsController extends Zend_Controller_Action {
                         $name = $row['name'];
                         $type = $row['type'];
                         $path = $row['path']; //имя картинки для запчасти
+                        $price = 'unload';
 
                         // Вызываем метод модели addMovie для вставки новой записи
-                        $warehouse->editWarehouse($id, $serial, $name, $type, $remain, $path);
+                        $warehouse->editWarehouse($id, $serial, $name, $type, $remain, $price, $path);
                         
                         $warehistory->addWarehistory($serial, $name, "{$number}-{$device['name']}",$row['remain'],$value, $remain);
                     }
@@ -153,10 +163,26 @@ class RepairsController extends Zend_Controller_Action {
                 $repaire = new Application_Model_DbTable_Repairs();
                 $repaire->addRepaire($number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked);
                 
+                $devices->editDeviceStatus($number, $status);
+                
+                
+                $device_data['number'] = $number;
+                $device_data['name'] = 'ремонт';
+                $device_data['type'] = 'ремонт';
+                $device_data['owner'] = 'ремонт';
+                $device_data['user'] = 'ремонт';
+                $device_data['status'] = $status;
+                $device_data['city'] = 'ремонт';
+                $device_data['adress'] = 'ремонт';
+                $device_data['tt_name'] = 'ремонт';
+                $device_data['tt_user'] = 'ремонт';
+                $device_data['tt_phone'] = 'ремонт';
+                
+                $history = new Application_Model_DbTable_History();
+                $history->addHistory($device_data);
         
                 
                 $this->_helper->redirector->gotoUrl("repairs/index/number/$number");
-                
                 
             //если есть ошибки
             } else {
@@ -167,6 +193,8 @@ class RepairsController extends Zend_Controller_Action {
               $this->view->work = $work;
               $this->view->comments = $comments;
               $this->view->counter = $counter;
+              $this->view->status = $status_values;
+              $this->view->status_ch = $status;
               $this->view->error = $error;
               $this->view->check_data = $check_data;
               $this->view->checked = $checked;
@@ -184,6 +212,12 @@ class RepairsController extends Zend_Controller_Action {
         $devices = new Application_Model_DbTable_Devices();
         $device = $devices->getName($number);
         $this->view->name=$device['name']; //название аппарата
+        
+        $status  = new Application_Model_DbTable_Setup();
+        $status->setTableName('status');
+        $status_values = $status->getValues();
+        $this->view->status=$status_values; //доступные статусы аппарата
+        $this->view->status_ch = $device['status']; //текущий статус аппарата
  
         
         $repaire = new Application_Model_DbTable_Repairs();
@@ -250,7 +284,8 @@ class RepairsController extends Zend_Controller_Action {
             $work = $this->getRequest()->getPost('work');
             $comments = $this->getRequest()->getPost('comments');
             $counter = $this->getRequest()->getPost('counter');
-
+            $status = $this->getRequest()->getPost('status');
+            
             //проверка регулярных выражений
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$claim))   {$error['claim']='error';}
             if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$diagnos)) {$error['diagnos']='error';}
@@ -283,14 +318,14 @@ class RepairsController extends Zend_Controller_Action {
                             }
                         }
                         $remain -= $value;
-                        //print_r($remain); die;
                         $serial = $row['serial'];
                         $name = $row['name'];
                         $type = $row['type'];
+                        $price = 'unload';
                         $path = $row['path']; //имя картинки для запчасти
 
                         // Вызываем метод модели addMovie для вставки новой записи
-                        $warehouse->editWarehouse($idw, $serial, $name, $type, $remain, $path);
+                        $warehouse->editWarehouse($idw, $serial, $name, $type, $remain, $price, $path);
                         
                         $warehistory->addWarehistory($serial, $name, "редактирование ремонта -{$number}-{$device['name']}",$row['remain'],$value, $remain);
                     }
@@ -302,6 +337,25 @@ class RepairsController extends Zend_Controller_Action {
                 $repaire = new Application_Model_DbTable_Repairs();
                 
                 $repaire->editRepaire($id, $number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked);
+                
+                $devices->editDeviceStatus($number, $status);
+                
+                
+                $device_data['number'] = $number;
+                $device_data['name'] = 'ремонт';
+                $device_data['type'] = 'ремонт';
+                $device_data['owner'] = 'ремонт';
+                $device_data['user'] = 'ремонт';
+                $device_data['status'] = $status;
+                $device_data['city'] = 'ремонт';
+                $device_data['adress'] = 'ремонт';
+                $device_data['tt_name'] = 'ремонт';
+                $device_data['tt_user'] = 'ремонт';
+                $device_data['tt_phone'] = 'ремонт';
+                
+                $history = new Application_Model_DbTable_History();
+                $history->addHistory($device_data);
+                
                 
                 $this->_helper->redirector->gotoUrl("repairs/index/number/$number");
                 

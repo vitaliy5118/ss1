@@ -7,7 +7,8 @@ class Application_Model_DbTable_History extends Zend_Db_Table_Abstract {
     public function getHistory($number = null) {
         
         $sql = (" SELECT history.data, history.number, history.owner, history.status, 
-                        history.status, history.user, devices.name
+                        history.status, history.user, history.adress,  history.city, 
+                        history.tt_name, history.tt_user, history.tt_phone,devices.name
                   FROM `history` JOIN `devices` ON history.number=devices.number
                   WHERE history.number = '$number'
                   ORDER BY data DESC
@@ -16,14 +17,19 @@ class Application_Model_DbTable_History extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->query($sql)->fetchAll();
     }
     
-    public function addHistory($number, $owner, $user, $status) {
+    public function addHistory(array $device) {
         
         // Формируем массив вставляемых значений
         $data = array(
-            'number' => $number,
-            'owner' => $owner,
-            'user' => $user,
-            'status' => $status
+            'number' => $device['number'],
+            'owner' => $device['owner'],
+            'user' => $device['user'],
+            'status' => $device['status'],
+            'city' =>  $device['city'], 
+            'adress' => $device['adress'], 
+            'tt_name' => $device['tt_name'], 
+            'tt_user' => $device['tt_user'], 
+            'tt_phone' => $device['tt_phone']
         );
         // Используем метод insert для вставки записи в базу
         $this->insert($data);
