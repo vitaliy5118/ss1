@@ -107,7 +107,7 @@
                                 <th colspan="10"></th>
                             </tr>
                             <tr  class="row_set_<?= $this->escape($rows['id']) ?> shop_table">
-                                <th rowspan="5"></th>
+                                <th rowspan="7"></th>
                                 <th><i class="fa fa-road"></i>&nbsp;город</th>
                                 <td  colspan="7"><?php echo $this->escape($rows['city']); ?></td>
                             </tr>
@@ -127,22 +127,35 @@
                                 <th><i class="fa fa-phone-square"></i>&nbsp;номер договора</th>
                                 <td colspan="7"><?php echo $this->escape($rows['tt_phone']); ?></td>
                             </tr>
+                            <tr class="row_set_<?= $this->escape($rows['id']) ?> shop_table">
+                                <th><i class="fa fa-map-marker  "></i>&nbsp;координаты</th>
+                                <td colspan="7">
+                                    <div id="cord_<?= $this->escape($rows['id']) ?>">
+                                        <span id="cordsp_<?= $this->escape($rows['id']) ?>">
+                                            <b>Долгота: </b><?php echo $this->escape($rows['lat']);?>
+                                            <b>Широта: </b><?php echo $this->escape($rows['lng']);?>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="row_set_<?= $this->escape($rows['id']) ?> shop_table">
+                                <td colspan="8">
+                                    <input type="checkbox" name="option2" value="a2">&nbsp;<b>Отображать на карте</b>  
+                                    <b>&nbsp;&nbsp;&nbsp;Цвет метки:</b> 
+                                    <input name="color" type="radio" value="red" checked=""> Красный
+                                    <input name="color" type="radio" value="green"> Зеленый
+                                    <input name="color" type="radio" value="blue" > Синий
+                                    <input name="color" type="radio" value="yellow" > Желтый
+                                    &nbsp;&nbsp;
+                                    <button type="button" onclick="window.location.href = '/catalog/add/'" class="btn btn-default">На карту</button>
+                                    <b>Координаты</b>&nbsp;
+                                    <button type="button" value="<?php echo $this->escape($rows['id']);?>" class="autofind btn btn-default">Авто</button>
+                                    <button type="button" value="<?php echo $this->escape($rows['id']);?>" class="manual   btn btn-default ">Ручн</button>
+                                </td>
+                            </tr>
                             <tr  class="row_set_<?= $this->escape($rows['id']) ?> shop_table">
                                 <th colspan="10" ><center><i class="fa  fa-chevron-up"></i></center></th>
                             </tr>
-
-
-
-
-
-
-
-
-
-                            
-                                
-                                
-                                
                                 <? } ?>                            
 
                         </tbody>

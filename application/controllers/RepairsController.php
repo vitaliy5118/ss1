@@ -68,7 +68,6 @@ class RepairsController extends Zend_Controller_Action {
         $number = $this->getRequest()->getParam('number');
         $this->view->number = $number; //принимаем номер аппарата
         
-        
         $devices = new Application_Model_DbTable_Devices();
         $device = $devices->getName($number);
         $this->view->name=$device['name']; //название аппарата
@@ -82,122 +81,36 @@ class RepairsController extends Zend_Controller_Action {
         $warehouse = new Application_Model_DbTable_Warehouse();
         $this->view->warehouse = $warehouse->fetchAll(); //загружаем данные склада
         
-
         // Если к нам идёт Post запрос
         if ($this->getRequest()->isPost()) {
 
-            // Принимаем его
             $formData = $this->getRequest()->getPost(); //принимаем данные
-
-            //создаем массив данных из пунктов где нажаты галочки
-            foreach ($formData as $data => $value ){
-                if (preg_match("/check/", $data)) { //ищем переменные check
-                    $check_data[$value] = $formData["$value"]; //создаем массив данных
-                    $checked["$value"] = "checked"; //запись в массив нажатых галочек
-                   
-                    if (!preg_match("/^[0-9]{0,10}$/i",$formData["$value"])) { //проверка регулярных выражений
-                     
-                       $error["$value"]='error'; //записываем несовпадение правилам
-                    }
-                    
-                    //проверка на количество запчастей в базе
-                    $spare_count= $warehouse->getWarehouse($value);   //подгружаем данные
-                    if(($spare_count['remain']-$formData["$value"])<0){   //делаем проверку
-                        $error["$value"]='error'; //записываем несовпадение правилам
-                    } 
-                }
-            }
-            //принимаем данные
-            $claim = $this->getRequest()->getPost('claim');
-            $diagnos = $this->getRequest()->getPost('diagnos');
-            $spares = $this->getRequest()->getPost('spares');
-            $work = $this->getRequest()->getPost('work');
-            $comments = $this->getRequest()->getPost('comments');
-            $counter = $this->getRequest()->getPost('counter');
-            $status = $this->getRequest()->getPost('status');
+            $repaire = new Application_Model_Repaire($formData);
             
-            //проверка регулярных выражений
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$claim))   {$error['claim']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$diagnos)) {$error['diagnos']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$spares))  {$error['spares']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$work))    {$error['work']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$comments)){$error['comments']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{0,300}$/i",$counter)) {$error['counter']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$counter)) {$error['status']='error';}
-            
+            //валидация данных
+            $error = $repaire->checkForm();
 
-            //если нет ошибкок
+           //если нет ошибкок
             if (!$error){
-
-                if($spares!=''){
-                    $spares.=' ';
-                }
-                if($check_data) {
-                    
-                    $warehouse = new Application_Model_DbTable_Warehouse();
-                    $warehistory = new Application_Model_DbTable_Warehistory();
-                    
-                    foreach ($check_data as $id => $value){
-                        $spare_data = $warehouse->getWarehouse($id);
-                        $spares.= "|| {$spare_data['serial']}-{$spare_data['name']}-{$value}шт ";
-                    
-                        $row = $warehouse->getWarehouse($id);
-                        
-                        $remain = $row['remain'] - $value;
-                        $serial = $row['serial'];
-                        $name = $row['name'];
-                        $type = $row['type'];
-                        $path = $row['path']; //имя картинки для запчасти
-                        $price = 'unload';
-
-                        // Вызываем метод модели addMovie для вставки новой записи
-                        $warehouse->editWarehouse($id, $serial, $name, $type, $remain, $price, $path);
-                        
-                        $warehistory->addWarehistory($serial, $name, "{$number}-{$device['name']}",$row['remain'],$value, $remain);
-                    }
-                }
-                
-                $serialize_data = serialize($check_data);
-                $serialize_checked = serialize($checked);
-               
-                $repaire = new Application_Model_DbTable_Repairs();
-                $repaire->addRepaire($number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked);
-                
-                $devices->editDeviceStatus($number, $status);
-                
-                
-                $device_data['number'] = $number;
-                $device_data['name'] = 'ремонт';
-                $device_data['type'] = 'ремонт';
-                $device_data['owner'] = 'ремонт';
-                $device_data['user'] = 'ремонт';
-                $device_data['status'] = $status;
-                $device_data['city'] = 'ремонт';
-                $device_data['adress'] = 'ремонт';
-                $device_data['tt_name'] = 'ремонт';
-                $device_data['tt_user'] = 'ремонт';
-                $device_data['tt_phone'] = 'ремонт';
-                
-                $history = new Application_Model_DbTable_History();
-                $history->addHistory($device_data);
-        
-                
+                //сохраняем данные
+                $repaire->saveRepair($number, $device);
                 $this->_helper->redirector->gotoUrl("repairs/index/number/$number");
                 
             //если есть ошибки
             } else {
+               
               $this->view->error_message = 'error_message';
-              $this->view->claim = $claim;
-              $this->view->diagnos = $diagnos;
-              $this->view->spares = $spares;
-              $this->view->work = $work;
-              $this->view->comments = $comments;
-              $this->view->counter = $counter;
+              $this->view->claim = $repaire->claim;
+              $this->view->diagnos = $repaire->diagnos;
+              $this->view->spares = $repaire->spares;
+              $this->view->work = $repaire->work;
+              $this->view->comments = $repaire->comments;
+              $this->view->counter = $repaire->counter;
+              $this->view->check_data = $repaire->check_data;
+              $this->view->checked = $repaire->checked;
               $this->view->status = $status_values;
-              $this->view->status_ch = $status;
+              $this->view->status_ch = $repaire->status;
               $this->view->error = $error;
-              $this->view->check_data = $check_data;
-              $this->view->checked = $checked;
             }
         }
     }
@@ -249,128 +162,31 @@ class RepairsController extends Zend_Controller_Action {
 
             // Принимаем его
             $formData = $this->getRequest()->getPost(); //принимаем данные
-
-            //создаем массив данных из пунктов где нажаты галочки
-            /*
-            $data - check_"id" - название нажатой галочки
-            $value - "id" - id нажатой галочки
-            */
-            foreach ($formData as $data => $value ){
-                if (preg_match("/check/", $data)) { //ищем переменные check
-                    $check_data[$value] = $formData["$value"]; //создаем массив данных
-                    $checked["$value"] = "checked"; //запись в массив нажатых галочек
-                   
-                    if (!preg_match("/^[0-9]{0,10}$/i",$formData["$value"])) { //проверка регулярных выражений
-                     
-                       $error["$value"]='error'; //записываем несовпадение правилам
-                    }
-                    
-                    //проверка на количество запчастей в базе
-                    foreach ($warehouse_data as $rows) {
-                        if ($rows['id'] == $value) {
-                            $spare_count = $rows['remain'];
-                        }
-                    }
-                    if(($spare_count-$formData["$value"])<0){   //делаем проверку
-                        $error["$value"]='error'; //записываем несовпадение правилам
-                    } 
-                }
-            } 
             
-            //принимаем данные
-            $claim = $this->getRequest()->getPost('claim');
-            $diagnos = $this->getRequest()->getPost('diagnos');
-            $spares = $this->getRequest()->getPost('spares');
-            $work = $this->getRequest()->getPost('work');
-            $comments = $this->getRequest()->getPost('comments');
-            $counter = $this->getRequest()->getPost('counter');
-            $status = $this->getRequest()->getPost('status');
-            
-            //проверка регулярных выражений
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$claim))   {$error['claim']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$diagnos)) {$error['diagnos']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$spares))  {$error['spares']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$work))    {$error['work']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{3,300}$/i",$comments)){$error['comments']='error';}
-            if (!preg_match("/^[А-Яа-яA-Za-z0-9 \.\,\-\ \!\;\:]{0,300}$/i",$counter)) {$error['counter']='error';}
+            $repaire = new Application_Model_Repaire($formData);
+            //валидация данных
+            $error = $repaire->checkForm();
             
             //если нет ошибкок
             if (!$error){
-
-                if($spares!=''){
-                    $spares.=' ';
-                }
-                if($check_data) {
-                    
-                    $warehouse = new Application_Model_DbTable_Warehouse();
-                    $warehistory = new Application_Model_DbTable_Warehistory();
-                    
-                    foreach ($check_data as $idw => $value){
-
-                        $spare_data = $warehouse->getWarehouse($idw);
-                        $spares.= "|| {$spare_data['serial']}-{$spare_data['name']}-{$value}шт ";
-                                                            
-                        $row = $warehouse->getWarehouse($idw);
-                        
-                        foreach ($warehouse_data as $rows) {
-                            if ($rows['id'] == $idw) {
-                                $remain = $rows['remain'];
-                            }
-                        }
-                        $remain -= $value;
-                        $serial = $row['serial'];
-                        $name = $row['name'];
-                        $type = $row['type'];
-                        $price = 'unload';
-                        $path = $row['path']; //имя картинки для запчасти
-
-                        // Вызываем метод модели addMovie для вставки новой записи
-                        $warehouse->editWarehouse($idw, $serial, $name, $type, $remain, $price, $path);
-                        
-                        $warehistory->addWarehistory($serial, $name, "редактирование ремонта -{$number}-{$device['name']}",$row['remain'],$value, $remain);
-                    }
-                }
-                
-                $serialize_data = serialize($check_data);
-                $serialize_checked = serialize($checked);
-               
-                $repaire = new Application_Model_DbTable_Repairs();
-                
-                $repaire->editRepaire($id, $number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked);
-                
-                $devices->editDeviceStatus($number, $status);
-                
-                
-                $device_data['number'] = $number;
-                $device_data['name'] = 'ремонт';
-                $device_data['type'] = 'ремонт';
-                $device_data['owner'] = 'ремонт';
-                $device_data['user'] = 'ремонт';
-                $device_data['status'] = $status;
-                $device_data['city'] = 'ремонт';
-                $device_data['adress'] = 'ремонт';
-                $device_data['tt_name'] = 'ремонт';
-                $device_data['tt_user'] = 'ремонт';
-                $device_data['tt_phone'] = 'ремонт';
-                
-                $history = new Application_Model_DbTable_History();
-                $history->addHistory($device_data);
-                
-                
+                $repaire->editRepair($id, $number, $device);
                 $this->_helper->redirector->gotoUrl("repairs/index/number/$number");
                 
             //если есть ошибки
             } else {
+                
               $this->view->error_message = 'error_message';
-              $this->view->claim = $claim;
-              $this->view->diagnos = $diagnos;
-              $this->view->spares = $spares;
-              $this->view->work = $work;
-              $this->view->comments = $comments;
-              $this->view->counter = $counter;
+              $this->view->claim = $repaire->claim;
+              $this->view->diagnos = $repaire->diagnos;
+              $this->view->spares = $repaire->spares;
+              $this->view->work = $repaire->work;
+              $this->view->comments = $repaire->comments;
+              $this->view->counter = $repaire->counter;
+              $this->view->check_data = $repaire->check_data;
+              $this->view->checked = $repaire->checked;
+              $this->view->status = $status_values;
+              $this->view->status_ch = $repaire->status;
               $this->view->error = $error;
-              $this->view->check_data = $check_data;
-              $this->view->checked = $checked;
             }
             
         //если запроса ПОСТ нету, заполняем поля редактирования из базы

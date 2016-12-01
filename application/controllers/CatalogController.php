@@ -11,12 +11,9 @@ class CatalogController extends Zend_Controller_Action {
     }
 
     public function indexAction() {
-        
-       // print_r($expression);
-        
         // создаем модель
         $devices = new Application_Model_DbTable_Devices();
-        
+
         //если идет запрос сортировки
         if ($this->getRequest()->getParam('sort')) {
             $sort = $this->getRequest()->getParam('sort');
@@ -92,6 +89,7 @@ class CatalogController extends Zend_Controller_Action {
  
         $this->view->types = $type->getValues();
         $this->view->devices = $devices->fetchAll($select);
+       // var_dump($this->view->devices); die;
         $this->view->search = $search;
    }
 
@@ -109,25 +107,10 @@ class CatalogController extends Zend_Controller_Action {
             //Проверка валидациии    
             if ($form->isValid($formData)) {
                 //Успешная валидация
-                //Извлекаем данные в массив
-                $device_data['number'] = $form->getValue('number');
-                $device_data['name'] = $form->getValue('name');
-                $device_data['type'] = $form->getValue('type');
-                $device_data['owner'] = $form->getValue('owner');
-                $device_data['user'] = $form->getValue('user');
-                $device_data['status'] = $form->getValue('status');
-                $device_data['city'] = $form->getValue('city');
-                $device_data['adress'] = $form->getValue('adress');
-                $device_data['tt_name'] = $form->getValue('tt_name');
-                $device_data['tt_user'] = $form->getValue('tt_user');
-                $device_data['tt_phone'] = $form->getValue('tt_phone');
-
-                //Добавляем данные в базу
-                $device = new Application_Model_DbTable_Devices();
-                $device->addDevice($device_data);
-                $history = new Application_Model_DbTable_History();
-                $history->addHistory($device_data);
-
+                //Извлекаем данные в обьект
+                $device = new Application_Model_Device($form);
+                //Сохраняем данные в базу
+                $device->save();
                 //Переходим на предыдущую страницу
                 $this->_helper->redirector('index');
             } else {
@@ -149,28 +132,15 @@ class CatalogController extends Zend_Controller_Action {
 
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
-
-                $device_data['id'] = $form->getValue('id');
-                $device_data['number'] = $form->getValue('number');
-                $device_data['name'] = $form->getValue('name');
-                $device_data['type'] = $form->getValue('type');
-                $device_data['owner'] = $form->getValue('owner');
-                $device_data['user'] = $form->getValue('user');
-                $device_data['status'] = $form->getValue('status');
-                $device_data['city'] = $form->getValue('city');
-                $device_data['adress'] = $form->getValue('adress');
-                $device_data['tt_name'] = $form->getValue('tt_name');
-                $device_data['tt_user'] = $form->getValue('tt_user');
-                $device_data['tt_phone'] = $form->getValue('tt_phone');
-
-                //Добавляем данные в базу
-                $device = new Application_Model_DbTable_Devices();
-                $device->editDevice($device_data);
-                $history = new Application_Model_DbTable_History();
-                $history->addHistory($device_data);
+                //Успешная валидация
+                //Извлекаем данные в обьект
+                $device = new Application_Model_Device($form);
+                //Редактируем данные в базе
+                $device->edit();
                 $this->_helper->redirector('index');
             } else {
-
+                //Неуспешная валидация
+                //Возвращаем данные в таблицу
                 $form->populate($formData);
             }
         } else {

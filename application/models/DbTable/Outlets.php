@@ -1,8 +1,8 @@
 <?php
 
-class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
+class Application_Model_DbTable_Outlets extends Zend_Db_Table_Abstract {
 
-    protected $_name = 'devices';
+    protected $_name = 'outlets';
 
     public function addDevice(Application_Model_Device $device) {
         // сохраняем данные в таблицу
@@ -10,17 +10,18 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
     }
 
     public function editDevice(Application_Model_Device $device) {
+
         // редактируем запись
         $this->update($device->makearray(), 'id=' . (int) $device->id);
     }
 
-    public function editDeviceStatus(Application_Model_Repaire $repaire) {
-        // редактирование статуса устройства
+    public function editDeviceStatus($number, $status) {
+        // ????????? ?????? ??????????? ????????
         $data = array(
-            'status' => $repaire->status,
+            'status' => $status,
         );
-        // обновляем запись
-        $this->update($data, 'number=' . "'$repaire->number'");
+        // ?????????? ????? insert ??? ??????? ?????? ? ????
+        $this->update($data, 'number=' . "'$number'");
     }
 
     public function getDevice($id) {
@@ -34,16 +35,6 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
 
         //возвращаем массив
         return $row->toArray();
-    }
-    
-    public function saveCoordinates($data_array){
-                // формируем массив данных для сохранения
-        $data = array(
-            'lng'   => $data_array['lng'],
-            'lat'     => $data_array['lat'],
-        );
-        $this->update($data, 'id='."'{$data_array['id']}'");
-        
     }
 
     public function getName($number) {

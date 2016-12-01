@@ -16,7 +16,7 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
         // Возвращаем select
         return $select;
     }
-    
+
     //Метод выборки значений
     public function statisticRepairs($date) {
 
@@ -30,6 +30,7 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
 
         return $this->getAdapter()->query($sql)->fetchAll();
     }
+
     //Метод выборки значений
     public function getcountRepairs($date = null) {
 
@@ -42,6 +43,7 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
 
         return $this->getAdapter()->query($sql)->fetchAll();
     }
+
     //Метод выборки значений
     public function getCountRepairsbyName($name) {
 
@@ -53,6 +55,7 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
 
         return $this->getAdapter()->query($sql)->fetchAll();
     }
+
     public function getCountRepairsbyNumber($number) {
 
         //Составляем запрос
@@ -63,42 +66,16 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
 
         return $this->getAdapter()->query($sql)->fetchAll();
     }
-    
+
     // Метод для добавление новой записи
-    public function addRepaire($number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked) {
-        // Формируем массив вставляемых значений
-        $data_array = array(
-            'number' => $number,
-            'claim' => $claim,
-            'diagnos' => $diagnos,
-            'work' => $work,
-            'spares' => $spares,
-            'comments' => $comments,
-            'counter' => $counter,
-            'serialize_data' => $serialize_data,
-            'serialize_checked' => $serialize_checked
-        );
-
-// Используем метод insert для вставки записи в базу
-        $this->insert($data_array);
+    public function addRepaire(Application_Model_Repaire $repaire) {
+        // Используем метод insert для вставки записи в базу
+        $this->insert($repaire->makearray());
     }
-    
-    public function editRepaire($id, $number, $claim, $diagnos, $spares, $work, $comments, $counter, $serialize_data, $serialize_checked) {
-    // Формируем массив вставляемых значений
-        $data_array = array(
-            'claim' => $claim,
-            'diagnos' => $diagnos,
-            'work' => $work,
-            'spares' => $spares,
-            'comments' => $comments,
-            'number' => $number,
-            'counter' => $counter,
-            'serialize_data' => $serialize_data,
-            'serialize_checked' => $serialize_checked
-        );
 
-    // Используем метод insert для вставки записи в базу
-        $this->update($data_array, 'id=' . (int) $id);
+    public function editRepaire(Application_Model_Repaire $repaire) {
+        // редактируем запись
+        $this->update($repaire->makearray(), 'id=' . (int) $repaire->id);
     }
 
     public function getRepaire($id) {
@@ -116,10 +93,9 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
 // Возвращаем результат, упакованный в массив
         return $row->toArray();
     }
-    
-        public function deleteRepaire($id) {
+
+    public function deleteRepaire($id) {
         $this->delete('id=' . (int) $id);
     }
 
 }
-

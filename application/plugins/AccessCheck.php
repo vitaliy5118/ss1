@@ -132,7 +132,7 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
             ->allow('admin', 'access',    array('logout'))
             ->allow('admin', 'index',     array('index'))
             ->allow('admin', 'history',   array('index'))
-            ->allow('admin', 'outlets',   array('index'))
+            ->allow('admin', 'outlets',   array('index','autofind', 'save'))
             ->allow('admin', 'documentation', array('index','file','delete'))
             ->allow('admin', 'reports',   array('index'))
             ->allow('admin', 'statistic', array('index'))
