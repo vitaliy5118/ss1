@@ -1,13 +1,22 @@
-
+<!--<script type="text/javascript" src="/js/outlets.js"></script>-->
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-dashboard fa-fw"></i> Торговые точки</h1>
-
+        <span><b>Отображать на карте:&nbsp;</b></span>
+        <input  disabled="" type="checkbox" name="red" value="a2">&nbsp;<b>Красный</b> 
+        <input  disabled="" type="checkbox" name="green" value="a2">&nbsp;<b>Зеленый</b> 
+        <input  disabled="" type="checkbox" name="blue" value="a2">&nbsp;<b>Синий</b> 
+        <input  disabled="" type="checkbox" name="yellow" value="a2">&nbsp;<b>Желтый</b> 
     </div>
-    <!-- /.col-lg-12 -->
 </div>	
 <br>
-<center><div style=" width: 90%; height: 500px;" id="map_canvas"></div></center>
-<br>
-<br>
-<br>
+<div class="row">
+        <div id="map" style="height: 500px; margin-left: 5%; margin-right: 5%; margin-top: 1%; margin-bottom: 5%" ></div>
+        <script type="text/javascript" src="/js/outlets.js"></script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoQKZO_RC6V2FUsSISFhE72Sx5A6YQoCI&callback=initMap">
+        </script>
+        <input id="lng_point" type="hidden" name="lng" value="<?=$this->lng?>">
+        <input id="lat_point" type="hidden" name="lat" value="<?=$this->lat?>">
+        <input id="zoom_point" type="hidden" name="zoom" value="<?=$this->zoom?>">
+</div>

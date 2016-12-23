@@ -35,6 +35,12 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
         //возвращаем массив
         return $row->toArray();
     }
+    //выгружаем данные о метках для карты
+    public function getMarkData() {
+        $data = $this->fetchAll("`show` = 'OK'");
+        //возвращаем массив
+        return $data;
+    }
     
     public function saveCoordinates($data_array){
                 // формируем массив данных для сохранения
@@ -42,6 +48,24 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
             'lng'   => $data_array['lng'],
             'lat'     => $data_array['lat'],
         );
+        $this->update($data, 'id='."'{$data_array['id']}'");
+        
+    }
+    
+    public function saveShow($data_array){
+                // формируем массив данных для сохранения
+        $data = array(
+            'show'   => $data_array['show'],
+         );
+        $this->update($data, 'id='."'{$data_array['id']}'");
+        
+    }
+    
+    public function saveColor($data_array){
+                // формируем массив данных для сохранения
+        $data = array(
+            'color'   => $data_array['color'],
+         );
         $this->update($data, 'id='."'{$data_array['id']}'");
         
     }

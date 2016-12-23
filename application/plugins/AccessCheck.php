@@ -38,7 +38,8 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
         // разрешаем гостю просматривать ресурс index
         $acl->allow('guest', 'access', array('login'))
             ->allow('guest', 'error');
-
+        
+        // выгружаем с базы данных страници доступные дл€ входа
         $allow = new Application_Model_DbTable_Allow();
         $allow_data = $allow->fetchAll($allow->select()->where("username = '$username'"))->toArray();
         
@@ -109,10 +110,12 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
                                      ,$allow_data[0]['set_addaccess']
                                      ,$allow_data[0]['set_editaccess']
                                      ,$allow_data[0]['set_deleteaccess'])
+            ,'outlets'      => array('index','autofind', 'save','saveshow','savecolor','getmarkdata') //доступ доступный всем
 
                                      
         );
         
+        // примен€ем доступ дл€ текущего пользовател€
         $acl->allow('client', 'error')
             ->allow('client', 'access', array('logout'))
             ->allow('client', 'index',  array('index'))
@@ -125,14 +128,15 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
             ->allow('client', 'repairs',        $allow_array['repairs'])
             ->allow('client', 'warehouse',      $allow_array['warehouse'])
             ->allow('client', 'service',        $allow_array['service'])
+            ->allow('client', 'outlets',        $allow_array['outlets'])
             ->allow('client', 'setup',          $allow_array['setup']);
                 
-                
+        // примен€ем доступ дл€ админа       
         $acl->allow('admin', 'error')
             ->allow('admin', 'access',    array('logout'))
             ->allow('admin', 'index',     array('index'))
             ->allow('admin', 'history',   array('index'))
-            ->allow('admin', 'outlets',   array('index','autofind', 'save'))
+            ->allow('admin', 'outlets',   array('index','autofind', 'save','saveshow','savecolor','getmarkdata'))
             ->allow('admin', 'documentation', array('index','file','delete'))
             ->allow('admin', 'reports',   array('index'))
             ->allow('admin', 'statistic', array('index'))

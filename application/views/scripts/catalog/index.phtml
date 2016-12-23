@@ -1,10 +1,20 @@
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoQKZO_RC6V2FUsSISFhE72Sx5A6YQoCI">
+</script>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-dashboard fa-fw"></i> Каталог аппаратов</h1>
-
     </div>
     <!-- /.col-lg-12 -->
-</div>	
+<!--    <div class="bubblingG">
+        <span id="bubblingG_1">
+        </span>
+        <span id="bubblingG_2">
+        </span>
+        <span id="bubblingG_3">
+        </span>
+    </div>-->
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -78,21 +88,18 @@
                                 <th>Принадлежность&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_owner'); ?>"></a></th>
                                 <th>Территория&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_user'); ?>"></a></th>
                                 <th>Статус&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_status'); ?>"></a></th>
-                               <!-- <th>Торговая точка&nbsp</th> -->
                                 <th><center><abbr title="Ремонты"><i class="fa fa-wrench fa-fw"></i></abbr></center></th>
                                 <th><center><abbr title="История"><i class="fa fa-thumb-tack fa-fw"></i></abbr></center></th>
                                 <th><center><abbr title="Редактировать"><i class="fa fa-gavel fa-fw"></i></abbr></center></th>
                                 <th><center><abbr title="Удалить"><i class="fa fa-trash-o fa-fw"></i></abbr></center></th>
-
-                        </tr>
-                        
+                            </tr>
                          </thead>
                         <tbody>
 
                         <?php
                         foreach ($this->devices as $rows) {
                             ?> <tr class="gradeA row_set">
-                                <td><center><a class="shop support-hover fa fa-shopping-cart " id='<?php echo $this->escape($rows['id']); ?>'></a></center></td>
+                                <td><center><a <?php if ($this->escape($rows['show'])=='OK') {echo 'style="color: #8FBC8F"';} else {echo 'style="color: #E9967A"';}  ?> class="shop support-hover fa fa-shopping-cart " id='<?php echo $this->escape($rows['id']); ?>'></a></center></td>
                                 <td><?php echo $this->escape($rows['number']); ?></td>
                                 <td><?php echo $this->escape($rows['name']); ?></td>
                                 <td><?php echo $this->escape($rows['owner']); ?></td>
@@ -132,32 +139,43 @@
                                 <td colspan="7">
                                     <div id="cord_<?= $this->escape($rows['id']) ?>">
                                         <span id="cordsp_<?= $this->escape($rows['id']) ?>">
-                                            <b>Долгота: </b><?php echo $this->escape($rows['lat']);?>
-                                            <b>Широта: </b><?php echo $this->escape($rows['lng']);?>
+                                            <b>Долгота: </b><?php echo $this->escape($rows['lng']);?>
+                                            <b>Широта: </b><?php echo $this->escape($rows['lat']);?>
                                         </span>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="row_set_<?= $this->escape($rows['id']) ?> shop_table">
                                 <td colspan="8">
-                                    <input type="checkbox" name="option2" value="a2">&nbsp;<b>Отображать на карте</b>  
+                                    <input class="show_mark" type="checkbox" name="show"  
+                                           id="show_<?php echo $this->escape($rows['id']);?>"
+                                           <?php 
+                                               if ($this->escape($rows['lat']) == 'нет данных' && $this->escape($rows['lng']) == 'нет данных') {echo ' disabled ';} 
+                                               if ($this->escape($rows['show']) == 'OK') { echo ' checked ';}
+                                           ?> 
+                                           value="<?php echo $this->escape($rows['id']); ?>" >&nbsp;
+                                    <b>Отображать на карте</b>  
                                     <b>&nbsp;&nbsp;&nbsp;Цвет метки:</b> 
-                                    <input name="color" type="radio" value="red" checked=""> Красный
-                                    <input name="color" type="radio" value="green"> Зеленый
-                                    <input name="color" type="radio" value="blue" > Синий
-                                    <input name="color" type="radio" value="yellow" > Желтый
+                                    <input disabled="" <?php if ($this->escape($rows['color']) == 'red')    { echo ' checked ';} ?> class="mark_color" id="<?php echo $this->escape($rows['id']); ?>" type="radio" value="red" name="<?php echo $this->escape($rows['id']); ?>"/> Красный
+                                    <input disabled="" <?php if ($this->escape($rows['color']) == 'green')  { echo ' checked ';} ?> class="mark_color" id="<?php echo $this->escape($rows['id']); ?>" type="radio" value="green" name="<?php echo $this->escape($rows['id']); ?>"/> Зеленый
+                                    <input disabled="" <?php if ($this->escape($rows['color']) == 'blue')   { echo ' checked ';} ?> class="mark_color" id="<?php echo $this->escape($rows['id']); ?>" type="radio" value="blue" name="<?php echo $this->escape($rows['id']); ?>"/> Синий
+                                    <input disabled="" <?php if ($this->escape($rows['color']) == 'yellow') { echo ' checked ';} ?> class="mark_color" id="<?php echo $this->escape($rows['id']); ?>" type="radio" value="yellow" name="<?php echo $this->escape($rows['id']); ?>"/> Желтый
                                     &nbsp;&nbsp;
-                                    <button type="button" onclick="window.location.href = '/catalog/add/'" class="btn btn-default">На карту</button>
                                     <b>Координаты</b>&nbsp;
+                                    
                                     <button type="button" value="<?php echo $this->escape($rows['id']);?>" class="autofind btn btn-default">Авто</button>
-                                    <button type="button" value="<?php echo $this->escape($rows['id']);?>" class="manual   btn btn-default ">Ручн</button>
+                                    <button type="button" id="but_man_<?php echo $this->escape($rows['id']);?>" value="<?php echo $this->escape($rows['id']);?>" class="manual   btn btn-default ">Ручн</button>
+                                    <button type="button" id="to_map_<?php echo $this->escape($rows['id']);?>"
+                                            <?php if ($this->escape($rows['show']) == 'NO' ) {echo ' disabled ';} ?> 
+                                            onclick="window.location.href = '/outlets/index/lng/<?php echo $this->escape($rows['lng']);?>/lat/<?php echo $this->escape($rows['lat']);?>'" class="btn btn-default">
+                                            На карту
+                                    </button>
                                 </td>
                             </tr>
                             <tr  class="row_set_<?= $this->escape($rows['id']) ?> shop_table">
                                 <th colspan="10" ><center><i class="fa  fa-chevron-up"></i></center></th>
                             </tr>
                                 <? } ?>                            
-
                         </tbody>
                     </table>
                     <table width=100% border="0">       

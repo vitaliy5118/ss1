@@ -184,7 +184,7 @@ class Application_Form_Devices extends Zend_Form {
                ->setAttrib('placeholder','ïğèâåğ: óë.Çîîëîãè÷åñêàÿ 23')
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
-               ->addValidator('regex',true, array("/^[À-ßà-ÿA-Za-z1-90 \.\-\,\"\¹\)\(]{3,200}$/i", 'messages' => $settings['messages']['error']))
+               ->addValidator('regex',true, array("/^[À-ßà-ÿA-Za-z1-90 \.\-\,\"\¹\)\(\/]{3,200}$/i", 'messages' => $settings['messages']['error']))
                ->addValidator('NotEmpty', true, array('messages' => array('isEmpty' => $settings['messages']['empty'])))
                ->setDecorators(array('ViewHelper', 'Errors',
                     array(array('data' => 'HtmlTag'), array('class'  => 'test')),

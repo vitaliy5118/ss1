@@ -89,7 +89,6 @@ class CatalogController extends Zend_Controller_Action {
  
         $this->view->types = $type->getValues();
         $this->view->devices = $devices->fetchAll($select);
-       // var_dump($this->view->devices); die;
         $this->view->search = $search;
    }
 

@@ -17,6 +17,8 @@ class Application_Model_Device {
     public $tt_phone;
     public $lat;
     public $lan;
+    public $show;
+    public $color;
 
     public function __construct(Application_Form_Devices $form) {
 

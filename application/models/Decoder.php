@@ -1,6 +1,7 @@
 <?php
 
 class Application_Model_Decoder {
+
     //put your code here
     public static function translit($s) {
         $s = (string) $s; // преобразуем в строковое значение

@@ -43,22 +43,22 @@ $(document).ready(function () {
 //******************************************************************************
 //Загрузка запчастей
 //Запрет ввода данных до нажатия соответствующей галочки
-        $('.spare_check').click(function () {
-            console.log('__check_row_toggle___');
-            var id = $(this).val();
-            console.log(id);
+    $('.spare_check').click(function () {
+        console.log('__check_row_toggle___');
+        var id = $(this).val();
+        console.log(id);
 
-            $('.check_spare_' + id).prop('disabled', !$('.spare_check_' + id).prop("checked"));
+        $('.check_spare_' + id).prop('disabled', !$('.spare_check_' + id).prop("checked"));
 
-            console.log($('.spare_check_' + id).prop("checked"));
-        });
+        console.log($('.spare_check_' + id).prop("checked"));
+    });
 //******************************************************************************
 // автоматическое обнаружение координат по адресу
     $('.autofind').click(function (e) {
         console.log('_autofind_process_start_');
         console.log('_check_id_');
         var id = $(this).val();
-        var coordinates;
+        //var coordinates;
         console.log('id=' + id);
         console.log('Ok');
 
@@ -71,36 +71,63 @@ $(document).ready(function () {
             success: function (data) {
                 console.log('___success___');
                 console.log('____JSON____');
-                console.log(data);
                 data = $.parseJSON(data);
-                console.log('___Finish___');
-                if (data['lng'] != 0 && data['lat'] != 0) {
-                    if (confirm('Координаты найдены!\n\Долгота: ' + data['lng'] + '\n\Широта: ' + data['lat'] + '\n\Сохранить данные?')) {
-                        console.log('Сохраняем');
-                        console.log('.........');
-                        coordinates = {'id': id, 'lng': data['lng'], 'lat': data['lat']};
-                        // сохраняема данные в базу данных
-                        $.ajax({
-                            url: '/outlets/save/',
-                            type: 'post',
-                            data: {
-                                coordinates: coordinates
-                            },
-                            success: function (data2) {
+                var address = utfConvertData(data);
+                console.log('address=');
+                console.log(address);
 
-                                console.log('Сохранено');
-                                console.log(data2);
-                                $('#cordsp_' + id).remove();
-                                $('<span id="cordsp_'+ id+'"><b>Долгота: </b>' + data['lat'] +
-                                        '<b> Широта: </b>' + data['lng'] + '</span>').prependTo('#cord_' + id);
-                            }
-                        });
+                //получаем координаты торговой точки точки
+                var geocoder;
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'address': address}, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var coordinates = results[0].geometry.location;
+                        console.log(coordinates);
+
+                        if (confirm('Координаты найдены!\n\Долгота: ' + coordinates.lng() + '\n\Широта: ' + coordinates.lat() + '\n\Сохранить данные?')) {
+                            console.log('Сохраняем');
+                            console.log('.........');
+                            var coord = {'id': id, 'lng': coordinates.lng(), 'lat': coordinates.lat()};
+                            // сохраняема данные в базу данных
+                            $.ajax({
+                                url: '/outlets/save/',
+                                type: 'post',
+                                data: {
+                                    coordinates: coord
+                                },
+                                success: function (data2) {
+                                    
+                                    console.log('Сохранено');
+                                    console.log(data2);
+                                    $('#cordsp_' + id).remove();
+                                    $('<span id="cordsp_' + id + '"><b>Долгота: </b>' + coordinates.lng() +
+                                            '<b> Широта: </b>' + coordinates.lat() + '</span>').prependTo('#cord_' + id);
+                                    $('#show_' + id).prop("disabled", false);
+                                    //редактируем кнопку "На карту"
+                                    var show = $('#show_'+id).prop("checked");
+                                    if (show === true) {
+                                       show=''; 
+                                    } else {
+                                       show = 'disabled';
+                                    }
+                                    console.log('show = '+show);
+                                    $('#to_map_' + id).remove();
+                                    $('<button style="margin-left: 4px;" type="button" class="btn btn-default" id="to_map_'+ id +'"'+ show +'>На карту</button>').insertAfter('#but_man_' + id);
+                                    $('#to_map_'+ id).bind('click', function(){
+                                        location.href='/outlets/index/lng/'+ coord.lng +'/lat/'+ coord.lat;
+                                    }); 
+                                    console.log('Сохранено2');
+                                }
+                            });
+                        } else {
+                            console.log('Не сохранено');
+                        }
                     } else {
-                        console.log('Не сохранено');
+                        alert("Координаты не найдены! Статус: " + status + "\n\Уточните адресс или введите координаты вручную!");
                     }
-                } else {
-                    alert('   Координаты не найдены\n\Введите координаты вручную\n\      или уточните адресс');
-                }
+                });
+                console.log('___Finish___');
+
             }
         });
 
@@ -132,14 +159,29 @@ $(document).ready(function () {
                         url: '/outlets/save/',
                         type: 'post',
                         data: {
-                        coordinates: coordinates
+                            coordinates: coordinates
                         },
-                        success: function (data2) {
+                        success: function (answer) {
                             console.log('Сохранено');
-                            console.log(data2);
+                            console.log(answer);
                             $('#cordsp_' + id).remove();
-                            $('<span id="cordsp_'+ id+'"><b>Долгота: </b>' + lat +
-                                    '<b> Широта: </b>' +lng + '</span>').prependTo('#cord_' + id);
+                            $('<span id="cordsp_' + id + '"><b>Долгота: </b>' + lat +
+                                    '<b> Широта: </b>' + lng + '</span>').prependTo('#cord_' + id);
+                            $('#show_' + id).prop("disabled", false);
+                            //редактируем кнопку "На карту"
+                            var show = $('#show_' + id).prop("checked");
+                            if (show === true) {
+                                show = '';
+                            } else {
+                                show = 'disabled';
+                            }
+                            console.log('show = ' + show);
+                            $('#to_map_' + id).remove();
+                            $('<button style="margin-left: 4px;" type="button" class="btn btn-default" id="to_map_'+ id +'" '+ show +'>На карту</button>').insertAfter('#but_man_' + id);
+                            $('#to_map_' + id).bind('click', function () {
+                                location.href = '/outlets/index/lng/' + coordinates.lng + '/lat/' + coordinates.lat;
+                            }); 
+                            console.log('Сохранено2');
                         }
                     });
                 }
@@ -147,6 +189,79 @@ $(document).ready(function () {
         }
         e.preventDefault();
     });
+//******************************************************************************
+// включение/выключение отображения торговой точки на карте
+    $('.show_mark').click(function () {
+        console.log('_show_mark_process_start_');
+        console.log('_check_id_');
+        var id = $(this).val();
+        var show = $(this).prop("checked");
+        console.log('id=' + id);
+        console.log('show=' + show);
+        if (show === true) {
+            show = {'id': id, 'show': 'OK'};
+            $('#to_map_' + id).removeAttr("disabled"); //включить кнопку перехода на метку на карте   
+            $('.gradeA #' + id).css('color', '#8FBC8F'); //меняем цвет значка  
+        } else {
+            show = {'id': id, 'show': 'NO'};
+            $('#to_map_' + id).attr('disabled', 'disabled'); //выключить кнопку перехода на метку на карте
+            $('.gradeA #' + id).css('color', '#E9967A'); //меняем цвет значка
+        }
+        console.log('show=' + show);
+        console.log('saving....');
+
+        // сохраняема данные в базу данных
+        $.ajax({
+            url: '/outlets/saveshow/',
+            type: 'post',
+            data: {
+                show: show
+            },
+            success: function (answer) {
+                console.log(answer);
+            }
+        });
+        console.log('finish');
+    });
+//******************************************************************************
+// включение/выключение отображения торговой точки на карте
+    $('.mark_color').click(function () {
+        console.log('_mark_color_process_start_');
+        console.log('_check_id_');
+        var id = $(this).attr("id");
+        console.log('id=' + id);
+        console.log('_check_color_');
+        var color = $(this).val();
+        console.log('color=' + color);
+        if (id && color) {
+            color = {'id': id, 'color': color};
+            console.log('color=' + color);
+            console.log('saving....');
+            // сохраняема данные в базу данных
+            $.ajax({
+                url: '/outlets/savecolor/',
+                type: 'post',
+                data: {
+                    color: color
+                },
+                success: function (answer) {
+                    console.log(answer);
+                }
+            });
+        } else {
+            alert("error");
+        }
+        console.log('finish');
+    });
+
+    //функция обратной перекодировки символов
+    function utfConvertData(data) {
+
+        var str = data;
+        var combining = /[\u0300-\u036F]/g;
+
+        return str.normalize('NFKD').replace(combining, '');
+    }
 //******************************************************************************
 });
 

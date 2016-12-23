@@ -4,8 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Z:/home/ss1.su/application/views/scripts/outlets/index.phtml</file>
-            <file>file:/Z:/home/ss1.su/application/controllers/CatalogController.php</file>
-            <file>file:/Z:/home/ss1.su/application/layouts/scripts/master.phtml</file>
+            <file>file:/Z:/home/ss1.su/application/controllers/OutletsController.php</file>
+            <file>file:/Z:/home/ss1.su/application/views/scripts/catalog/index.phtml</file>
+            <file>file:/Z:/home/ss1.su/public/settings.php</file>
+            <file>file:/Z:/home/ss1.su/public/js/script.js</file>
+            <file>file:/Z:/home/ss1.su/public/css/style.css</file>
+            <file>file:/Z:/home/ss1.su/public/js/outlets.js</file>
         </group>
     </open-files>
 </project-private>
