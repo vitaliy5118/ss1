@@ -97,5 +97,17 @@ class Application_Model_DbTable_Repairs extends Zend_Db_Table_Abstract {
     public function deleteRepaire($id) {
         $this->delete('id=' . (int) $id);
     }
+    
+        //статистика количества аппаратов по имени
+    public function getChart() {
+
+        //формируем запрос
+        $sql = (" SELECT date, count(id) as count
+                  FROM `repairs` 
+                  GROUP BY MONTH(date)
+                ");
+
+        return $this->getAdapter()->query($sql)->fetchAll();
+    }
 
 }

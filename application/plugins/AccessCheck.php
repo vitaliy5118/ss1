@@ -12,11 +12,13 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
         $auth = Zend_Auth::getInstance();
         
         $username = Zend_Auth::getInstance()->getIdentity()->username;
+
         // Создаём объект Zend_Acl
         $acl = new Zend_Acl();
         // Добавляем ресурсы сайта
         $acl->addResource('index')
                 ->addResource('access')
+                ->addResource('update') //ресурс используемый для создания и обновления базы данных
                 ->addResource('catalog')
                 ->addResource('history')
                 ->addResource('outlets')
@@ -39,107 +41,109 @@ class Application_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
         $acl->allow('guest', 'access', array('login'))
             ->allow('guest', 'error');
         
-        // выгружаем с базы данных страници доступные для входа
-        $allow = new Application_Model_DbTable_Allow();
-        $allow_data = $allow->fetchAll($allow->select()->where("username = '$username'"))->toArray();
-        
-        $allow_array = array(
-            'documentation' => array ($allow_data[0]['doc_index']
-                                     ,$allow_data[0]['doc_file']
-                                     ,$allow_data[0]['doc_delete'])
-           ,'catalog'       => array ($allow_data[0]['cat_index']
-                                     ,$allow_data[0]['cat_add']
-                                     ,$allow_data[0]['cat_edit']
-                                     ,$allow_data[0]['cat_delete']
-                                     ,$allow_data[0]['cat_exl'])
-           ,'history'       => array ($allow_data[0]['his_index'])
-           ,'reports'       => array ($allow_data[0]['rep_index'])
-           ,'statistic'     => array ($allow_data[0]['stat_index'])
-           ,'sales'         => array ($allow_data[0]['sal_index']
-                                     ,$allow_data[0]['sal_add']
-                                     ,$allow_data[0]['sal_edit']
-                                     ,$allow_data[0]['sal_delete']
-                                     ,$allow_data[0]['sal_toexcel'])
-           ,'repairs'       => array ($allow_data[0]['rps_index']
-                                     ,$allow_data[0]['rps_add']
-                                     ,$allow_data[0]['rps_edit']
-                                     ,$allow_data[0]['rps_delete']
-                                     ,$allow_data[0]['rps_toexcel']
-                                     ,$allow_data[0]['rps_toexcelmounth']
-                                     ,$allow_data[0]['rps_statistic'])
-           ,'warehouse'     => array ($allow_data[0]['war_index']
-                                     ,$allow_data[0]['war_add']
-                                     ,$allow_data[0]['war_edit']
-                                     ,$allow_data[0]['war_delete']
-                                     ,$allow_data[0]['war_toexcel']
-                                     ,$allow_data[0]['war_history']
-                                     ,$allow_data[0]['war_load']
-                                     ,$allow_data[0]['war_unload'])
-           ,'service'       => array ($allow_data[0]['ser_index']
-                                     ,$allow_data[0]['ser_add']
-                                     ,$allow_data[0]['ser_edit']
-                                     ,$allow_data[0]['ser_delete']
-                                     ,$allow_data[0]['ser_toexcel']
-                                     ,$allow_data[0]['ser_invoice'])
-           ,'setup'         => array ($allow_data[0]['set_index']
-                                     ,$allow_data[0]['set_names']
-                                     ,$allow_data[0]['set_addname']
-                                     ,$allow_data[0]['set_editname']
-                                     ,$allow_data[0]['set_deletename']
-                                     ,$allow_data[0]['set_types']
-                                     ,$allow_data[0]['set_addtype']
-                                     ,$allow_data[0]['set_edittype']
-                                     ,$allow_data[0]['set_deletetype']
-                                     ,$allow_data[0]['set_owners']
-                                     ,$allow_data[0]['set_addowner']
-                                     ,$allow_data[0]['set_editowner']
-                                     ,$allow_data[0]['set_deleteowner']
-                                     ,$allow_data[0]['set_users']
-                                     ,$allow_data[0]['set_adduser']
-                                     ,$allow_data[0]['set_edituser']
-                                     ,$allow_data[0]['set_deleteuser']
-                                     ,$allow_data[0]['set_status']
-                                     ,$allow_data[0]['set_addstatus']
-                                     ,$allow_data[0]['set_editstatus']
-                                     ,$allow_data[0]['set_deletestatus']
-                                     ,$allow_data[0]['set_prices']
-                                     ,$allow_data[0]['set_addprices']
-                                     ,$allow_data[0]['set_editprices']
-                                     ,$allow_data[0]['set_deleteprices']
-                                     ,$allow_data[0]['set_access']
-                                     ,$allow_data[0]['set_addaccess']
-                                     ,$allow_data[0]['set_editaccess']
-                                     ,$allow_data[0]['set_deleteaccess'])
-            ,'outlets'      => array('index','autofind', 'save','saveshow','savecolor','getmarkdata') //доступ доступный всем
+       
+        if ($username == 'client') {
+            // выгружаем с базы данных страници доступные для входа
+            $allow = new Application_Model_DbTable_Allow();
+            $allow_data = $allow->fetchAll($allow->select()->where("username = '$username'"))->toArray();
 
-                                     
-        );
-        
-        // применяем доступ для текущего пользователя
-        $acl->allow('client', 'error')
-            ->allow('client', 'access', array('logout'))
-            ->allow('client', 'index',  array('index'))
-            ->allow('client', 'history',        $allow_array['history'])
-            ->allow('client', 'documentation',  $allow_array['documentation'])
-            ->allow('client', 'reports',        $allow_array['reports'])
-            ->allow('client', 'statistic',      $allow_array['statistic'])
-            ->allow('client', 'catalog',        $allow_array['catalog'])
-            ->allow('client', 'sales',          $allow_array['sales'])
-            ->allow('client', 'repairs',        $allow_array['repairs'])
-            ->allow('client', 'warehouse',      $allow_array['warehouse'])
-            ->allow('client', 'service',        $allow_array['service'])
-            ->allow('client', 'outlets',        $allow_array['outlets'])
-            ->allow('client', 'setup',          $allow_array['setup']);
-                
+            $allow_array = array(
+                'documentation' => array($allow_data[0]['doc_index']
+                    , $allow_data[0]['doc_file']
+                    , $allow_data[0]['doc_delete'])
+                , 'catalog' => array($allow_data[0]['cat_index']
+                    , $allow_data[0]['cat_add']
+                    , $allow_data[0]['cat_edit']
+                    , $allow_data[0]['cat_delete']
+                    , $allow_data[0]['cat_exl'])
+                , 'history' => array($allow_data[0]['his_index'])
+                , 'reports' => array($allow_data[0]['rep_index'])
+                , 'statistic' => array($allow_data[0]['stat_index'], 'getchart', 'getchartrepair')
+                , 'sales' => array($allow_data[0]['sal_index']
+                    , $allow_data[0]['sal_add']
+                    , $allow_data[0]['sal_edit']
+                    , $allow_data[0]['sal_delete']
+                    , $allow_data[0]['sal_toexcel'])
+                , 'repairs' => array($allow_data[0]['rps_index']
+                    , $allow_data[0]['rps_add']
+                    , $allow_data[0]['rps_edit']
+                    , $allow_data[0]['rps_delete']
+                    , $allow_data[0]['rps_toexcel']
+                    , $allow_data[0]['rps_toexcelmounth']
+                    , $allow_data[0]['rps_statistic'])
+                , 'warehouse' => array($allow_data[0]['war_index']
+                    , $allow_data[0]['war_add']
+                    , $allow_data[0]['war_edit']
+                    , $allow_data[0]['war_delete']
+                    , $allow_data[0]['war_toexcel']
+                    , $allow_data[0]['war_history']
+                    , $allow_data[0]['war_load']
+                    , $allow_data[0]['war_unload'])
+                , 'service' => array($allow_data[0]['ser_index']
+                    , $allow_data[0]['ser_add']
+                    , $allow_data[0]['ser_edit']
+                    , $allow_data[0]['ser_delete']
+                    , $allow_data[0]['ser_toexcel']
+                    , $allow_data[0]['ser_invoice'])
+                , 'setup' => array($allow_data[0]['set_index']
+                    , $allow_data[0]['set_names']
+                    , $allow_data[0]['set_addname']
+                    , $allow_data[0]['set_editname']
+                    , $allow_data[0]['set_deletename']
+                    , $allow_data[0]['set_types']
+                    , $allow_data[0]['set_addtype']
+                    , $allow_data[0]['set_edittype']
+                    , $allow_data[0]['set_deletetype']
+                    , $allow_data[0]['set_owners']
+                    , $allow_data[0]['set_addowner']
+                    , $allow_data[0]['set_editowner']
+                    , $allow_data[0]['set_deleteowner']
+                    , $allow_data[0]['set_users']
+                    , $allow_data[0]['set_adduser']
+                    , $allow_data[0]['set_edituser']
+                    , $allow_data[0]['set_deleteuser']
+                    , $allow_data[0]['set_status']
+                    , $allow_data[0]['set_addstatus']
+                    , $allow_data[0]['set_editstatus']
+                    , $allow_data[0]['set_deletestatus']
+                    , $allow_data[0]['set_prices']
+                    , $allow_data[0]['set_addprices']
+                    , $allow_data[0]['set_editprices']
+                    , $allow_data[0]['set_deleteprices']
+                    , $allow_data[0]['set_access']
+                    , $allow_data[0]['set_addaccess']
+                    , $allow_data[0]['set_editaccess']
+                    , $allow_data[0]['set_deleteaccess'])
+                , 'outlets' => array('index', 'autofind', 'save', 'saveshow', 'savecolor', 'getmarkdata') //доступ доступный всем
+            );
+
+            // применяем доступ для текущего пользователя
+            $acl->allow('client', 'error')
+                    ->allow('client', 'access', array('logout'))
+                    ->allow('client', 'index', array('index'))
+                    ->allow('client', 'history', $allow_array['history'])
+                    ->allow('client', 'documentation', $allow_array['documentation'])
+                    ->allow('client', 'reports', $allow_array['reports'])
+                    ->allow('client', 'statistic', $allow_array['statistic'])
+                    ->allow('client', 'catalog', $allow_array['catalog'])
+                    ->allow('client', 'sales', $allow_array['sales'])
+                    ->allow('client', 'repairs', $allow_array['repairs'])
+                    ->allow('client', 'warehouse', $allow_array['warehouse'])
+                    ->allow('client', 'service', $allow_array['service'])
+                    ->allow('client', 'outlets', $allow_array['outlets'])
+                    ->allow('client', 'setup', $allow_array['setup']);
+        }
+
         // применяем доступ для админа       
         $acl->allow('admin', 'error')
+            ->allow('admin', 'update',    array('index','update','load','make'))
             ->allow('admin', 'access',    array('logout'))
             ->allow('admin', 'index',     array('index'))
             ->allow('admin', 'history',   array('index'))
             ->allow('admin', 'outlets',   array('index','autofind', 'save','saveshow','savecolor','getmarkdata'))
             ->allow('admin', 'documentation', array('index','file','delete'))
             ->allow('admin', 'reports',   array('index'))
-            ->allow('admin', 'statistic', array('index'))
+            ->allow('admin', 'statistic', array('index', 'getchart','getchartrepair'))
             ->allow('admin', 'catalog',   array('index','toexcel','add', 'edit', 'delete'))
             ->allow('admin', 'sales',     array('index','toexcel','add', 'edit', 'delete'))
             ->allow('admin', 'service',   array('index','toexcel', 'invoice','add', 'edit', 'delete'))

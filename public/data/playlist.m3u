@@ -1,0 +1,482 @@
+#EXTM3U deinterlace=1
+
+#EXTINF:0,СТБ
+http://tivitivi.teletrans.tv/stb/index.m3u8
+
+#EXTINF:0,1+1
+http://tivitivi.teletrans.tv/1plus1/index.m3u8
+
+#EXTINF:0,Интер
+http://tivitivi.teletrans.tv/inter/index.m3u8
+
+#EXTINF:0,ICTV
+http://tivitivi.teletrans.tv/ictv/index.m3u8
+
+#EXTINF:0,Новый канал
+http://tivitivi.teletrans.tv/noviy/index.m3u8
+
+#EXTINF:0,Espreso TV
+http://tivitivi.teletrans.tv/espresotv/index.m3u8
+
+#EXTINF:0,НТН
+http://tivitivi.teletrans.tv/ntn/index.m3u8
+
+#EXTINF:0,2+2
+http://tivitivi.teletrans.tv/2plus2/index.m3u8
+
+#EXTINF:0,ТЕТ
+http://tivitivi.teletrans.tv/tet/index.m3u8
+
+#EXTINF:0,Первый национальный
+http://tivitivi.teletrans.tv/perviynational/index.m3u8
+
+#EXTINF:0,5 канал
+http://tivitivi.teletrans.tv/5channel/index.m3u8
+
+#EXTINF:0,Eu Music
+http://tivitivi.teletrans.tv/eumusic/index.m3u8
+
+#EXTINF:0,K1
+http://tivitivi.teletrans.tv/k1/index.m3u8
+
+#EXTINF:0,K2
+http://tivitivi.teletrans.tv/k2/index.m3u8
+
+#EXTINF:0,ТРК Киев
+http://tivitivi.teletrans.tv/trkkiev/index.m3u8
+
+#EXTINF:0,112 Украина
+http://tivitivi.teletrans.tv/112ukraine/index.m3u8
+
+#EXTINF:0,Тонис
+http://tivitivi.teletrans.tv/tonis/index.m3u8
+
+#EXTINF:0,Мега
+http://tivitivi.teletrans.tv/mega/index.m3u8
+
+#EXTINF:0,Макси ТВ 
+http://tivitivi.teletrans.tv/maxitv/index.m3u8
+
+#EXTINF:0,Eurosport
+http://tivitivi.teletrans.tv/eurosport/index.m3u8
+
+#EXTINF:0,Eurosport 2
+http://tivitivi.teletrans.tv/eurosport2/index.m3u8
+
+#EXTINF:0,112 Украина HD
+http://tivitivi.teletrans.tv/112ukrainehd/index.m3u8
+
+#EXTINF:0,360 TUNEBOX
+http://tivitivi.teletrans.tv/360tunebox/index.m3u8
+
+#EXTINF:0,7 канал Одесса
+http://tivitivi.teletrans.tv/7channel/index.m3u8
+
+#EXTINF:0,Академия Одесса
+http://tivitivi.teletrans.tv/akademiaod/index.m3u8
+
+#EXTINF:0,Беларусь 24
+http://tivitivi.teletrans.tv/belarus24/index.m3u8
+
+#EXTINF:0,Бигуди
+http://tivitivi.teletrans.tv/bigudi/index.m3u8
+
+#EXTINF:0,Винтаж ТВ
+http://tivitivi.teletrans.tv/vintajtv/index.m3u8
+
+#EXTINF:0,Возрождение ТВ
+http://tivitivi.teletrans.tv/vozrojdenietv/index.m3u8
+
+#EXTINF:0,Глас
+http://tivitivi.teletrans.tv/glas/index.m3u8
+
+#EXTINF:0,ГЛАС Одесса
+http://tivitivi.teletrans.tv/glass/index.m3u8
+
+#EXTINF:0,Громадське ТВ HD
+http://tivitivi.teletrans.tv/gromadske/index.m3u8
+
+#EXTINF:0,Гумор ТВ / Бабай ТВ
+http://tivitivi.teletrans.tv/gumortb/index.m3u8
+
+#EXTINF:0,Дача
+http://tivitivi.teletrans.tv/dacha/index.m3u8
+
+#EXTINF:0,Дача HD
+http://tivitivi.teletrans.tv/dachahd/index.m3u8
+
+#EXTINF:0,Детский мир/Телеклуб
+http://tivitivi.teletrans.tv/detkiymir/index.m3u8
+
+#EXTINF:0,Думская ТВ HD
+http://tivitivi.teletrans.tv/dumskayatvhd/index.m3u8
+
+#EXTINF:0,Еврокино
+http://tivitivi.teletrans.tv/evrokino/index.m3u8
+
+#EXTINF:0,Зоопарк
+http://tivitivi.teletrans.tv/zoopark/index.m3u8
+
+#EXTINF:0,Квартал ТВ
+http://tivitivi.teletrans.tv/kvartaltv/index.m3u8
+
+#EXTINF:0,Киевская Русь (КРТ)
+http://tivitivi.teletrans.tv/kievskayarus/index.m3u8
+
+#EXTINF:0,Культура
+http://tivitivi.teletrans.tv/kultura/index.m3u8
+
+#EXTINF:0,Львов ТВ
+http://tivitivi.teletrans.tv/lvivtv/index.m3u8
+
+#EXTINF:0,Малятко TV
+http://tivitivi.teletrans.tv/malyatkotv/index.m3u8
+
+#EXTINF:0,Мультимания
+http://tivitivi.teletrans.tv/multimania/index.m3u8
+
+#EXTINF:0,Надія
+http://tivitivi.teletrans.tv/nadiya/index.m3u8
+
+#EXTINF:0,Настоящее Время
+http://tivitivi.teletrans.tv/currenttime/index.m3u8
+
+#EXTINF:0,Наше любимое кино
+http://tivitivi.teletrans.tv/nashelyubimoekino/index.m3u8
+
+#EXTINF:0,Наука
+http://tivitivi.teletrans.tv/nauka/index.m3u8
+
+#EXTINF:0,Новини 24
+http://tivitivi.teletrans.tv/noviny24/index.m3u8
+
+#EXTINF:0,Одесса Интернешнл
+http://tivitivi.teletrans.tv/odessa/index.m3u8
+
+#EXTINF:0,Охотник и рыболов
+http://tivitivi.teletrans.tv/or/index.m3u8
+
+#EXTINF:0,Охотник и рыболов HD
+http://tivitivi.teletrans.tv/orhd/index.m3u8
+
+#EXTINF:0,Первый городской Одесса
+http://tivitivi.teletrans.tv/perviyodessa/index.m3u8
+
+#EXTINF:0,Первый Деловой
+http://tivitivi.teletrans.tv/perviydelovoy/index.m3u8
+
+#EXTINF:0,Первый крымскотатарский ATR
+http://tivitivi.teletrans.tv/atr/index.m3u8
+
+#EXTINF:0,Перший автомобільний
+http://tivitivi.teletrans.tv/pershiyavtomobilniy/index.m3u8
+
+#EXTINF:0,Перший Ukraine
+http://tivitivi.teletrans.tv/pershiyukraine/index.m3u8
+
+#EXTINF:0,Пиксель
+http://tivitivi.teletrans.tv/pixel/index.m3u8
+
+#EXTINF:0,Планета
+http://tivitivi.teletrans.tv/planeta/index.m3u8
+
+#EXTINF:0,Плюс
+http://tivitivi.teletrans.tv/plus/index.m3u8
+
+#EXTINF:0,Плюс Плюс
+http://tivitivi.teletrans.tv/plusplus/index.m3u8
+
+#EXTINF:0,Правда Тут
+http://tivitivi.teletrans.tv/pravdatut/index.m3u8
+
+#EXTINF:0,Про все
+http://tivitivi.teletrans.tv/provse/index.m3u8
+
+#EXTINF:0,Рада
+http://tivitivi.teletrans.tv/rada/index.m3u8
+
+#EXTINF:0,Репортер Одесса
+http://tivitivi.teletrans.tv/reporterod/index.m3u8
+
+#EXTINF:0,CK1 Житомир
+http://tivitivi.teletrans.tv/ck1/index.m3u8
+
+#EXTINF:0,Солнце Украина
+http://tivitivi.teletrans.tv/solnceukraine/index.m3u8
+
+#EXTINF:0,Спорт 1
+http://tivitivi.teletrans.tv/sport1/index.m3u8
+
+#EXTINF:0,Спорт 2
+http://tivitivi.teletrans.tv/sport2/index.m3u8
+
+#EXTINF:0,Страна советов
+http://tivitivi.teletrans.tv/stranasovetov/index.m3u8
+
+#EXTINF:0,СNL TV
+http://tivitivi.teletrans.tv/cnltv/index.m3u8
+
+#EXTINF:0,Телевсесвіт
+http://tivitivi.teletrans.tv/televsesvit/index.m3u8
+
+#EXTINF:0,Телевсесвіт HD
+http://tivitivi.teletrans.tv/televsesvithd/index.m3u8
+
+#EXTINF:0,Терра
+http://tivitivi.teletrans.tv/terra/index.m3u8
+
+#EXTINF:0,Тиса
+http://tivitivi.teletrans.tv/tisa/index.m3u8
+
+#EXTINF:0,Тонис HD
+http://tivitivi.teletrans.tv/tonishd/index.m3u8
+
+#EXTINF:0,Третий цифровой Одесса
+http://tivitivi.teletrans.tv/3chod/index.m3u8
+
+#EXTINF:0,Трофей
+http://tivitivi.teletrans.tv/trofey/index.m3u8
+
+#EXTINF:0,Трофей HD
+http://tivitivi.teletrans.tv/trofeihd/index.m3u8
+
+#EXTINF:0,УНIАН
+http://tivitivi.teletrans.tv/unian/index.m3u8
+
+#EXTINF:0,Фауна
+http://tivitivi.teletrans.tv/fauna/index.m3u8
+
+#EXTINF:0,Центральный канал
+http://tivitivi.teletrans.tv/ck/index.m3u8
+
+#EXTINF:0,Чернівецький промінь HD
+http://tivitivi.teletrans.tv/cvpromin/index.m3u8
+
+#EXTINF:0,Черноморская ТРК 
+http://tivitivi.teletrans.tv/chernomorskayatrk/index.m3u8
+
+#EXTINF:0,ЧП.INFO
+http://tivitivi.teletrans.tv/chpinfo/index.m3u8
+
+#EXTINF:0,ЭкоТВ
+http://tivitivi.teletrans.tv/ekotv/index.m3u8
+
+#EXTINF:0,Эпоха
+http://tivitivi.teletrans.tv/epoha/index.m3u8
+
+#EXTINF:0,Южная волна HD
+http://tivitivi.teletrans.tv/yuznayavolna/index.m3u8
+
+#EXTINF:0,100% News
+http://tivitivi.teletrans.tv/100news/index.m3u8
+
+#EXTINF:0,A-One
+http://tivitivi.teletrans.tv/aone/index.m3u8
+
+#EXTINF:0,Animal Planet
+http://tivitivi.teletrans.tv/animalplanet/index.m3u8
+
+#EXTINF:0,AzTV
+http://tivitivi.teletrans.tv/aztv/index.m3u8
+
+#EXTINF:0,Boomerang
+http://tivitivi.teletrans.tv/boomerang/index.m3u8
+
+#EXTINF:0,BrainTV
+http://tivitivi.teletrans.tv/braintv/index.m3u8
+
+#EXTINF:0,Business
+http://tivitivi.teletrans.tv/business/index.m3u8
+
+#EXTINF:0,Cartoon Network 
+http://tivitivi.teletrans.tv/cartoonnetwork/index.m3u8
+
+#EXTINF:0,Da Vinci Learning
+http://tivitivi.teletrans.tv/davincilearning/index.m3u8
+
+#EXTINF:0,Deutsche Welle
+http://tivitivi.teletrans.tv/dw/index.m3u8
+
+#EXTINF:0,Discovery Channel
+http://tivitivi.teletrans.tv/discoverychannel/index.m3u8
+
+#EXTINF:0,Dobro TV
+http://tivitivi.teletrans.tv/dobrotv/index.m3u8
+
+#EXTINF:0,DocuBox HD
+http://tivitivi.teletrans.tv/docuboxhd/index.m3u8
+
+#EXTINF:0,Ducktv
+http://tivitivi.teletrans.tv/ducktv/index.m3u8
+
+#EXTINF:0,English club
+http://tivitivi.teletrans.tv/englishclub/index.m3u8
+
+#EXTINF:0,Enter-фильм
+http://tivitivi.teletrans.tv/enterfilm/index.m3u8
+
+#EXTINF:0,Espreso TV HD
+http://tivitivi.teletrans.tv/espresotvhd/index.m3u8
+
+#EXTINF:0,Eu Music HD
+http://tivitivi.teletrans.tv/eumusichd/index.m3u8
+
+#EXTINF:0,EuroNews
+http://tivitivi.teletrans.tv/euronews/index.m3u8
+
+#EXTINF:0,Fashion TV
+http://tivitivi.teletrans.tv/fashiontv/index.m3u8
+
+#EXTINF:0,Fashion TV HD
+http://tivitivi.teletrans.tv/fashiontvhd/index.m3u8
+
+#EXTINF:0,FashionBox HD
+http://tivitivi.teletrans.tv/fashionboxhd/index.m3u8
+
+#EXTINF:0,Fast & FunBox HD
+http://tivitivi.teletrans.tv/fastfunboxhd/index.m3u8
+
+#EXTINF:0,FightBox HD
+http://tivitivi.teletrans.tv/fightboxhd/index.m3u8
+
+#EXTINF:0,FilmBox
+http://tivitivi.teletrans.tv/filmbox/index.m3u8
+
+#EXTINF:0,FilmBox Arthouse
+http://tivitivi.teletrans.tv/filmboxarthouse/index.m3u8
+
+#EXTINF:0,France 24 English 
+http://tivitivi.teletrans.tv/france24/index.m3u8
+
+#EXTINF:0,France 24 Francais 
+http://tivitivi.teletrans.tv/france24fr/index.m3u8
+
+#EXTINF:0,HD Fashion
+http://tivitivi.teletrans.tv/hdfashion/index.m3u8
+
+#EXTINF:0,Kino Polska International
+http://tivitivi.teletrans.tv/kinopolskaint/index.m3u8
+
+#EXTINF:0,Kino Polska Muzyka International
+http://tivitivi.teletrans.tv/kinopolskamuz/index.m3u8
+
+#EXTINF:0,Lale
+http://tivitivi.teletrans.tv/lale/index.m3u8
+
+#EXTINF:0,M1
+http://tivitivi.teletrans.tv/m1/index.m3u8
+
+#EXTINF:0,M2
+http://tivitivi.teletrans.tv/m2/index.m3u8
+
+#EXTINF:0,Milady Television
+http://tivitivi.teletrans.tv/miladytelevision/index.m3u8
+
+#EXTINF:0,MostVideo.TV HD
+http://tivitivi.teletrans.tv/mostvideotvhd/index.m3u8
+
+#EXTINF:0,MTV Hits
+http://tivitivi.teletrans.tv/mtvhits/index.m3u8
+
+#EXTINF:0,MTV Dance
+http://tivitivi.teletrans.tv/mtvdance/index.m3u8
+
+#EXTINF:0,MTV Rocks
+http://tivitivi.teletrans.tv/mtvrocks/index.m3u8
+
+#EXTINF:0,Music Box TV
+http://tivitivi.teletrans.tv/musicboxtv/index.m3u8
+
+#EXTINF:0,News Network
+http://tivitivi.teletrans.tv/newsnetwork/index.m3u8
+
+#EXTINF:0,News One Channel
+http://tivitivi.teletrans.tv/newsonechannel/index.m3u8
+
+#EXTINF:0,Nick Jr.
+http://tivitivi.teletrans.tv/nickjr/index.m3u8
+
+#EXTINF:0,Nickelodeon
+http://tivitivi.teletrans.tv/nickelodeon/index.m3u8
+
+#EXTINF:0,O-TV
+http://tivitivi.teletrans.tv/otv/index.m3u8
+
+#EXTINF:0,QTV
+http://tivitivi.teletrans.tv/qtv/index.m3u8
+
+#EXTINF:0,RTI
+http://tivitivi.teletrans.tv/rti/index.m3u8
+
+#EXTINF:0,RTI HD
+http://tivitivi.teletrans.tv/rtihd/index.m3u8
+
+#EXTINF:0,RTVi
+http://tivitivi.teletrans.tv/rtvi/index.m3u8
+
+#EXTINF:0,3S.TV
+http://tivitivi.teletrans.tv/s3tv/index.m3u8
+
+#EXTINF:0,Shopping TV
+http://tivitivi.teletrans.tv/shoppingtv/index.m3u8
+
+#EXTINF:0,TLC
+http://tivitivi.teletrans.tv/tlc/index.m3u8
+
+#EXTINF:0,Travel and Adventure
+http://tivitivi.teletrans.tv/travelandadventure/index.m3u8
+
+#EXTINF:0,TV 1000 Русское кино
+http://tivitivi.teletrans.tv/tv1000rucinema/index.m3u8
+
+#EXTINF:0,TV 1000 Action
+http://tivitivi.teletrans.tv/tv1000action/index.m3u8
+
+#EXTINF:0,TV 1000 Comedy
+http://tivitivi.teletrans.tv/tv1000comedy/index.m3u8
+
+#EXTINF:0,TV 1000 East
+http://tivitivi.teletrans.tv/tv1000east/index.m3u8
+
+#EXTINF:0,TV XXI
+http://tivitivi.teletrans.tv/tvxxi/index.m3u8
+
+#EXTINF:0,UA/TV
+http://tivitivi.teletrans.tv/uatv/index.m3u8
+
+#EXTINF:0,UBR
+http://tivitivi.teletrans.tv/ubr/index.m3u8
+
+#EXTINF:0,VH1 Europe
+http://tivitivi.teletrans.tv/vh1europe/index.m3u8
+
+#EXTINF:0,VH1 Classic
+http://tivitivi.teletrans.tv/vh1classic/index.m3u8
+
+#EXTINF:0,Viasat Explorer CEE
+http://tivitivi.teletrans.tv/viasatexplorercee/index.m3u8
+
+#EXTINF:0,Viasat History
+http://tivitivi.teletrans.tv/viasathistory/index.m3u8
+
+#EXTINF:0,Viasat Nature CEE
+http://tivitivi.teletrans.tv/viasatnaturecee/index.m3u8
+
+#EXTINF:0,Viasat Sport East
+http://tivitivi.teletrans.tv/viasatsporteast/index.m3u8
+
+#EXTINF:0,World Fashion Channel
+http://tivitivi.teletrans.tv/worldfashionchannel/index.m3u8
+
+#EXTINF:0,XSport
+http://tivitivi.teletrans.tv/xsport/index.m3u8
+
+#EXTINF:0,ZEE TV
+http://tivitivi.teletrans.tv/zeetv/index.m3u8
+
+#EXTINF:0,ZIK
+http://tivitivi.teletrans.tv/zik/index.m3u8
+
+#EXTINF:0,Zoom
+http://tivitivi.teletrans.tv/zoom/index.m3u8
+

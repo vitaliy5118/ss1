@@ -122,5 +122,17 @@ class Application_Model_DbTable_Devices extends Zend_Db_Table_Abstract {
 
         return $this->getAdapter()->query($sql)->fetchAll();
     }
+    //статистика количества аппаратов по имени
+    public function getChart($data) {
+
+        //формируем запрос
+        $sql = (" SELECT $data, count($data) as count
+                  FROM `devices`
+                  GROUP BY $data
+                  ORDER BY count DESC 
+                ");
+        
+        return $this->getAdapter()->query($sql)->fetchAll();
+    }
 
 }

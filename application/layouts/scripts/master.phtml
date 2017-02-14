@@ -1,3 +1,4 @@
+<?php global $settings; ?>
 <?php echo $this->doctype();?>
 <html>
     <head>
@@ -27,6 +28,11 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="/js/script.js"></script>
+        <script type="text/javascript" src="/js/tooltip.js"></script>
+        
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
     </head>
     <body>
@@ -34,7 +40,7 @@
             <!-- Navigation -->
             <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Coffee Service Center Admin v3.0 12.2016&nbsp&nbsp&nbsp&nbspAromoPlyus development department</a>
+                    <a class="navbar-brand" href="/">Coffee Service Center Admin <?=$settings['version'];?>&nbsp&nbsp&nbsp&nbsp<?=$settings['department'];?></a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="dropdown">

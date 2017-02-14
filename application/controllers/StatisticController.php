@@ -122,6 +122,42 @@ class StatisticController extends Zend_Controller_Action {
         $this->view->unique_users = $unique_users;
         $this->view->visits = $visits;
     }
+    
+    public function getchartAction() {
+        if($this->getRequest()->getParam('parameter')) {
+            $parameter = $this->getRequest()->getParam('parameter');
+        }
+        
+        $devices = new Application_Model_DbTable_Devices();
+        $data = $devices->getChart($parameter);
+        
+        foreach ($data as $rows) {
+         
+            $data_array[ iconv('cp1251', 'utf-8', $rows[$parameter])] = $rows['count'];
+        }
+        
+        $data_array = json_encode($data_array);
+        echo $data_array;
+        //var_dump ($data_array);
+        die();
+        
+    }
+    public function getchartrepairAction() {
+        
+        $repairs = new Application_Model_DbTable_Repairs();
+        $data = $repairs->getChart();
+        
+        foreach ($data as $rows) {
+         
+            $data_array[$rows['date']] = $rows['count'];
+        }
+        
+        $data_array = json_encode($data_array);
+        echo $data_array;
+        //var_dump ($data_array);
+        die();
+        
+    }
 
 }
 

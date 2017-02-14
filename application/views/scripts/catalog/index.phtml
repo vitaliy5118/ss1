@@ -1,6 +1,15 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoQKZO_RC6V2FUsSISFhE72Sx5A6YQoCI">
 </script>
+<!-- Скрипт для инициализации элемента на странице, имеющего идентификатор tooltip -->
+<!-- Скрипт для инициализации элементов на странице, имеющих атрибут data-toggle="tooltip" -->
+<script>
+// после загрузки страницы
+$(function () {
+  // инициализировать все элементы на страницы, имеющих атрибут data-toggle="tooltip", как компоненты tooltip
+  $('[data-toggle="tooltip"]').tooltip();
+})
+</script>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-dashboard fa-fw"></i> Каталог аппаратов</h1>
@@ -88,10 +97,12 @@
                                 <th>Принадлежность&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_owner'); ?>"></a></th>
                                 <th>Территория&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_user'); ?>"></a></th>
                                 <th>Статус&nbsp<a class="fa fa-sort fa-fw" href="<?php echo $this->url(array(), 'catalog_sort_status'); ?>"></a></th>
-                                <th><center><abbr title="Ремонты"><i class="fa fa-wrench fa-fw"></i></abbr></center></th>
-                                <th><center><abbr title="История"><i class="fa fa-thumb-tack fa-fw"></i></abbr></center></th>
-                                <th><center><abbr title="Редактировать"><i class="fa fa-gavel fa-fw"></i></abbr></center></th>
-                                <th><center><abbr title="Удалить"><i class="fa fa-trash-o fa-fw"></i></abbr></center></th>
+                                <th><center>Управление 
+<!--                                    <abbr title="Ремонты"><i class="fa fa-wrench fa-fw"></i></abbr>
+                                    <abbr title="История"><i class="fa fa-thumb-tack fa-fw"></i></abbr>
+                                    <abbr title="Редактировать"><i class="fa fa-gavel fa-fw"></i></abbr>
+                                    <abbr title="Удалить"><i class="fa fa-trash-o fa-fw"></i></abbr>-->
+                                </center></th>
                             </tr>
                          </thead>
                         <tbody>
@@ -99,17 +110,19 @@
                         <?php
                         foreach ($this->devices as $rows) {
                             ?> <tr class="gradeA row_set">
-                                <td><center><a <?php if ($this->escape($rows['show'])=='OK') {echo 'style="color: #8FBC8F"';} else {echo 'style="color: #E9967A"';}  ?> class="shop support-hover fa fa-shopping-cart " id='<?php echo $this->escape($rows['id']); ?>'></a></center></td>
+                                <td><center><a <?php if ($this->escape($rows['show'])=='OK') {echo 'style="color: #8FBC8F"';} else {echo 'style="color: #E9967A"';}  ?> data-toggle="tooltip" data-original-title="торговая точка" class="shop support-hover fa fa-shopping-cart " id='<?php echo $this->escape($rows['id']); ?>'></a></center></td>
                                 <td><?php echo $this->escape($rows['number']); ?></td>
                                 <td><?php echo $this->escape($rows['name']); ?></td>
                                 <td><?php echo $this->escape($rows['owner']); ?></td>
                                 <td><?php echo $this->escape($rows['user']); ?></td>
                                 <td><?php echo $this->escape($rows['status']); ?></td>
-                                <td><center><a class="fa fa-wrench fa-fw" href="/repairs/index/number/<?= $this->escape($rows['number']) ?>"></a></center></td>
-                                <td><center><a class="fa fa-thumb-tack fa-fw" href="/history/index/number/<?= $this->escape($rows['number']) ?>"></a></center></td>
-                                <td><center><a class="fa fa-gavel fa-fw" href="/catalog/edit/id/<?= $this->escape($rows['id']) ?>"></a></center></td>
-                                <td><center><a class="fa fa-trash-o fa-fw" href="/catalog/delete/id/<?= $this->escape($rows['id']) ?>"></a></center></td>
-                            </tr>
+                                <td><center>
+                                    <a data-toggle="tooltip" data-placement="top" class="btn btn-success btn-sm" data-original-title="добавить ремонт" href="/repairs/index/number/<?= $this->escape($rows['number']) ?>"><i class="fa fa-wrench fa-fw"></i></a>
+                                    <a data-toggle="tooltip" class="btn btn-info  btn-sm"   data-original-title="посмотреть историю" href="/history/index/number/<?= $this->escape($rows['number']) ?>"><i class="fa fa-thumb-tack fa-fw"></i></a>
+                                    <a data-toggle="tooltip" class="btn btn-primary btn-sm" data-original-title="редактировать аппарат" href="/catalog/edit/id/<?= $this->escape($rows['id']) ?>"><i class="fa fa-pencil fa-fw" ></i></a>
+                                    <a data-toggle="tooltip" class="btn btn-danger btn-sm"  data-original-title="удалить аппарат" href="/catalog/delete/id/<?= $this->escape($rows['id']) ?>"><i class="fa fa-trash-o fa-fw" ></i></a>
+                                </center></td>
+                    </tr>
                             <tr  class="row_set_<?= $this->escape($rows['id']) ?> shop_table ">
                                 <th colspan="10"></th>
                             </tr>
